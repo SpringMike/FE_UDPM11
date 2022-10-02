@@ -38,7 +38,7 @@ const items: MenuItem[] = [
 
 const SideBar: React.FC = () => {
   // const user = useSelector((state: RootState) => state?.user)
-  // // @ts-ignore
+
   // const roles = useSelector((state: RootState) => state?.user?.authorities);
   // // console.log(roles);
 
@@ -51,7 +51,7 @@ const SideBar: React.FC = () => {
           <a href="/home">
             <img
                 className="img-fill"
-                src="https://bizweb.dktcdn.net/assets/admin/images/icon-svg/sub_logosapo-02.svg"
+                src="https://seeklogo.com/images/1/shop-logo-C0083F2CCF-seeklogo.com.png"
                 alt="logo"
             />
           </a>

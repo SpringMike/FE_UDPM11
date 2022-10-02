@@ -41,7 +41,6 @@ const SupplierCreate = ({reload}: SupplierProps) => {
             handleKeyChange()
         }).catch((err) => {
             const error = err.response.data.message
-            console.log(err)
             ToastCustom.fire({
                 icon: 'error',
                 title: "Thêm nhà cung cấp thất bại",
