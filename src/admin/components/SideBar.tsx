@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
-import React from "react";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -39,7 +38,7 @@ const items: MenuItem[] = [
 
 const SideBar: React.FC = () => {
   // const user = useSelector((state: RootState) => state?.user)
-  // // @ts-ignore
+
   // const roles = useSelector((state: RootState) => state?.user?.authorities);
   // // console.log(roles);
 
@@ -52,7 +51,7 @@ const SideBar: React.FC = () => {
           <a href="/home">
             <img
                 className="img-fill"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTawhnJ_lVjWONmK3EUGr7SRoxZc_q7RkjkjQ&usqp=CAU"
+                src="https://seeklogo.com/images/1/shop-logo-C0083F2CCF-seeklogo.com.png"
                 alt="logo"
             />
           </a>
