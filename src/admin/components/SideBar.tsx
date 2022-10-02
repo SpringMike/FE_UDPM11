@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
+import React from "react";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -51,7 +52,7 @@ const SideBar: React.FC = () => {
           <a href="/home">
             <img
                 className="img-fill"
-                src="https://bizweb.dktcdn.net/assets/admin/images/icon-svg/sub_logosapo-02.svg"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTawhnJ_lVjWONmK3EUGr7SRoxZc_q7RkjkjQ&usqp=CAU"
                 alt="logo"
             />
           </a>

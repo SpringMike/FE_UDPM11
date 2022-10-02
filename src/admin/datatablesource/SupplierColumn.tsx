@@ -1,3 +1,5 @@
+import React from "react";
+
 export const SupplierColumn = [
     {
         title: 'Mã nhà cung cấp',
