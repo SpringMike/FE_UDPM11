@@ -84,7 +84,7 @@ const AddAddress = ({onChange,keyChange} : AddressProps) =>{
             <Row gutter={24}>
                 <Col span={12}>
                     <Form.Item label="Địa chỉ chi tiết" name="detailsAddress" rules={[{required: true, message:"Địa chỉ không được để trống"}]}>
-                        <Input onChange={(e) => setDetailAddress(e.target.value)} placeholder="nhập địa chỉ nhà cung cấp"/>
+                        <Input onChange={(e) => setDetailAddress(e.target.value)} placeholder="nhập địa chỉ chi tiết"/>
                     </Form.Item>
                 </Col>
                 <Col span={12}>

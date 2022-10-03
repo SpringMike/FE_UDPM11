@@ -6,6 +6,8 @@ import HomePage from "./admin/pages/home/HomePage";
 import Dashboard from "./admin/components/Dashboard";
 import SupplierList from "./admin/pages/supplier/SupplierList";
 import SupplierDetails from "./admin/pages/supplier/SupplierDetails";
+import StaffList from './admin/pages/staff/StaffList';
+import StaffDetails from './admin/pages/staff/StaffDetails';
 
 const App: React.FC = () => {
   // const dispatch = useDispatch();
@@ -34,6 +36,15 @@ const App: React.FC = () => {
             // {path: "add", element: <CategoryAdd/>},
             { path: "", element: <SupplierList /> },
             { path: "details/:id", element: <SupplierDetails /> },
+          ],
+        },
+
+        {
+          path: "staff",
+          children: [
+            // {path: "add", element: <CategoryAdd/>},
+            { path: "", element: <StaffList /> },
+            { path: "details/:id", element: <StaffDetails /> },
           ],
         },
         // {

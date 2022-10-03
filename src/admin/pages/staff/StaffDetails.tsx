@@ -1,28 +1,28 @@
-import {Link, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import { ISupplier} from "../../type/SupplierType";
-import { getSupplierById} from "../../service/SupplierApi";
-import {Col, Dropdown, Menu, MenuProps, Row, Space, Table, Tabs} from "antd";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+import { Col, Dropdown, Menu, MenuProps, Row, Space, Table, Tabs } from "antd";
 import Moment from "react-moment";
-import {DeleteOutlined, DownOutlined, InfoCircleOutlined, LeftOutlined} from "@ant-design/icons";
-import SupplierUpdate from "./SupplierUpdate";
+import { DeleteOutlined, DownOutlined, InfoCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import { IStaff } from "../../type/StaffType";
+import { getStaffById } from "../../service/StaffApi";
+import StaffUpdate from "./StaffUpdate";
 
 
 type Account = {
     id: number,
-    fullName:string
+    fullName: string
 }
-const SupplierDetails = () => {
-    // useTitle("Chi tiết nhà cung cấp","Nhà cung cấp")
-    const {id} = useParams();
-    const [supplier, setSupplier] = useState({} as ISupplier);
 
-    const [account,setAccount] = useState({} as Account)
+const StaffDetails = () => {
+
+    const { id } = useParams();
+    const [staff, setStaff] = useState({} as IStaff);
+
+    const [account, setAccount] = useState({} as Account)
     useEffect(() => {
-        getSupplierById(parseInt(id as string)).then(supplier => {
-            setSupplier(supplier.data)
-
-
+        getStaffById(parseInt(id as string)).then(staff => {
+            setStaff(staff.data)
         })
 
 
@@ -48,14 +48,14 @@ const SupplierDetails = () => {
             onClick={handleMenuClick}
             items={[
                 {
-                    label: <Link to="#">Xóa nhà cung cấp</Link>,
+                    label: <Link to="#">Xóa nhân viên</Link>,
                     key: '1',
-                    icon: <DeleteOutlined/>,
+                    icon: <DeleteOutlined />,
                 },
                 {
-                    label: <Link to="#" onClick={() => setIsLoadModal(true)}>Sửa nhà cung cấp</Link>,
+                    label: <Link to="#" onClick={() => setIsLoadModal(true)}>Sửa nhân viên</Link>,
                     key: '2',
-                    icon: <InfoCircleOutlined/>,
+                    icon: <InfoCircleOutlined />,
 
                 },
             ]}
@@ -67,83 +67,105 @@ const SupplierDetails = () => {
         <div className='p-5'>
 
             {
-                supplier && (
+                staff && (
                     <div>
-                        <h2 style={{ fontSize:'15px',marginBottom:20}} >
-                            <Link to="/supplier/">
-                                <LeftOutlined /> Danh sách nhà cung cấp
+                        <h2 style={{ fontSize: '15px', marginBottom: 20 }} >
+                            <Link to="/staff/">
+                                <LeftOutlined /> Danh sách nhân viên
                             </Link>
                         </h2>
-                        <div style={{background: "white"}}>
-                            <div style={{padding: 20, display: 'flex', justifyContent: 'space-between', paddingBottom: 0}}>
+                        <div style={{ background: "white" }}>
+                            <div style={{ padding: 20, display: 'flex', justifyContent: 'space-between', paddingBottom: 0 }}>
                                 <div>
-                                    Thong tin khac
+                                    Thông tin khác
                                 </div>
                                 <div>
                                     <Dropdown overlay={menu}>
-                                        <div style={{width: "190px", fontSize: '14px', textAlign: 'center'}}>
+                                        <div style={{ width: "190px", fontSize: '14px', textAlign: 'center' }}>
                                             <Space>
                                                 Thao tác khác
-                                                <DownOutlined/>
+                                                <DownOutlined />
                                             </Space>
                                         </div>
                                     </Dropdown>
                                 </div>
                             </div>
-                            <hr/>
-                            <div style={{padding: '20px'}}>
+                            <hr />
+                            <div style={{ padding: '20px' }}>
                                 <Row>
                                     <Col span={8}>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Tên nhà cung cấp: </p>
+                                                <p>Tên nhà nhân viên: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{supplier.name}</b>
+                                                <b>{staff.name}</b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Mã nhà cung cấp: </p>
+                                                <p>Mã nhân viên: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{supplier.code}</b>
+                                                <b>{staff.code}</b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>SĐT nhà cung cấp: </p>
+                                                <p>SĐT nhân viên: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{supplier.phone}</b>
+                                                <b>{staff.phone}</b>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span={8}>
+                                                <p>Người tạo: </p>
+                                            </Col>
+                                            <Col span={12}>
+                                                <b>Comming</b>
                                             </Col>
                                         </Row>
                                     </Col>
                                     <Col span={8}>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Email nhà cung cấp: </p>
+                                                <p>Email nhân viên: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{supplier.email}</b>
+                                                <b>{staff.email}</b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Nhân viên phụ trách: </p>
+                                                <p>Giới tính: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{account?.fullName}</b>
+                                                <b>{staff.gender ? 'Nam' : 'Nữ'}</b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Địa chỉ nhà cung cấp: </p>
+                                                <p>Ngày sinh: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{supplier.address}</b>
+                                                <b>
+                                                    <Moment format="DD/MM/YYYY">
+                                                        {staff.dob}
+                                                    </Moment>
+                                                </b>
                                             </Col>
                                         </Row>
+                                        <Row>
+                                            <Col span={8}>
+                                                <p>Địa chỉ nhân viên: </p>
+                                            </Col>
+                                            <Col span={12}>
+                                                <b>{staff.address}</b>
+                                            </Col>
+                                        </Row>
+
+
                                     </Col>
                                     <Col span={8}>
                                         <Row>
@@ -153,7 +175,7 @@ const SupplierDetails = () => {
                                             <Col span={12}>
                                                 <b>
                                                     <Moment format="DD/MM/YYYY HH:mm:ss">
-                                                        {supplier.createdAt}
+                                                        {staff.createdAt}
                                                     </Moment>
                                                 </b>
                                             </Col>
@@ -165,20 +187,28 @@ const SupplierDetails = () => {
                                             <Col span={12}>
                                                 <b>
                                                     <Moment format="DD/MM/YYYY HH:mm:ss">
-                                                        {supplier.updateAt}
+                                                        {staff.updateAt}
                                                     </Moment>
                                                 </b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Trạng thái giao dịch: </p>
+                                                <p>Người cập nhập: </p>
+                                            </Col>
+                                            <Col span={12}>
+                                                <b>comming</b>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span={8}>
+                                                <p>Trạng thái tài khoản: </p>
                                             </Col>
                                             <Col span={12}>
                                                 <b>{
-                                                    supplier.statusTransaction ? (
-                                                        <p style={{color: 'blue'}}>Đang giao dịch</p>
-                                                    ) : (<p style={{color: 'red'}}>Ngừng giao dịch</p>)
+                                                    staff.statusAccount ? (
+                                                        <p style={{ color: 'blue' }}>Hoạt động</p>
+                                                    ) : (<p style={{ color: 'red' }}>Khoá</p>)
                                                 }</b>
                                             </Col>
                                         </Row>
@@ -186,7 +216,7 @@ const SupplierDetails = () => {
                                 </Row>
                             </div>
                         </div>
-                        {isLoadModal && <SupplierUpdate supplier={supplier}  isVisible={isLoadModal}
+                        {isLoadModal && <StaffUpdate staff={staff} isVisible={isLoadModal}
                                                         setIsVisible={() => setIsLoadModal(false)}/>}
                     </div>
                 )
@@ -194,4 +224,7 @@ const SupplierDetails = () => {
         </div>
     )
 }
-export default SupplierDetails
+
+
+
+export default StaffDetails;

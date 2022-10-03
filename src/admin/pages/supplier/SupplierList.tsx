@@ -37,6 +37,7 @@ const SupplierList = () => {
   useEffect(() => {
     // setTimeout(() => {
     getSuppliers().then((r) => {
+      console.log(r)
       setData(r.data.reverse());
       setIsLoading(false);
     });

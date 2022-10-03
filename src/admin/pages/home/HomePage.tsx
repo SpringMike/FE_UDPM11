@@ -5,6 +5,7 @@ import LineChartReport from "./LineChartReport";
 import PieChartReport from "./PieChartReport";
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import {useEffect} from "react";
+import React from "react";
 
 const HomePage = () => {
     useEffect(() => {
