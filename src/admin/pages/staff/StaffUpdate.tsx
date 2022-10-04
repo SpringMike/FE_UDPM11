@@ -31,8 +31,8 @@ const StaffUpdate = ({ staff, isVisible, setIsVisible }: StaffProps) => {
         email: staff.email,
         accountId: staff.accountId,
         address: staff.address,
-        statusAccount: staff.statusAccount,
-        roleId: staff.roleId
+        statusAccount: staff.statusAccount + '',
+        roleId: staff.roleId + ''
     });
     const onFormSubmit = (staffForm: TypeStaff) => {
         staffForm.accountId = Number(1)

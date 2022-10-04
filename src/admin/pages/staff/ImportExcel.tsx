@@ -5,6 +5,7 @@ import {Modal, Space, Upload, UploadProps, message, Button} from "antd";
 
 import axios from "axios";
 import ToastCustom from "../../features/toast/Toast";
+import base_url from "../api/BaseApi";
 
 type Props = {
     reload: () => void
@@ -43,16 +44,18 @@ const ImportExcel = ({reload} :Props) =>{
         formData.append('file', file);
         formData.append('name', file.name);
         axios({
-            url :'http://localhost:8080/api/suppliers/upload',
+            url :`${base_url}/staffs/upload`,
             method :'POST',
             data : formData
         }).then((res)=>{
+            console.log(res)
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Upload file thành công'
             }).then()
             reload()
         }).catch(ex =>{
+            console.log("this is: " + ex)
             ToastCustom.fire({
                 icon: 'error',
                 title: "Upload file thất bại",
@@ -71,7 +74,7 @@ const ImportExcel = ({reload} :Props) =>{
             </Button>
 
             <Modal
-                title="Nhập dữ liệu nhà cung cấp"
+                title="Nhập dữ liệu nhân viên"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -89,9 +92,10 @@ const ImportExcel = ({reload} :Props) =>{
                 ]}
             >
                 <p>Chú ý:</p>
-                <p>- Mã nhà cung cấp phải là duy nhất đối với các nhà cung cấp </p>
-                <p>- SĐT nhà cung cấp phải là duy nhất đối với các nhà cung cấp </p>
-                <p>- Email nhà cung cấp phải là duy nhất đối với các nhà cung cấp </p>
+                <p>- Mã nhân viên phải là duy nhất đối với các nhân viên </p>
+                <p>- SĐT nhân viên phải là duy nhất đối với các nhân viên </p>
+                <p>- Email nhân viên phải là duy nhất đối với các nhân viên </p>
+                <p>- Username nhân viên phải là duy nhất đối với các nhân viên </p>
                 <input key={inputKey} type="file" onChange={handleFile}/>
             </Modal>
         </div>

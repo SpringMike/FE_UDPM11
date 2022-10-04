@@ -179,7 +179,7 @@ const StaffCreate = ({ reload }: StaffProps) => {
 
                         <Row gutter={24}>
                             <Col span={12}>
-                            <Form.Item label="Giới tính" name="roleId">
+                            <Form.Item label="Chức vụ" name="roleId">
                                     <Radio.Group>
                                         <Radio value="1"> STAFF </Radio>
                                         <Radio value="2"> ADMIN </Radio>

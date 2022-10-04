@@ -2,14 +2,15 @@ import { Button, Space } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import React from "react";
 import axios from "axios";
+import base_url from "../api/BaseApi";
 const ExportExcel = () => {
 
     const handleUpload = () => {
         const link = document.createElement("a");
         link.target = "_blank";
-        link.download = "supplier"
+        link.download = "staff"
         axios
-            .get("http://localhost:8080/api/suppliers/download", {
+            .get(`${base_url}/staffs/download`, {
                 responseType: "blob",
             })
             .then((res) => {
