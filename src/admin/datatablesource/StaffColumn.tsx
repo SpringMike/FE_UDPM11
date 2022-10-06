@@ -1,6 +1,11 @@
 import React from "react";
 import Moment from "react-moment";
-
+import {
+    CheckCircleOutlined,
+    CloseCircleOutlined
+} from '@ant-design/icons';
+import { Divider, Tag, Switch } from 'antd';
+import { updateStaffById } from "../service/StaffApi";
 export const StaffColumn = [
     {
         title: 'Mã nhân viên',
@@ -32,8 +37,8 @@ export const StaffColumn = [
         dataIndex: "gender",
         key: "gender",
         render: (gender: Boolean) => {
-            return gender  ? <p style={{ color: 'blue' }}>Nam</p> :
-                <p style={{ color: 'red' }}>Nữ</p>
+            return gender ? "Nam" :
+                "Nữ"
         },
     },
     {
@@ -41,8 +46,8 @@ export const StaffColumn = [
         dataIndex: "roleId",
         key: "roleId",
         render: (roleId: Number) => {
-            return roleId == 1 ? <p style={{ color: 'blue' }}>ADMIN</p> :
-                <p style={{ color: 'red' }}>STAFF</p>
+            return roleId == 1 ? "Quản lý" :
+                "Nhân viên"
         },
     },
     {
@@ -50,8 +55,8 @@ export const StaffColumn = [
         dataIndex: "statusAccount",
         key: "status",
         render: (status: boolean) => {
-            return status ? <p style={{ color: 'blue' }}>Hoạt động</p> :
-                <p style={{ color: 'red' }}>Khoá tài khoản</p>
+            return status ? <Switch defaultChecked  /> :
+                <Switch  />
         },
 
 
