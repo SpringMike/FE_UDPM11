@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
+import React from "react";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -32,6 +33,7 @@ const items: MenuItem[] = [
     getItem("Danh mục sản phẩm", "/categories"),
   ]),
     getItem("Nhà cung cấp", "supplier", <ShopOutlined />),
+    getItem("Nhân Viên", "staff", <TeamOutlined />),
 
     getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];
