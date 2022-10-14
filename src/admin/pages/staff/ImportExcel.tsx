@@ -5,7 +5,7 @@ import {Modal, Space, Upload, UploadProps, message, Button} from "antd";
 
 import axios from "axios";
 import ToastCustom from "../../features/toast/Toast";
-import base_url from "../api/BaseApi";
+import base_url from "../../service/BaseApi";
 
 type Props = {
     reload: () => void

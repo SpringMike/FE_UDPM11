@@ -80,7 +80,8 @@ const SupplierList = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Delete!",
+      cancelButtonText:"Huỷ",
+      confirmButtonText: "Xoá!",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteSupplier(listId).then(() => {

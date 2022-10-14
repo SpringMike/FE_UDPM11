@@ -2,7 +2,7 @@ import { Button, Space } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import React from "react";
 import axios from "axios";
-import base_url from "../api/BaseApi";
+import base_url from "../../service/BaseApi";
 const ExportExcel = () => {
 
     const handleUpload = () => {
