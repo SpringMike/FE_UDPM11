@@ -6,7 +6,8 @@ import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
-import React from "react";
+import {Dashboard, ImportExportOutlined} from "@mui/icons-material";
+
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -28,12 +29,16 @@ const items: MenuItem[] = [
   // getItem("Đơn vị vận chuyển", "/transport-companies", <LocalShippingIcon />),
 
   getItem("Quản lý sản phẩm", "sub1", <AppstoreOutlined />, [
-    getItem("Thêm sản phẩm", "/product_add"),
+    getItem("Thêm sản phẩm", "/add_product"),
     getItem("Danh sách sản phẩm", "/products"),
     getItem("Danh mục sản phẩm", "/categories"),
   ]),
+    getItem("Hàng hoá", "", <Dashboard />, [
+        getItem("Nhập hàng", "purchase_orders", <ImportExportOutlined />),
+    ]),
     getItem("Nhà cung cấp", "supplier", <ShopOutlined />),
     getItem("Nhân Viên", "staff", <TeamOutlined />),
+    getItem("Kho hàng", "/inventories", <WarehouseIcon />),
 
     getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];

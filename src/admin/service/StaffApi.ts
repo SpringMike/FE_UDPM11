@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import base_url from "../pages/api/BaseApi";
+import base_url from "./BaseApi";
 
 let configValue: string | undefined = process.env.REACT_APP_API
 const headers = {
