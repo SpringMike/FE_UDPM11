@@ -15,6 +15,8 @@ import CreateReturnImportInvoice from "./admin/pages/importInvoice/CreateReturnI
 import InventoryManager from "./admin/pages/inventory/InventoryManager";
 import InventoryList from "./admin/pages/inventory/InventoryList";
 import AddProduct from "./admin/pages/product/AddProduct";
+import React from 'react';
+import Header from './user/components/Header';
 
 const App: React.FC = () => {
   // const dispatch = useDispatch();
@@ -79,6 +81,10 @@ const App: React.FC = () => {
 
       ],
     },
+    {
+      path: 'user',
+      element: <Header/>
+    }
   ]);
 
   return router;
