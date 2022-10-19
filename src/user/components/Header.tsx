@@ -4,53 +4,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { Link} from "react-router-dom";
 import React from "react";
 
-
 const Header: React.FC = () => {
-import { Link, useNavigate } from "react-router-dom";
-import React from "react";
-import type { MenuProps } from "antd/es/menu";
-import { AppstoreOutlined, ShopOutlined, TeamOutlined, } from "@ant-design/icons";
-import { Menu } from "antd";
-
-
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-    label: React.ReactNode,
-    key?: React.Key | null,
-    icon?: React.ReactNode,
-    children?: MenuItem[]
-): MenuItem {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    } as MenuItem;
-}
-const items: MenuItem[] = [
-    // getItem("Đơn vị vận chuyển", "/transport-companies", <LocalShippingIcon />),
-    getItem("Home", "/user/home"),
-    getItem("About Us", "/user/about"),
-    getItem("Pages", "/user/page"),
-
-    getItem("Shop", "cart", <TeamOutlined />, [
-        getItem("Shop", "/user/shop"),
-        getItem("Product Details", "/user/signle-product"),
-        getItem("Checkout", "/user/checkout"),
-        getItem("Cart", "cart"),
-    ]),
-
-    getItem("Account", "sub2", <TeamOutlined />, [
-        getItem("Login Page", "/user/login"),
-        getItem("SignUp Page", "/user/signup"),
-        getItem("ForgotPassword Page", "/user/forgot"),
-    ]),
-
-];
-
-const Header: React.FC = () => {
-    const navigate = useNavigate();
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation" id="navbar">
             <div className="container">
@@ -62,7 +16,7 @@ const Header: React.FC = () => {
                 <div className="collapse navbar-collapse " id="main-navbar">
                     <ul className="navbar-nav mx-auto">
                         <li className="nav-item active">
-                            <Link className="nav-link" to={{ pathname: "/" }}>Home</Link>
+                            <Link className="nav-link" to={{ pathname: "/home-user" }}>Home</Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">About Us</a>
@@ -92,19 +46,6 @@ const Header: React.FC = () => {
                                 <li><Link to={{ pathname: "/single-product" }}>Product Details</Link></li>
                                 <li><Link to={{ pathname: "/checkout" }}>Checkout</Link></li>
                                 <li><Link to={{ pathname: "/cart" }}>Cart</Link></li>
-                                {/* <Menu
-                                    // style={{ width: 256 }}
-                                    mode="inline"
-                                    theme="dark"
-                                    items={items}
-                                    onClick={(e) => {
-                                        navigate(e.key, { replace: true })
-                                    }}
-                                /> */}
-                                <li><Link to={{ pathname: "/shop" }}>Shop</Link></li>
-                                <li><Link to={{ pathname: "/single-product" }}>Product Details</Link></li>
-                                <li><Link to={{ pathname: "/checkout" }}>Checkout</Link></li>
-                                <li><Link to={{ pathname: "/user/cart" }}>Cart</Link></li>
                             </ul>
                         </li>
 
@@ -114,6 +55,7 @@ const Header: React.FC = () => {
                                 Account.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
+                                <li><Link to={{ pathname: "/home" }}>Dashboard</Link></li>
                                 <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
                                 <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
                                 <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>
