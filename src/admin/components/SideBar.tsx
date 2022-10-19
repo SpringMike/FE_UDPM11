@@ -40,7 +40,7 @@ const items: MenuItem[] = [
     getItem("Nhà cung cấp", "supplier", <ShopOutlined />),
     getItem("Nhân Viên", "staff", <TeamOutlined />),
     getItem("Kho hàng", "/inventories", <WarehouseIcon />),
-    getItem("Website người dùng", "/homePage", <WebIcon/>),
+    getItem("Website người dùng", "/", <WebIcon/>),
 
     getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];

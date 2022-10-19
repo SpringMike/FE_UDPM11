@@ -16,6 +16,9 @@ const HomePageUser: React.FC = () => {
                 <Content>
                     <div >
                         <Outlet/>
+                        {!useLocation().pathname.includes(" ") && (
+                           <Home/>
+                        )}
                     </div>
                 </Content>
             </Layout>
