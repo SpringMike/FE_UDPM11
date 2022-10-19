@@ -4,6 +4,7 @@ import {Menu} from "antd";
 import type {MenuProps} from "antd/es/menu";
 import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import WebIcon from '@mui/icons-material/Web';
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
 import {Dashboard, ImportExportOutlined} from "@mui/icons-material";
@@ -39,6 +40,7 @@ const items: MenuItem[] = [
     getItem("Nhà cung cấp", "supplier", <ShopOutlined />),
     getItem("Nhân Viên", "staff", <TeamOutlined />),
     getItem("Kho hàng", "/inventories", <WarehouseIcon />),
+    getItem("Website người dùng", "/homePage", <WebIcon/>),
 
     getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];

@@ -4,7 +4,6 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { Link} from "react-router-dom";
 import React from "react";
 
-
 const Header: React.FC = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation" id="navbar">
@@ -17,7 +16,7 @@ const Header: React.FC = () => {
                 <div className="collapse navbar-collapse " id="main-navbar">
                     <ul className="navbar-nav mx-auto">
                         <li className="nav-item active">
-                            <Link className="nav-link" to={{ pathname: "/" }}>Home</Link>
+                            <Link className="nav-link" to={{ pathname: "/home-user" }}>Home</Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">About Us</a>
@@ -56,6 +55,7 @@ const Header: React.FC = () => {
                                 Account.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
+                                <li><Link to={{ pathname: "/home" }}>Dashboard</Link></li>
                                 <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
                                 <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
                                 <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>
