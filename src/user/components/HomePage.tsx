@@ -9,6 +9,7 @@ const {Content, Footer} = Layout;
 
 
 const HomePageUser: React.FC = () => {
+    const [component, setComponent] = useState(<Home/>);
     return (
         <Layout>
             <Headers/>
@@ -16,9 +17,6 @@ const HomePageUser: React.FC = () => {
                 <Content>
                     <div >
                         <Outlet/>
-                        {!useLocation().pathname.includes(" ") && (
-                           <Home/>
-                        )}
                     </div>
                 </Content>
             </Layout>
