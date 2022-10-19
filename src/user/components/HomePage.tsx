@@ -1,17 +1,31 @@
-import React, { Children, Component, HtmlHTMLAttributes } from "react";
+import React, {Children, Component, HtmlHTMLAttributes, useEffect, useState} from "react";
 import Cart from "./Cart";
-import Footer from "./Footer";
-import Header from "./Header";
-
+import Footers from "./Footer";
+import Headers from "./Header";
+import Home from "./Home";
+import {Layout} from "antd";
+import {Outlet, useLocation} from "react-router-dom";
+const {Content, Footer} = Layout;
 
 
 const HomePageUser: React.FC = () => {
     return (
-        <div>
-            <Header/>
-            
-            <Footer/>
-        </div>
+        <Layout>
+            <Headers/>
+            <Layout>
+                <Content>
+                    <div >
+                        <Outlet/>
+                        {!useLocation().pathname.includes(" ") && (
+                           <Home/>
+                        )}
+                    </div>
+                </Content>
+            </Layout>
+            <Footer>
+                <Footers></Footers>
+            </Footer>
+        </Layout>
     );
 }
 

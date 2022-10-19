@@ -1,4 +1,3 @@
-
 import './App.css';
 import {useRoutes} from 'react-router-dom';
 
@@ -18,76 +17,120 @@ import AddProduct from "./admin/pages/product/AddProduct";
 import React from 'react';
 import Header from './user/components/Header';
 
+// user
+import HomePageUser from "./user/components/HomePage";
+import Checkout from "./user/components/Checkout";
+import Login from "./user/components/Login";
+import SignUp from "./user/components/Signup";
+import ForgotPassword from "./user/components/ForgotPassword";
+import Cart from "./user/components/Cart";
+import Home from "./user/components/Home";
+import Shop from "./user/components/Shop";
+import SignleProduct from "./user/components/SignleProduct";
+
 const App: React.FC = () => {
-  // const dispatch = useDispatch();
-  // dispatch(
-  //     setUserStore({
-  //       token: localStorage.getItem('token') || ''
-  //     })
-  // );
-  const router = useRoutes([
-    // {
-    //   path: "/login",
-    //   element: <Login />,
-    // },
-    {
-      path: "/",
-      element: <Dashboard />,
+    // const dispatch = useDispatch();
+    // dispatch(
+    //     setUserStore({
+    //       token: localStorage.getItem('token') || ''
+    //     })
+    // );
 
-      children: [
+    return useRoutes([
         {
-          path: "home",
-          element: <HomePage />,
-        },
-        {
-          path: "supplier",
-          children: [
-            // {path: "add", element: <CategoryAdd/>},
-            { path: "", element: <SupplierList /> },
-            { path: "details/:id", element: <SupplierDetails /> },
-          ],
-        },
+            path: "/",
+            element: <HomePageUser/>,
 
-        {
-          path: "staff",
-          children: [
-            // {path: "add", element: <CategoryAdd/>},
-            { path: "", element: <StaffList /> },
-            { path: "details/:id", element: <StaffDetails /> },
-          ],
+            children: [
+                {
+                    path: "home-user",
+                    element: <Home/>,
+                },
+                {
+                    path: "shop",
+                    element: <Shop/>,
+                },
+                {
+                    path: "checkout",
+                    element: <Checkout/>,
+                },
+                {
+                    path: "login",
+                    element: <Login/>,
+                },
+                {
+                    path: "signup",
+                    element: <SignUp/>,
+                },
+                {
+                    path: "forgot-password",
+                    element: <ForgotPassword/>,
+                },
+                {
+                    path: "cart",
+                    element: <Cart/>,
+                },
+                {
+                    path: "single-product",
+                    element: <SignleProduct/>,
+                },
+            ],
         },
         {
-          path: "purchase_orders",
-          children: [
-            // {path: "add", element: <CategoryAdd/>},
-            { path: "", element: <ListImportInvoice /> },
-            { path: "create", element: <CreateImport /> },
-            { path: "details/:code", element: <DetailImportInvoice /> },
-            { path: "return/:code", element: <CreateReturnImportInvoice /> },
-          ],
-        },
-        {
-          path: "/inventories/:id",
-          element: <InventoryManager />,
-        },
-        {
-          path: "/inventories",
-          element: <InventoryList />,
-        },
-        {
-          path: "/add_product",
-          element: <AddProduct />,
-        },
+            path: "/",
+            element: <Dashboard/>,
 
-      ],
-    },
-    {
-      path: 'user',
-      element: <Header/>
-    }
-  ]);
+            children: [
+                {
+                    path: "home",
+                    element: <HomePage/>,
+                },
+                {
+                    path: "supplier",
+                    children: [
+                        // {path: "add", element: <CategoryAdd/>},
+                        {path: "", element: <SupplierList/>},
+                        {path: "details/:id", element: <SupplierDetails/>},
+                    ],
+                },
 
-  return router;
+                {
+                    path: "staff",
+                    children: [
+                        // {path: "add", element: <CategoryAdd/>},
+                        {path: "", element: <StaffList/>},
+                        {path: "details/:id", element: <StaffDetails/>},
+                    ],
+                },
+                {
+                    path: "purchase_orders",
+                    children: [
+                        // {path: "add", element: <CategoryAdd/>},
+                        {path: "", element: <ListImportInvoice/>},
+                        {path: "create", element: <CreateImport/>},
+                        {path: "details/:code", element: <DetailImportInvoice/>},
+                        {path: "return/:code", element: <CreateReturnImportInvoice/>},
+                    ],
+                },
+                {
+                    path: "/inventories/:id",
+                    element: <InventoryManager/>,
+                },
+                {
+                    path: "/inventories",
+                    element: <InventoryList/>,
+                },
+                {
+                    path: "/add_product",
+                    element: <AddProduct/>,
+                },
+            ],
+        },
+        {
+            path: 'user',
+            element: <Header/>
+        },
+    ]);
 };
 
 export default App;
