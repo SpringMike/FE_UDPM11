@@ -17,7 +17,11 @@ import ImageUpload from "./ImageUpload";
 
 const AddProduct = (props: any) => {
 
-    var initOptions: Array<OptionAdd> = []
+
+    var initOptions: Array<OptionAdd> = [];
+
+
+
     var valuesForName: string[] = []
     var variantsAll: IVariant[] = []
     var initVariants: Array<IVariant> = []
@@ -30,7 +34,9 @@ const AddProduct = (props: any) => {
         wholesalePrice: 0,
         salePrice: 0,
         importPrice: 0,
-
+        option1:"",
+        option2:"",
+        option3:""
 
     }
     //state
@@ -70,7 +76,7 @@ const AddProduct = (props: any) => {
         if (options.length == 0) {
             body = {
                 ...body,
-                variants: [{name: newProduct.name, salePrice, image: imageUrl, importPrice, wholesalePrice}]
+                variants: [{name: newProduct.name, salePrice, image: imageUrl, importPrice, wholesalePrice,option1:"",option2:"",option3:""}]
             }
         } else {
             var variantsSt1 = variants.map((variant, index) => {
@@ -139,13 +145,18 @@ const AddProduct = (props: any) => {
                         wholesalePrice: product.wholesalePrice,
                         salePrice: product.salePrice,
                         importPrice: product.importPrice,
+                        option1:valuesForName[0] ? valuesForName[0] : "" ,
+                        option2:valuesForName[1] ? valuesForName[1] : "",
+                        option3:valuesForName[2] ? valuesForName[2] : ""
                     })
                 }
+
                 createVariants(options, i + 1, n)
                 valuesForName.pop()
             })
         }
     }
+
 
     const onOptionChange = () => {
         createVariants(options, 0, options.length)
@@ -164,6 +175,8 @@ const AddProduct = (props: any) => {
         setProduct(y)
     }, [options])
 
+    console.log(variantsAll)
+
     useEffect(() => {
         getSuppliers().then((r) => {
             setSuppliers(r.data.reverse())
@@ -175,7 +188,21 @@ const AddProduct = (props: any) => {
         }).catch(error => {
 
         })
-
+        const initOptionsName = [
+            {
+                name: "color",
+                values: []
+            },
+            {
+                name: "size",
+                values: []
+            },
+            {
+                name: "material",
+                values: []
+            },
+        ]
+        setOptions(initOptions.concat(initOptionsName))
         document.title = 'Thêm sản phẩm'
     }, [])
 

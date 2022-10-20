@@ -81,7 +81,7 @@ const SelectOption = (props:ISelectOption) => {
 
                             )
                         })}
-                {options.length < size ? <Mui.Button sx={{ ml: 3 }} onClick={()=>addNewOptionUI()}>+ Thêm Thuộc tính</Mui.Button> : null
+                {options.length < size-1 ? <Mui.Button sx={{ ml: 3 }} onClick={()=>addNewOptionUI()}>+ Thêm Thuộc tính</Mui.Button> : null
                 }                  
 
 
