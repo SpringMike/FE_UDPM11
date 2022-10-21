@@ -9,15 +9,16 @@ const {Content, Footer} = Layout;
 
 
 const HomePageUser: React.FC = () => {
-    const [component, setComponent] = useState(<Home/>);
+    const [component, setComponent] = useState(<Outlet/>);
+
     return (
         <Layout>
             <Headers/>
             <Layout>
                 <Content>
-                    <div >
-                        <Outlet/>
-                    </div>
+                    <>
+                        {component}
+                    </>
                 </Content>
             </Layout>
             <Footer>

@@ -40,10 +40,13 @@ const App: React.FC = () => {
         {
             path: "/",
             element: <HomePageUser/>,
-
             children: [
                 {
-                    path: "home-user",
+                    path: "/",
+                    element: <Home/>,
+                },
+                {
+                    path: "/home-user",
                     element: <Home/>,
                 },
                 {
@@ -82,7 +85,7 @@ const App: React.FC = () => {
 
             children: [
                 {
-                    path: "home",
+                    path: "dashboard",
                     element: <HomePage/>,
                 },
                 {

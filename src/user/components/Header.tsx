@@ -8,7 +8,7 @@ const Header: React.FC = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation" id="navbar">
             <div className="container">
-                <Link className="navbar-brand font-weight-bold" to={{ pathname: "/" }}>E-Shop</Link>
+                <Link className="navbar-brand font-weight-bold" to={{ pathname: "/home-user" }}>E-Shop</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
                     aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
                                 Account.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
-                                <li><Link to={{ pathname: "/home" }}>Dashboard</Link></li>
+                                <li><Link to={{ pathname: "/dashboard" }}>Dashboard</Link></li>
                                 <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
                                 <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
                                 <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>

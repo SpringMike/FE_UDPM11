@@ -57,7 +57,7 @@ const SideBar: React.FC = () => {
       // <div className="side-bar">
       <>
         <div className="side-bar__brand-logo">
-          <a href="/home">
+          <a href="/dashboard">
             <img
                 className="img-fill"
                 src="https://seeklogo.com/images/1/shop-logo-C0083F2CCF-seeklogo.com.png"
