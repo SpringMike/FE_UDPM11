@@ -74,7 +74,7 @@ const App: React.FC = () => {
                     element: <Cart/>,
                 },
                 {
-                    path: "single-product",
+                    path: "single-product/:id",
                     element: <SignleProduct/>,
                 },
             ],
