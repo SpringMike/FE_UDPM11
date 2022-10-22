@@ -1,6 +1,29 @@
-import React from "react";
+import { info } from "console";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getDetailProduct } from "../service/HomePage";
+import { IInfo } from "../type/HomePage";
 
 function SingleProduct() {
+    const { id } = useParams();
+    console.log("THis is ", id);
+    const [infos, setInfos] = useState({} as IInfo);
+    const [option1, setOption1] = useState([]);
+    const [option2, setOption2] = useState([]);
+    const [option3, setOption3] = useState([]);
+    useEffect(() => {
+        getDetailProduct(parseInt(id as string)).then((response) => {
+            setInfos(response.data.InfoProduct)
+            setOption1(response.data.Option1)
+            setOption2(response.data.Option2)
+            setOption3(response.data.Option3)
+        });
+    }, []);
+
+    console.log(option1);
+    console.log(option2);
+    console.log(option3);
+
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -32,13 +55,13 @@ function SingleProduct() {
                                 <div className="carousel slide" data-ride="carousel" id="single-product-slider">
                                     <div className="carousel-inner">
                                         <div className="carousel-item active">
-                                            <img src="assets/images/product-3.jpg" alt="" className="img-fluid" />
+                                            <img src={infos.image} alt="" className="img-fluid" />
                                         </div>
                                         <div className="carousel-item">
-                                            <img src="assets/images/product-2.jpg" alt="" className="img-fluid" />
+                                            <img src={infos.image} alt="" className="img-fluid" />
                                         </div>
                                         <div className="carousel-item ">
-                                            <img src="assets/images/product-1.jpg" alt="" className="img-fluid" />
+                                            <img src={infos.image} alt="" className="img-fluid" />
                                         </div>
                                     </div>
 
@@ -59,14 +82,14 @@ function SingleProduct() {
 
                         <div className="col-md-7">
                             <div className="single-product-details mt-5 mt-lg-0">
-                                <h2>Eclipse Crossbody</h2>
+                                <h2>{infos.name}</h2>
                                 <div className="sku_wrapper mb-4">
                                     SKU: <span className="text-muted">AB1563456789 </span>
                                 </div>
 
                                 <hr />
 
-                                <h3 className="product-price">$300 <del>$119.90</del></h3>
+                                <h3 className="product-price">{infos.price} vnd<del>$119.90</del></h3>
 
                                 <p className="product-description my-4 ">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur? Eveniet consequatur ipsum dicta recusandae.
@@ -83,7 +106,14 @@ function SingleProduct() {
                                 <div className="color-swatches mt-4 d-flex align-items-center">
                                     <span className="font-weight-bold text-capitalize product-meta-title">color:</span>
                                     <ul className="list-inline mb-0">
-                                        <li className="list-inline-item">
+                                        {option1.map(o1 =>
+                                            <li className="list-inline-item">
+                                                <a href="/product-single">
+                                                    {o1}
+                                                </a>
+                                            </li>
+                                        )}
+                                        {/* <li className="list-inline-item">
                                             <a href="/product-single" className="bg-info"></a>
                                         </li>
                                         <li className="list-inline-item">
@@ -91,25 +121,26 @@ function SingleProduct() {
                                         </li>
                                         <li className="list-inline-item">
                                             <a href="/product-single" className="bg-danger"></a>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
 
                                 <div className="product-size d-flex align-items-center mt-4">
                                     <span className="font-weight-bold text-capitalize product-meta-title">Size:</span>
-                                    <select className="form-control">
-                                        <option>S</option>
-                                        <option>M</option>
-                                        <option>L</option>
-                                        <option>XL</option>
-                                    </select>
+
+                                    <select className="form-control">{
+                                        option2.map(o2 =>
+                                            <option key={o2}>{o2}</option>)
+                                    }</select>
                                 </div>
 
                                 <div className="products-meta mt-4">
                                     <div className="product-category d-flex align-items-center">
-                                        <span className="font-weight-bold text-capitalize product-meta-title">Categories :</span>
-                                        <a href="#">Products , </a>
-                                        <a href="#">Soap</a>
+                                        <span className="font-weight-bold text-capitalize product-meta-title">Metarial :</span>
+                                        {option3.map(o3 =>
+                                            <a href={o3}>{o3}</a>
+                                        )}
+                              
                                     </div>
 
                                     <div className="product-share mt-5">
