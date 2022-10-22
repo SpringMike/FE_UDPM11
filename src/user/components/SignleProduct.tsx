@@ -5,6 +5,7 @@ import { getDetailProduct } from "../service/HomePage";
 import { IInfo } from "../type/HomePage";
 
 function SingleProduct() {
+    console.log("IN OUT")
     const { id } = useParams();
     console.log("THis is ", id);
     const [infos, setInfos] = useState({} as IInfo);
@@ -104,24 +105,15 @@ function SingleProduct() {
 
 
                                 <div className="color-swatches mt-4 d-flex align-items-center">
-                                    <span className="font-weight-bold text-capitalize product-meta-title">color:</span>
+                                    <span className="font-weight-bold text-capitalize product-meta-title ">Màu sắc:</span>
                                     <ul className="list-inline mb-0">
                                         {option1.map(o1 =>
-                                            <li className="list-inline-item">
-                                                <a href="/product-single">
+                                            <li className="list-inline-item mr-3 ">
+                                                <a href="/product-single" className="text-dark fw-bold " >
                                                     {o1}
                                                 </a>
                                             </li>
                                         )}
-                                        {/* <li className="list-inline-item">
-                                            <a href="/product-single" className="bg-info"></a>
-                                        </li>
-                                        <li className="list-inline-item">
-                                            <a href="/product-single" className="bg-dark"></a>
-                                        </li>
-                                        <li className="list-inline-item">
-                                            <a href="/product-single" className="bg-danger"></a>
-                                        </li> */}
                                     </ul>
                                 </div>
 
@@ -136,10 +128,16 @@ function SingleProduct() {
 
                                 <div className="products-meta mt-4">
                                     <div className="product-category d-flex align-items-center">
-                                        <span className="font-weight-bold text-capitalize product-meta-title">Metarial :</span>
-                                        {option3.map(o3 =>
-                                            <a href={o3}>{o3}</a>
+                                    <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
+                                    <ul className="list-inline mb-0">
+                                        {option3.map(o1 =>
+                                            <li className="list-inline-item mr-3 ">
+                                                <a href="/product-single" className="text-dark fw-bold" >
+                                                    {o1}
+                                                </a>
+                                            </li>
                                         )}
+                                    </ul>
                               
                                     </div>
 

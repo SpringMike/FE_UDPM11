@@ -40,8 +40,6 @@ function Shop() {
     //     setCourses(courses.filter((c) => c.id != id))
     // }
 
-
-
     return (
         <div className="shop-container">
             <section className="page-header">
