@@ -15,11 +15,9 @@ const HomePageUser: React.FC = () => {
         <Layout>
             <Headers/>
             <Layout>
-                <Content>
                     <>
                         {component}
                     </>
-                </Content>
             </Layout>
             <Footer>
                 <Footers></Footers>
