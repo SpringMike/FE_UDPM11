@@ -1,6 +1,6 @@
 import { info } from "console";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getDetailProduct } from "../service/HomePage";
 import { IInfo } from "../type/HomePage";
 
@@ -109,9 +109,10 @@ function SingleProduct() {
                                     <ul className="list-inline mb-0">
                                         {option1.map(o1 =>
                                             <li className="list-inline-item mr-3 ">
-                                                <a href="/product-single" className="text-dark fw-bold " >
+                                                <Link to={{ pathname: `/getProduct/${infos.product_id}?opt1=${o1}` }}>{o1}</Link>
+                                                {/* <a href="/product-single" className="text-dark fw-bold " >
                                                     {o1}
-                                                </a>
+                                                </a> */}
                                             </li>
                                         )}
                                     </ul>
