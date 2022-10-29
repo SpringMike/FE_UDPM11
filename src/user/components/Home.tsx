@@ -9,7 +9,7 @@ function Home() {
                         <div className="row">
                             <div className="col-lg-6 col-12 offset-lg-6 offset-md-6">
                                 <div className="slider-caption">
-                                    <span className="lead">Trendy dress</span>
+                                    <span className="lead">Trendy dresss</span>
                                     <h1 className="mt-2 mb-5"><span className="text-color">Winter </span>Collection</h1>
                                     <a href="#" className="btn btn-main">Shop Now</a>
                                 </div>
