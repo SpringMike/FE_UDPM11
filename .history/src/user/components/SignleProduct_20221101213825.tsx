@@ -33,18 +33,18 @@ function SingleProduct() {
     const defaultOption3= infos.option3
 
 
-    const onChangeOptions = useCallback(() =>
-        (
-        console.log("inf 1:"+infos),
+    // const onChangeOptions = useCallback(() =>
+    //     (
+    //     console.log("inf 1:"+infos),
 
-        console.log(" op1:"+op1),
-        console.log(" op2:"+op2),
-        console.log(" op3:"+op3),
-        getProductOption(parseInt(id as string),op1 as string,op2 as string,op3 as string).then((response) => {
-            setInfos(response.data)
-            console.log("inf 2:"+infos)
-        })),[infos]
-    )
+    //     console.log(" op1:"+op1),
+    //     console.log(" op2:"+op2),
+    //     console.log(" op3:"+op3),
+    //     getProductOption(parseInt(id as string),op1 as string,op2 as string,op3 as string).then((response) => {
+    //         setInfos(response.data)
+    //         console.log("inf 2:"+infos)
+    //     })),[infos]
+    // )
 
 
 
