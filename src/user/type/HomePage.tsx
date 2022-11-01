@@ -15,6 +15,9 @@ export interface IInfo {
     image: string;
     price: number;
     quantity: number;
+    option1:string;
+    option2:string;
+    option3:string;
 }
 
 // export interface IOption1 
