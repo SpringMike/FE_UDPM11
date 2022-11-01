@@ -1,8 +1,9 @@
 import { info } from "console";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getDetailProduct } from "../service/HomePage";
-import { IInfo } from "../type/HomePage";
+import base_url from "../../admin/service/BaseApi";
+import { getDetailProduct, getProductByOption } from "../service/HomePage";
+import { IInfo, IProducrVarient } from "../type/HomePage";
 
 function SingleProduct() {
     console.log("IN OUT")
@@ -24,6 +25,20 @@ function SingleProduct() {
     console.log(option1);
     console.log(option2);
     console.log(option3);
+
+    const [statusMessage, setStatusMessage] = useState({} as IProducrVarient);
+
+    const getProductVarient = (opt1: any, opt2: any, opt3: any, id: any) => {
+        fetch(`${base_url}/products?${id}?op1=${opt1}&op2=${opt2}&op3=${opt3}`)
+            .then((response) => response.json())
+            .then((response) => {
+                setStatusMessage(response.data);
+            })
+            .catch((e) => {
+                // setStatusMessage();
+                console.log(e);
+            });
+    };
 
     return (
         <div className="single-product-container">
@@ -104,18 +119,12 @@ function SingleProduct() {
                                 </form>
 
 
-                                <div className="color-swatches mt-4 d-flex align-items-center">
+                                <div className="product-size d-flex align-items-center mt-4">
                                     <span className="font-weight-bold text-capitalize product-meta-title ">Màu sắc:</span>
-                                    <ul className="list-inline mb-0">
-                                        {option1.map(o1 =>
-                                            <li className="list-inline-item mr-3 ">
-                                                <Link to={{ pathname: `/getProduct/${infos.product_id}?opt1=${o1}` }}>{o1}</Link>
-                                                {/* <a href="/product-single" className="text-dark fw-bold " >
-                                                    {o1}
-                                                </a> */}
-                                            </li>
-                                        )}
-                                    </ul>
+                                    <select className="form-control">{
+                                        option1.map(o1 =>
+                                            <option value={o1} key={o1}>{o1}</option>)
+                                    }</select>
                                 </div>
 
                                 <div className="product-size d-flex align-items-center mt-4">
@@ -123,25 +132,25 @@ function SingleProduct() {
 
                                     <select className="form-control">{
                                         option2.map(o2 =>
-                                            <option key={o2}>{o2}</option>)
+                                            <option value={o2} key={o2}>{o2}</option>)
                                     }</select>
                                 </div>
 
                                 <div className="products-meta mt-4">
                                     <div className="product-category d-flex align-items-center">
-                                    <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
-                                    <ul className="list-inline mb-0">
-                                        {option3.map(o1 =>
-                                            <li className="list-inline-item mr-3 ">
-                                                <a href="/product-single" className="text-dark fw-bold" >
-                                                    {o1}
-                                                </a>
-                                            </li>
+                                        <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
+                                        {option3.map(o3 =>
+                                            <>
+                                                <div className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        name="material"
+                                                        type="radio" id={o3} value={o3} /><label className="form-check-label" htmlFor={o3}>{o3}</label>
+                                                </div>
+                                            </>
                                         )}
-                                    </ul>
-                              
-                                    </div>
 
+                                    </div>
                                     <div className="product-share mt-5">
                                         <ul className="list-inline">
                                             <li className="list-inline-item">

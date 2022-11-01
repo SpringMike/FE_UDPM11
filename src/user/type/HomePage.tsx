@@ -1,6 +1,6 @@
 export interface IHomePage {
     key: React.Key;
-    id:number,
+    id: number,
     name: string;
     image: string;
     wholesale_price: number;
@@ -10,14 +10,29 @@ export interface IHomePage {
 export interface IInfo {
     key: React.Key;
     id: number,
-    product_id:number,
+    product_id: number,
     name: string;
     image: string;
     price: number;
     quantity: number;
 }
 
-// export interface IOption1 
+export interface IProducrVarient {
+    key: React.Key;
+    id: number,
+    name: string;
+    image: string;
+    price: number;
+    quantity: number;
+    code: string;
+    option1: string;
+    option2: string;
+    option3: string;
+    wholesale_price: string;
+    
+}
+
+// export interface IOption1
 
 // export interface IOption2 {
 //     key: React.Key;
