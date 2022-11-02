@@ -1,10 +1,19 @@
 import "jquery/dist/jquery.slim.min.js";
 import "popper.js/dist/umd/popper.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
-import { Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import { useAuthStore } from "../../hooks/zustand/auth";
 
 const Header: React.FC = () => {
+    let navigate = useNavigate()
+    const resetAuth = useAuthStore((state) => state.resetAuth)
+    const name = useAuthStore((state) => state.name)
+    function onLogout () {
+        resetAuth()
+        navigate('/login')
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation" id="navbar">
             <div className="container">
@@ -112,6 +121,8 @@ const Header: React.FC = () => {
                         </div>
                     </li>
                     <li className="list-inline-item"><a href="#"><i className="tf-ion-ios-person mr-3"></i></a></li>
+                    <li>Hi {name}</li>
+                    <li className="list-inline-item"><button onClick={onLogout} className="btn btn-primary" >Logout</button></li>
                 </ul>
             </div>
         </nav>
