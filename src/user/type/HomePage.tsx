@@ -18,6 +18,7 @@ export interface IInfo {
     option1:string;
     option2:string;
     option3:string;
+    wholesale_price:number
 }
 
 // export interface IOption1 

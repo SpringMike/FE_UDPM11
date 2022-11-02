@@ -2,7 +2,7 @@ import { info } from "console";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailProduct } from "../service/HomePage";
-import { getProductOption } from "../service/SignleProduct";
+import { addToCart, getProductOption } from "../service/SignleProduct";
 import { IInfo } from "../type/HomePage";
 import FormLabel from '@mui/joy/FormLabel';
 import Radio, { radioClasses } from '@mui/joy/Radio';
@@ -19,6 +19,9 @@ function SingleProduct() {
     const [op1, setOp1] = useState('');
     const [op2, setOp2] = useState('');
     const [op3, setOp3] = useState('');
+
+    const [quantityBuy, setQuantityBuy] = useState(1);
+
 
 
 
@@ -44,17 +47,24 @@ function SingleProduct() {
 
 
     async function test() {
-        // console.log("inf 1:" + infos),
 
-        //     console.log(" op1:" + op1),
-        //     console.log(" op2:" + op2),
-        //     console.log(" op3:" + op3),
         await getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+
+            console.log(response.data)
             setInfos(response.data)
             console.log("inf 2:" + infos)
         })
+        console.log(" op1:" + op1)
+        console.log(" op2:" + op2)
+        console.log(" op3:" + op3)
     }
-    useEffect(() => { onChangeOptions() }, [op1, op2, op3])
+
+
+    useEffect(() => { onChangeOptions() }, [op1])
+    useEffect(() => { onChangeOptions() }, [op2])
+    useEffect(() => { onChangeOptions() }, [op3])
+
+    // useEffect(() => { onChangeOptions() }, [quantityBuy])
     const onChangeOptions = () =>
     (
         console.log("inf 1:" + infos),
@@ -63,9 +73,21 @@ function SingleProduct() {
         console.log(" op2:" + op2),
         console.log(" op3:" + op3),
         getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+            console.log(response.data)
             setInfos(response.data)
             console.log("inf 2:" + infos)
         }))
+
+    const [clickBuy, setClickBuy] = useState(0)
+    useEffect(() => { addToCartCustomer() }, [clickBuy])
+    const addToCartCustomer = () => {
+        addToCart(quantityBuy, infos.id).then((res) => {
+            // setClickBuy(false)
+            console.log(res.data)
+        }, (err) => {
+            console.log(err)
+        })
+    }
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -137,12 +159,23 @@ function SingleProduct() {
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur? Eveniet consequatur ipsum dicta recusandae.
                                 </p>
 
-                                <form className="cart" action="#" method="post">
-                                    <div className="quantity d-flex align-items-center">
-                                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" name="quantity" value="1" title="Qty" size={4} />
-                                        <a href="#" className="btn btn-main btn-small">Add to cart</a>
-                                    </div>
-                                </form>
+                                {/* <form className="cart" action="#" method="post"> */}
+                                <div className="quantity d-flex align-items-center">
+                                    <input type="number" id="qty" className="input-text qty text form-control w-25 mr-3"
+
+                                        onChange={(e: any) => {
+                                            setQuantityBuy(e.target.value)
+                                        }}
+                                        max={infos.quantity} name="quantity" size={4} />
+                                    <button className="btn btn-main btn-small"
+                                        onClick={() => {
+                                            console.log("Click@!!!!!")
+                                            setClickBuy(clickBuy + 1)
+                                            // addToCartCustomer()
+                                        }}
+                                    >Add to cart</button>
+                                </div>
+                                {/* </form> */}
 
 
                                 <div className="color-swatches mt-4 d-flex align-items-center">
@@ -201,7 +234,6 @@ function SingleProduct() {
                                         name="platform"
                                         onChange={(event) => {
                                             setOp2(event.target.value)
-
                                         }}
                                         sx={{
                                             flexDirection: 'row',
