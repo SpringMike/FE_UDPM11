@@ -9,9 +9,8 @@ const headers = {
 
 
 
-export const getProductOption = async (id: number,op1: any,op2: any,op3: any) => {return (
-        await axios.get(`http://localhost:8080/products/getProduct/${id}`, {
-            params: {op1: op1,op2: op2,op3: op3},
-        })
+export const getProductOption = async (id: number, op1: any, op2: any, op3: any) => {
+    return (
+        await axios.get(`http://localhost:8080/api/products/getProduct/${id}?op1=${op1}&op2=${op2}&op3=${op3}`)
     ).data;
 };

@@ -1,5 +1,5 @@
 import { info } from "console";
-import React, {useRef,useCallback, useEffect, useState} from "react";
+import React, { useRef, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailProduct } from "../service/HomePage";
 import { getProductOption } from "../service/SignleProduct";
@@ -16,9 +16,12 @@ function SingleProduct() {
     const [option2, setOption2] = useState([]);
     const [option3, setOption3] = useState([]);
 
-    const [op1, setOp1] = useState(String);
-    const [op2, setOp2] = useState(String);
-    const [op3, setOp3] = useState(String);
+    const [op1, setOp1] = useState('');
+    const [op2, setOp2] = useState('');
+    const [op3, setOp3] = useState('');
+
+
+
     useEffect(() => {
         getDetailProduct(parseInt(id as string)).then((response) => {
             setInfos(response.data.InfoProduct)
@@ -27,27 +30,42 @@ function SingleProduct() {
             setOption3(response.data.Option3)
         });
 
+
+
     }, []);
+
+    // const [op1, setOp1] = useState(infos.option1);
+    // const [op2, setOp2] = useState(infos.option2);
+    // const [op3, setOp3] = useState(infos.option3);
+
     const defaultOption1 = infos.option1
     const defaultOption2 = infos.option2
-    const defaultOption3= infos.option3
+    const defaultOption3 = infos.option3
 
 
-    const onChangeOptions = useCallback(() =>
-        (
-        console.log("inf 1:"+infos),
+    async function test() {
+        // console.log("inf 1:" + infos),
 
-        console.log(" op1:"+op1),
-        console.log(" op2:"+op2),
-        console.log(" op3:"+op3),
-        getProductOption(parseInt(id as string),op1 as string,op2 as string,op3 as string).then((response) => {
+        //     console.log(" op1:" + op1),
+        //     console.log(" op2:" + op2),
+        //     console.log(" op3:" + op3),
+        await getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
             setInfos(response.data)
-            console.log("inf 2:"+infos)
-        })),[infos]
-    )
+            console.log("inf 2:" + infos)
+        })
+    }
+    useEffect(() => { onChangeOptions() }, [op1, op2, op3])
+    const onChangeOptions = () =>
+    (
+        console.log("inf 1:" + infos),
 
-
-
+        console.log(" op1:" + op1),
+        console.log(" op2:" + op2),
+        console.log(" op3:" + op3),
+        getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+            setInfos(response.data)
+            console.log("inf 2:" + infos)
+        }))
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -134,7 +152,10 @@ function SingleProduct() {
                                         defaultValue={defaultOption1}
                                         overlay
                                         name="platform"
-                                        onChange={(event) => {setOp1(event.target.value);onChangeOptions()}}
+                                        onChange={(event) => {
+                                            setOp1(event.target.value)
+
+                                        }}
                                         sx={{
                                             flexDirection: 'row',
                                             gap: 1,
@@ -160,7 +181,7 @@ function SingleProduct() {
                                                     display: 'flex',
                                                     flexDirection: 'column',
                                                     alignItems: 'center',
-                                                    p:1,
+                                                    p: 1,
                                                     minWidth: 60,
                                                 }}
                                             >
@@ -178,8 +199,10 @@ function SingleProduct() {
                                         defaultValue={defaultOption2}
                                         overlay
                                         name="platform"
-                                        onChange={(event) => {setOp2(event.target.value);onChangeOptions()}
-                                            }
+                                        onChange={(event) => {
+                                            setOp2(event.target.value)
+
+                                        }}
                                         sx={{
                                             flexDirection: 'row',
                                             gap: 1,
@@ -205,7 +228,7 @@ function SingleProduct() {
                                                     display: 'flex',
                                                     flexDirection: 'column',
                                                     alignItems: 'center',
-                                                    p:1,
+                                                    p: 1,
                                                     minWidth: 60,
                                                 }}
                                             >
@@ -218,13 +241,15 @@ function SingleProduct() {
 
                                 <div className="products-meta mt-4">
                                     <div className="product-category d-flex align-items-center">
-                                    <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
+                                        <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
                                         <RadioGroup
                                             aria-label="platform"
                                             defaultValue={defaultOption3}
                                             overlay
                                             name="platform"
-                                            onChange={(event) => {setOp3(event.target.value);onChangeOptions()}}
+                                            onChange={(event) => {
+                                                setOp3(event.target.value)
+                                            }}
                                             sx={{
                                                 flexDirection: 'row',
                                                 gap: 1,
@@ -250,7 +275,7 @@ function SingleProduct() {
                                                         display: 'flex',
                                                         flexDirection: 'column',
                                                         alignItems: 'center',
-                                                        p:1,
+                                                        p: 1,
                                                         minWidth: 60,
                                                     }}
                                                 >
