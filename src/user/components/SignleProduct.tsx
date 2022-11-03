@@ -8,7 +8,9 @@ import FormLabel from '@mui/joy/FormLabel';
 import Radio, { radioClasses } from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
+import { useAuthStore } from "../../hooks/zustand/auth";
 function SingleProduct() {
+    const accessToken = useAuthStore((e) => e.accessToken)
 
     const { id } = useParams();
     const [infos, setInfos] = useState({} as IInfo);
@@ -81,8 +83,7 @@ function SingleProduct() {
     const [clickBuy, setClickBuy] = useState(0)
     useEffect(() => { addToCartCustomer() }, [clickBuy])
     const addToCartCustomer = () => {
-        addToCart(quantityBuy, infos.id).then((res) => {
-            // setClickBuy(false)
+        addToCart(quantityBuy, infos.id, accessToken).then((res) => {
             console.log(res.data)
         }, (err) => {
             console.log(err)

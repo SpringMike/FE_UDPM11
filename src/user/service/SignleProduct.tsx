@@ -13,12 +13,9 @@ import base_url_public from "./BaseApiPublic";
 //     return axiosClient.post(url, {insId, amount}, config)
 //   },
 
+// String(localStorage.getItem('UDPM11-accessToken'))
 
-let config = {
-    headers: {
-        token: String(localStorage.getItem('UDPM11-accessToken'))
-    }
-}
+
 console.log(localStorage.getItem('UDPM11-accessToken'))
 
 export const getProductOption = async (id: number, op1: any, op2: any, op3: any) => {
@@ -27,7 +24,13 @@ export const getProductOption = async (id: number, op1: any, op2: any, op3: any)
     );
 };
 
-export const addToCart = async (quantity: number, id_product_varient: number) => {
+export const addToCart = async (quantity: number, id_product_varient: number, accessToken: string) => {
+
+    let config = {
+        headers: {
+            token: accessToken
+        }
+    }
 
     return (
         await axios.post(`${base_url_public}/cart/`, { quantity, id_product_varient }, config)
