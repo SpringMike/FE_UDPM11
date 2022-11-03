@@ -1,3 +1,4 @@
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { showCart } from "../service/SignleProduct";
@@ -10,9 +11,10 @@ const Cart = () => {
 
     console.log('access', idUser)
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
-
+    const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
         showCart(Number(idUser), accessToken).then((response) => {
+            setTotalPrice(response.data.reduce((a: any, b: any) => a + b, 0))
             console.log(response.data)
             setCartItems(response.data)
         },
@@ -20,6 +22,8 @@ const Cart = () => {
                 console.log('OUT', err);
             });
     }, []);
+
+
     console.log('cat9qwsdaudashd', cartItems)
 
 
@@ -55,58 +59,37 @@ const Cart = () => {
                         <div className="col-lg-12">
                             <div className="product-list">
                                 <form className="cart-form">
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Dessert (100g serving)</TableCell>
+                                                    <TableCell align="right">Calories</TableCell>
+                                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {cartItems.map((row) => (
+                                                    <TableRow
+                                                        key={row.name}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell component="th" scope="row">
+                                                            {row.name}
+                                                        </TableCell>
+                                                        <TableCell align="right">{row.quantity}</TableCell>
+                                                        <TableCell align="right">{row.priceTotal}</TableCell>
+                                                        <TableCell align="right">{row.wholesale_price}</TableCell>
+                                                        <TableCell align="right">{row.option1}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+
                                     <table className="table shop_table shop_table_responsive cart" cellSpacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th className="product-thumbnail"> </th>
-                                                <th className="product-name">Product</th>
-                                                <th className="product-price">Price</th>
-                                                <th className="product-quantity">Quantity</th>
-                                                <th className="product-subtotal">Total</th>
-                                                <th className="product-remove"> </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <>
-                                                {
-                                                    cartItems.map((o) => {
-                                                    {console.log(o.id)}
-                                                     <a href="">{o.id}</a>
-                                                        // <tr className="cart_item">
-                                                        //     <td className="product-thumbnail" data-title="Thumbnail">
-                                                        //         <a href="/product-single"><img src="assets/images/cart-2.jpg" className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
-                                                        //     </td>
-                                                        //     <td className="product-name" data-title="Product">
-                                                        //         <a href="#">{o.name}</a>
-                                                        //     </td>
-                                                        //     <td className="product-price" data-title="Price">
-                                                        //         <span className="amount"><span className="currencySymbol">
-                                                        //             <pre wp-pre-tag-3=""></pre>
-                                                        //         </span>{o.wholesale_price}</span>
-                                                        //     </td>
-                                                        //     <td className="product-quantity" data-title="Quantity">
-                                                        //         <div className="quantity">
-                                                        //             <label className="sr-only" >{o.quantity}</label>
-                                                        //             <input type="number" id="quantity_5cc58182489a8" className="input-text qty text" step="1" min="0" max="9" name="#" title="Qty" size={4} />
-                                                        //         </div>
-                                                        //     </td>
-                                                        //     <td className="product-subtotal" data-title="Total">
-                                                        //         <span className="amount">
-                                                        //             <span className="currencySymbol">
-                                                        //                 <pre wp-pre-tag-3=""></pre>
-                                                        //             </span>{o.priceTotal}</span>
-                                                        //     </td>
-                                                        //     <td className="product-remove" data-title="Remove">
-                                                        //         <a href="#" className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
-                                                        //     </td>
-                                                        // </tr>
-                                                    })
-                                                }
-                                            </>
-
-                                        </tbody>
-
-
                                         <tr>
                                             <td colSpan={6} className="actions">
                                                 <div className="coupon">
@@ -120,8 +103,8 @@ const Cart = () => {
                                                 <input type="hidden" name="_wp_http_referer" value="/cart/" />
                                             </td>
                                         </tr>
-
                                     </table>
+
                                 </form>
                             </div>
                         </div>
@@ -133,7 +116,7 @@ const Cart = () => {
                                 <ul className="list-unstyled mb-4">
                                     <li className="d-flex justify-content-between pb-2 mb-3">
                                         <h5>Subtotal</h5>
-                                        <span>$90.00</span>
+                                        <span>{totalPrice}</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2 mb-3">
                                         <h5>Shipping</h5>
@@ -141,7 +124,7 @@ const Cart = () => {
                                     </li>
                                     <li className="d-flex justify-content-between pb-2">
                                         <h5>Total</h5>
-                                        <span>$90.00</span>
+                                        <span>{totalPrice}</span>
                                     </li>
                                 </ul>
                                 <a href="#" className="btn btn-main btn-small">Proceed to checkout</a>
@@ -154,3 +137,4 @@ const Cart = () => {
     )
 }
 export default Cart
+
