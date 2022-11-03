@@ -48,33 +48,39 @@ function SingleProduct() {
     const defaultOption3 = infos.option3
 
 
-    async function test() {
+    // async function test() {
 
-        await getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+    //     await getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
 
-            console.log(response.data)
-            setInfos(response.data)
-            console.log("inf 2:" + infos)
-        })
-        console.log(" op1:" + op1)
-        console.log(" op2:" + op2)
-        console.log(" op3:" + op3)
-    }
+    //         console.log(response.data)
+    //         setInfos(response.data)
+    //         console.log("inf 2:" + infos)
+    //     })
+    //     console.log(" op1:" + op1)
+    //     console.log(" op2:" + op2)
+    //     console.log(" op3:" + op3)
+    // }
 
 
-    useEffect(() => { onChangeOptions() }, [op1])
-    useEffect(() => { onChangeOptions() }, [op2])
-    useEffect(() => { onChangeOptions() }, [op3])
+    // useEffect(() => { onChangeOptions() }, [op1])
+    // useEffect(() => { onChangeOptions() }, [op2])
+    // useEffect(() => { onChangeOptions() }, [op3])
+    useEffect(() => { onChangeOptions() }, [op1, op2, op3])
 
     // useEffect(() => { onChangeOptions() }, [quantityBuy])
+
     const onChangeOptions = () =>
     (
-        console.log("inf 1:" + infos),
+        console.log("inf 1:" + infos.id),
 
         console.log(" op1:" + op1),
         console.log(" op2:" + op2),
         console.log(" op3:" + op3),
+        // componentDidMount(){
+
+        // }
         getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+            console.log('In select')
             console.log(response.data)
             setInfos(response.data)
             console.log("inf 2:" + infos)
@@ -83,7 +89,10 @@ function SingleProduct() {
     const [clickBuy, setClickBuy] = useState(0)
     useEffect(() => { addToCartCustomer() }, [clickBuy])
     const addToCartCustomer = () => {
-        addToCart(quantityBuy, infos.id, accessToken).then((res) => {
+        console.log('In add to cart')
+        console.log('Quantity ????', quantityBuy);
+        addToCart(Number(quantityBuy), infos.id, accessToken).then((res) => {
+            // setClickBuy(false)
             console.log(res.data)
         }, (err) => {
             console.log(err)
@@ -171,7 +180,8 @@ function SingleProduct() {
                                     <button className="btn btn-main btn-small"
                                         onClick={() => {
                                             console.log("Click@!!!!!")
-                                            setClickBuy(clickBuy + 1)
+                                            // setClickBuy(clickBuy + 1)
+                                            addToCartCustomer()
                                             // addToCartCustomer()
                                         }}
                                     >Add to cart</button>

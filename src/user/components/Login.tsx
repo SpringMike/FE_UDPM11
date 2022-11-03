@@ -22,6 +22,7 @@ function Login() {
 
     const updateAuth = useAuthStore((state) => state.updateAuth)
     const handleFormSubmit: SubmitHandler<LoginFormData> = async (data) => {
+        console.log(data.username, data.password)
         // loginApi
         //   .add({ username: 'hoangnd25@fpt.com.vn', password: 'ArianaGrande2' })
         //   .then((res) => {
@@ -29,13 +30,13 @@ function Login() {
         //   })
         //   .catch((err) => console.log(err))
         try {
-
             const response = await loginApi(data.username, data.password)
-            console.log('response', response)
-            updateAuth({ newAccessToken: response.data.accessToken, newRole: response.data.type, newName: response.data.name })
+            console.log('in')
+            console.log('response.data.id ', response.data.id )
+            updateAuth({ newAccessToken: response.data.accessToken, newRole: response.data.type, newName: response.data.name, newId: response.data.id })
             navigate('/shop')
         } catch (error: any) {
-            setLoginError(error.response.data.error);
+            setLoginError(error);
             console.log('this bug', error)
         }
 
