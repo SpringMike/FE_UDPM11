@@ -5,16 +5,16 @@ import { showCart } from "../service/SignleProduct";
 import { ICartItem } from "../type/CartItem";
 
 const Cart = () => {
-
+    let nf = new Intl.NumberFormat();
     const idUser = useAuthStore((e) => e.id);
     const accessToken = useAuthStore((e) => e.accessToken);
-
+    let sumPrice=0;
     console.log('access', idUser)
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
     const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
         showCart(Number(idUser), accessToken).then((response) => {
-            setTotalPrice(response.data.reduce((a: any, b: any) => a + b, 0))
+           
             console.log(response.data)
             setCartItems(response.data)
         },
@@ -23,6 +23,14 @@ const Cart = () => {
             });
     }, []);
 
+    useEffect(() => {
+        cartItems.forEach((e) => {
+            console.log(e.priceTotal)
+           
+            sumPrice += Number(e.priceTotal)
+          })
+          setTotalPrice(Number(sumPrice))
+    }, [cartItems]);
 
     console.log('cat9qwsdaudashd', cartItems)
 
@@ -80,8 +88,8 @@ const Cart = () => {
                                                             {row.name}
                                                         </TableCell>
                                                         <TableCell align="right">{row.quantity}</TableCell>
-                                                        <TableCell align="right">{row.priceTotal}</TableCell>
-                                                        <TableCell align="right">{row.wholesale_price}</TableCell>
+                                                        <TableCell align="right">{nf.format(row.priceTotal)}</TableCell>
+                                                        <TableCell align="right">{nf.format(row.wholesale_price)}</TableCell>
                                                         <TableCell align="right">{row.option1}</TableCell>
                                                     </TableRow>
                                                 ))}
@@ -116,7 +124,7 @@ const Cart = () => {
                                 <ul className="list-unstyled mb-4">
                                     <li className="d-flex justify-content-between pb-2 mb-3">
                                         <h5>Subtotal</h5>
-                                        <span>{totalPrice}</span>
+                                        <span>{nf.format(totalPrice)}</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2 mb-3">
                                         <h5>Shipping</h5>
@@ -124,7 +132,7 @@ const Cart = () => {
                                     </li>
                                     <li className="d-flex justify-content-between pb-2">
                                         <h5>Total</h5>
-                                        <span>{totalPrice}</span>
+                                        <span>{nf.format(totalPrice)}</span>
                                     </li>
                                 </ul>
                                 <a href="#" className="btn btn-main btn-small">Proceed to checkout</a>

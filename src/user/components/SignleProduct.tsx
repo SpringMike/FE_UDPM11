@@ -11,7 +11,7 @@ import Sheet from '@mui/joy/Sheet';
 import { useAuthStore } from "../../hooks/zustand/auth";
 function SingleProduct() {
     const accessToken = useAuthStore((e) => e.accessToken)
-
+    let nf = new Intl.NumberFormat();
     const { id } = useParams();
     const [infos, setInfos] = useState({} as IInfo);
     const [option1, setOption1] = useState([]);
@@ -39,9 +39,6 @@ function SingleProduct() {
 
     }, []);
 
-    // const [op1, setOp1] = useState(infos.option1);
-    // const [op2, setOp2] = useState(infos.option2);
-    // const [op3, setOp3] = useState(infos.option3);
 
     const defaultOption1 = infos.option1
     const defaultOption2 = infos.option2
@@ -67,32 +64,19 @@ function SingleProduct() {
     // useEffect(() => { onChangeOptions() }, [op3])
     useEffect(() => { onChangeOptions() }, [op1, op2, op3])
 
-    // useEffect(() => { onChangeOptions() }, [quantityBuy])
-
     const onChangeOptions = () =>
     (
-        console.log("inf 1:" + infos.id),
-
         console.log(" op1:" + op1),
         console.log(" op2:" + op2),
         console.log(" op3:" + op3),
-        // componentDidMount(){
-
-        // }
         getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
-            console.log('In select')
             console.log(response.data)
             setInfos(response.data)
-            console.log("inf 2:" + infos)
         }))
-
-    const [clickBuy, setClickBuy] = useState(0)
-    useEffect(() => { addToCartCustomer() }, [clickBuy])
     const addToCartCustomer = () => {
         console.log('In add to cart')
         console.log('Quantity ????', quantityBuy);
         addToCart(Number(quantityBuy), infos.id, accessToken).then((res) => {
-            // setClickBuy(false)
             console.log(res.data)
         }, (err) => {
             console.log(err)
@@ -163,7 +147,7 @@ function SingleProduct() {
 
                                 <hr />
 
-                                <h3 className="product-price">{infos.price} vnd<del>$119.90</del></h3>
+                                <h3 className="product-price">{nf.format(infos.price)} vnd<del>$119.90</del></h3>
 
                                 <p className="product-description my-4 ">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur? Eveniet consequatur ipsum dicta recusandae.
@@ -176,13 +160,10 @@ function SingleProduct() {
                                         onChange={(e: any) => {
                                             setQuantityBuy(e.target.value)
                                         }}
-                                        max={infos.quantity} name="quantity" size={4} />
+                                        max={infos.quantity} name="quantity" size={4} value={quantityBuy}/>
                                     <button className="btn btn-main btn-small"
                                         onClick={() => {
-                                            console.log("Click@!!!!!")
-                                            // setClickBuy(clickBuy + 1)
                                             addToCartCustomer()
-                                            // addToCartCustomer()
                                         }}
                                     >Add to cart</button>
                                 </div>
@@ -229,7 +210,7 @@ function SingleProduct() {
                                                     minWidth: 60,
                                                 }}
                                             >
-                                                <Radio id={value} value={value} />
+                                                <Radio id={value} value={value} checked={value === defaultOption1}/>
                                                 <FormLabel htmlFor={value}>{value}</FormLabel>
                                             </Sheet>
                                         ))}
@@ -275,7 +256,7 @@ function SingleProduct() {
                                                     minWidth: 60,
                                                 }}
                                             >
-                                                <Radio id={value} value={value} />
+                                                <Radio id={value} value={value} checked={value === defaultOption2} />
                                                 <FormLabel htmlFor={value}>{value}</FormLabel>
                                             </Sheet>
                                         ))}
@@ -322,7 +303,7 @@ function SingleProduct() {
                                                         minWidth: 60,
                                                     }}
                                                 >
-                                                    <Radio id={value} value={value} />
+                                                    <Radio id={value} value={value} checked={value === defaultOption3}/>
                                                     <FormLabel htmlFor={value}>{value}</FormLabel>
                                                 </Sheet>
                                             ))}
