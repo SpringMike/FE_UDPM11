@@ -210,7 +210,7 @@ function SingleProduct() {
                                                     minWidth: 60,
                                                 }}
                                             >
-                                                <Radio id={value} value={value} checked={value === defaultOption1}/>
+                                                <Radio id={value} value={value} />
                                                 <FormLabel htmlFor={value}>{value}</FormLabel>
                                             </Sheet>
                                         ))}
@@ -256,7 +256,7 @@ function SingleProduct() {
                                                     minWidth: 60,
                                                 }}
                                             >
-                                                <Radio id={value} value={value} checked={value === defaultOption2} />
+                                                <Radio id={value} value={value}  />
                                                 <FormLabel htmlFor={value}>{value}</FormLabel>
                                             </Sheet>
                                         ))}
@@ -303,7 +303,7 @@ function SingleProduct() {
                                                         minWidth: 60,
                                                     }}
                                                 >
-                                                    <Radio id={value} value={value} checked={value === defaultOption3}/>
+                                                    <Radio id={value} value={value} />
                                                     <FormLabel htmlFor={value}>{value}</FormLabel>
                                                 </Sheet>
                                             ))}

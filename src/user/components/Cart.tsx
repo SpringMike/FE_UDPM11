@@ -1,20 +1,20 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { showCart } from "../service/SignleProduct";
 import { ICartItem } from "../type/CartItem";
-
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 const Cart = () => {
     let nf = new Intl.NumberFormat();
     const idUser = useAuthStore((e) => e.id);
     const accessToken = useAuthStore((e) => e.accessToken);
-    let sumPrice=0;
+    let sumPrice = 0;
     console.log('access', idUser)
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
     const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
         showCart(Number(idUser), accessToken).then((response) => {
-           
+
             console.log(response.data)
             setCartItems(response.data)
         },
@@ -22,17 +22,54 @@ const Cart = () => {
                 console.log('OUT', err);
             });
     }, []);
-
     useEffect(() => {
         cartItems.forEach((e) => {
             console.log(e.priceTotal)
-           
+
             sumPrice += Number(e.priceTotal)
-          })
-          setTotalPrice(Number(sumPrice))
+        })
+        setTotalPrice(Number(sumPrice))
     }, [cartItems]);
 
     console.log('cat9qwsdaudashd', cartItems)
+
+
+    const columns: GridColDef[] = [
+        { field: 'id_cart_item', headerName: 'ID', width: 70 },
+        { field: 'id_product_variant', headerName: 'ID', width: 70 },
+        { field: 'wholesale_price', headerName: 'ID', width: 70 },
+        { field: 'name', headerName: 'ID', width: 70 },
+        { field: 'quantity', headerName: 'quantitt', editable: true, width: 70 },
+        { field: 'image', headerName: 'ID', width: 70 },
+        { field: 'option1', headerName: 'ID', width: 70 },
+        { field: 'option2', headerName: 'ID', width: 70 },
+        { field: 'priceTotal', headerName: 'ID', width: 70 },
+        { field: 'option3', headerName: 'ID', width: 70 },
+        { field: 'firstName', headerName: 'First name', width: 130 },
+        { field: 'lastName', headerName: 'Last name', width: 130 },
+        // {
+        //     field: 'age',
+        //     headerName: 'Age',
+        //     type: 'number',
+        //     width: 90,
+        // },
+        // {
+        //     field: 'fullName',
+        //     headerName: 'Full name',
+        //     description: 'This column has a value getter and is not sortable.',
+        //     sortable: false,
+        //     width: 160,
+        //     valueGetter: (params: GridValueGetterParams) =>
+        //         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+    ];
+
+    const onRowsSelectionHandler = (ids: any) => {
+        const selectedRowsData = ids.map((id: any) => cartItems.find((row) => row.id_cart_item === id));
+         localStorage.setItem('test', selectedRowsData)
+        console.log(localStorage.getItem('test'))
+        console.log(selectedRowsData);
+    };
 
 
 
@@ -67,10 +104,11 @@ const Cart = () => {
                         <div className="col-lg-12">
                             <div className="product-list">
                                 <form className="cart-form">
-                                    <TableContainer component={Paper}>
+                                    {/* <TableContainer component={Paper}>
                                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                             <TableHead>
                                                 <TableRow>
+                                                    <Checkbox />
                                                     <TableCell>Dessert (100g serving)</TableCell>
                                                     <TableCell align="right">Calories</TableCell>
                                                     <TableCell align="right">Fat&nbsp;(g)</TableCell>
@@ -84,6 +122,7 @@ const Cart = () => {
                                                         key={row.name}
                                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                     >
+                                                        <Checkbox formEncType="checkbox" name="foo" value={row.id_cart_item} />
                                                         <TableCell component="th" scope="row">
                                                             {row.name}
                                                         </TableCell>
@@ -95,7 +134,19 @@ const Cart = () => {
                                                 ))}
                                             </TableBody>
                                         </Table>
-                                    </TableContainer>
+                                    </TableContainer> */}
+
+                                    <div style={{ height: 400, width: '100%' }}>
+                                        <DataGrid
+                                            rows={cartItems}
+                                            columns={columns}
+                                            pageSize={5}
+                                            rowsPerPageOptions={[5]}
+                                            getRowId={(cartItems) => cartItems.id_cart_item}
+                                            onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+                                            checkboxSelection
+                                        />
+                                    </div>
 
                                     <table className="table shop_table shop_table_responsive cart" cellSpacing="0">
                                         <tr>
@@ -135,7 +186,11 @@ const Cart = () => {
                                         <span>{nf.format(totalPrice)}</span>
                                     </li>
                                 </ul>
-                                <a href="#" className="btn btn-main btn-small">Proceed to checkout</a>
+                                <button className="btn btn-main btn-small"
+                                    onClick={() => {
+                                        console.log(localStorage.getItem('test'))
+                                    }}
+                                >Proceed to checkout</button>
                             </div>
                         </div>
                     </div>
