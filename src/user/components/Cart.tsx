@@ -4,6 +4,7 @@ import { useAuthStore } from "../../hooks/zustand/auth";
 import { showCart } from "../service/SignleProduct";
 import { ICartItem } from "../type/CartItem";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
     let nf = new Intl.NumberFormat();
     const idUser = useAuthStore((e) => e.id);
@@ -12,7 +13,10 @@ const Cart = () => {
     console.log('access', idUser)
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
     const [totalPrice, setTotalPrice] = useState(0);
+    let navigate = useNavigate()
     useEffect(() => {
+
+        localStorage.removeItem('test1')
         showCart(Number(idUser), accessToken).then((response) => {
 
             console.log(response.data)
@@ -31,7 +35,7 @@ const Cart = () => {
         setTotalPrice(Number(sumPrice))
     }, [cartItems]);
 
-    console.log('cat9qwsdaudashd', cartItems)
+    // console.log('cat9qwsdaudashd', cartItems)
 
 
     const columns: GridColDef[] = [
@@ -66,8 +70,12 @@ const Cart = () => {
 
     const onRowsSelectionHandler = (ids: any) => {
         const selectedRowsData = ids.map((id: any) => cartItems.find((row) => row.id_cart_item === id));
-         localStorage.setItem('test', selectedRowsData)
-        console.log(localStorage.getItem('test'))
+        const idsCItems: string[] = [];
+        selectedRowsData.forEach((e: any) => {
+            let { id_cart_item } = e;
+            idsCItems.push(id_cart_item)
+        });
+        localStorage.setItem('test1', JSON.stringify(idsCItems))
         console.log(selectedRowsData);
     };
 
@@ -188,7 +196,7 @@ const Cart = () => {
                                 </ul>
                                 <button className="btn btn-main btn-small"
                                     onClick={() => {
-                                        console.log(localStorage.getItem('test'))
+                                        navigate('/checkout')
                                     }}
                                 >Proceed to checkout</button>
                             </div>
