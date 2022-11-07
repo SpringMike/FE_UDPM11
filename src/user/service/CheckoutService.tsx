@@ -40,14 +40,24 @@ export const moneyFee = async (money: number, to_district: number, to_ward: stri
     );
 };
 
-export const addOrderPush = async (address: string, note: string, id_cart_items: string[], money_fee: number, accessToken: string) => {
+export const addOrderPush = (address: string, note: string, id_cart_items: number[], money_fee: number, accessToken: string) => {
     let config = {
         headers: {
             token: accessToken
         }
     }
+    const obj = { address, note, id_cart_items, money_fee }
+    console.log('obj ne ', obj)
+    const body = JSON.stringify(obj);
     console.log(`${base_url_public}/cart/addOrderPurchase`)
     return (
-        await axios.post(`${base_url_public}/cart/addOrderPurchase`, { address, note, id_cart_items, money_fee }, config)
+        fetch(`${base_url_public}/cart/addOrderPurchase`, {
+            method: 'POST',
+            body,
+            headers: {
+                token: accessToken,
+                'Content-Type': 'application/json',
+            }
+        })
     );
 };

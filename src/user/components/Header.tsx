@@ -55,6 +55,7 @@ const Header: React.FC = () => {
                                 <li><Link to={{ pathname: "/single-product" }}>Product Details</Link></li>
                                 <li><Link to={{ pathname: "/checkout" }}>Checkout</Link></li>
                                 <li><Link to={{ pathname: "/cart" }}>Cart</Link></li>
+                                <li><Link to={{ pathname: "/history" }}>Lịch sủáhdahsd</Link></li>
                             </ul>
                         </li>
 

@@ -28,6 +28,7 @@ import Home from "./user/components/Home";
 import Shop from "./user/components/Shop";
 import SignleProduct from "./user/components/SignleProduct";
 import { useAuthStore } from './hooks/zustand/auth';
+import OrderHistory from './user/components/OrderHistory';
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -73,6 +74,10 @@ const App: React.FC = () => {
                         {
                             path: "cart",
                             element: <Cart />,
+                        },
+                        {
+                            path: "history",
+                            element: <OrderHistory/>,
                         },
                         {
                             path: "single-product/:id",

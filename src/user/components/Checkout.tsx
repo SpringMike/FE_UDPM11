@@ -102,7 +102,7 @@ function Checkout() {
 
     const addOrder123 = () => {
         console.log('OKOKOOKk' + (nameXa + ' ' + nameHy + ' ' + nameTP) + 'comming' + id_cart_item_local + moneyFeeShip.total + accessToken)
-        addOrderPush((nameXa + ' ' + nameHy + ' ' + nameTP), 'comming', id_cart_item_local, moneyFeeShip.total, accessToken).then((res) => {
+        addOrderPush(String((nameXa + ' ' + nameHy + ' ' + nameTP)), 'comming', id_cart_item_local, moneyFeeShip.total, accessToken).then((res) => {
             console.log('12313123123' + res)
         }, (err) => {
             console.log(err)
