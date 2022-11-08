@@ -2,8 +2,10 @@ import "jquery/dist/jquery.slim.min.js";
 import "popper.js/dist/umd/popper.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { Link, useNavigate } from "react-router-dom";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useAuthStore } from "../../hooks/zustand/auth";
+import {ICartItem} from "../type/CartItem";
+import {showCart} from "../service/SignleProduct";
 
 const Header: React.FC = () => {
     let navigate = useNavigate()
@@ -13,6 +15,34 @@ const Header: React.FC = () => {
         resetAuth()
         navigate('/login')
     }
+
+    let nf = new Intl.NumberFormat();
+    const idUser = useAuthStore((e) => e.id);
+    const accessToken = useAuthStore((e) => e.accessToken);
+    let sumPrice = 0;
+    console.log('access', idUser)
+    const [cartItems, setCartItems] = useState([] as ICartItem[]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    useEffect(() => {
+
+        localStorage.removeItem('test1')
+        showCart(Number(idUser), accessToken).then((response) => {
+
+                console.log(response.data)
+                setCartItems(response.data)
+            },
+            (err) => {
+                console.log('OUT', err);
+            });
+    }, []);
+    useEffect(() => {
+        cartItems.forEach((e) => {
+            console.log(e.priceTotal)
+
+            sumPrice += Number(e.priceTotal)
+        })
+        setTotalPrice(Number(sumPrice))
+    }, [cartItems]);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation" id="navbar">
@@ -52,25 +82,12 @@ const Header: React.FC = () => {
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
                                 <li><Link to={{ pathname: "/shop" }}>Shop</Link></li>
-                                <li><Link to={{ pathname: "/single-product" }}>Product Details</Link></li>
                                 <li><Link to={{ pathname: "/checkout" }}>Checkout</Link></li>
                                 <li><Link to={{ pathname: "/cart" }}>Cart</Link></li>
-                                <li><Link to={{ pathname: "/history" }}>Lịch sủáhdahsd</Link></li>
+                                <li><Link to={{ pathname: "/history" }}>Order History</Link></li>
                             </ul>
                         </li>
 
-                        <li className="nav-item dropdown dropdown-slide">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Account.
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
-                                <li><Link to={{ pathname: "/dashboard" }}>Dashboard</Link></li>
-                                <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
-                                <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
-                                <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
 
@@ -111,19 +128,31 @@ const Header: React.FC = () => {
                                 </div>
                                 <a href="#" className="remove"><i className="tf-ion-close"></i></a>
                             </div>
+
                             <div className="cart-summary">
                                 <span className="h6">Total</span>
                                 <span className="total-price h6">$1799.00</span>
                                 <div className="text-center cart-buttons mt-3">
-                                    <a href="#" className="btn btn-small btn-transparent btn-block">View Cart</a>
-                                    <a href="#" className="btn btn-small btn-main btn-block">Checkout</a>
+                                    <Link className="btn btn-small btn-transparent btn-block" to={{ pathname: "/cart" }}>View Cart</Link>
+                                    <Link className="btn btn-small btn-main btn-block" to={{ pathname: "/checkout" }}>Checkout</Link>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li className="list-inline-item"><a href="#"><i className="tf-ion-ios-person mr-3"></i></a></li>
-                    <li>Hi {name}</li>
-                    <li className="list-inline-item"><button onClick={onLogout} className="btn btn-primary" >Logout</button></li>
+                    <li className="nav-item dropdown dropdown-slide list-inline-item">
+                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-delay="350"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i className="tf-ion-ios-person"></i>
+                        </a>
+                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
+                            <li><a type = "button" onClick={onLogout}>Logout</a></li>
+                            <li><Link to={{ pathname: "/dashboard" }}>Dashboard</Link></li>
+                            <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
+                            <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
+                            <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>
+                        </ul>
+                    </li>
+                    <li className="list-inline-item">Hi {name}</li>
                 </ul>
             </div>
         </nav>

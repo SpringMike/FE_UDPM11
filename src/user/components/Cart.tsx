@@ -35,37 +35,17 @@ const Cart = () => {
         setTotalPrice(Number(sumPrice))
     }, [cartItems]);
 
-    // console.log('cat9qwsdaudashd', cartItems)
-
-
     const columns: GridColDef[] = [
-        { field: 'id_cart_item', headerName: 'ID', width: 70 },
-        { field: 'id_product_variant', headerName: 'ID', width: 70 },
-        { field: 'wholesale_price', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'ID', width: 70 },
-        { field: 'quantity', headerName: 'quantitt', editable: true, width: 70 },
-        { field: 'image', headerName: 'ID', width: 70 },
-        { field: 'option1', headerName: 'ID', width: 70 },
-        { field: 'option2', headerName: 'ID', width: 70 },
-        { field: 'priceTotal', headerName: 'ID', width: 70 },
-        { field: 'option3', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
-        // {
-        //     field: 'age',
-        //     headerName: 'Age',
-        //     type: 'number',
-        //     width: 90,
-        // },
-        // {
-        //     field: 'fullName',
-        //     headerName: 'Full name',
-        //     description: 'This column has a value getter and is not sortable.',
-        //     sortable: false,
-        //     width: 160,
-        //     valueGetter: (params: GridValueGetterParams) =>
-        //         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-        // },
+        // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
+        // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
+        { field: 'image'+ ' name' , headerName: 'Name', width: 200},
+        // { field: 'image', headerName: 'Image', width: 70 },
+        { field: 'option1 '+' option2'+' option3', headerName: 'Options', width: 200, align: "center"},
+        { field: 'quantity', headerName: 'Quantity', editable: true, width: 130,align: "center" },
+        { field: 'wholesale_price', headerName: 'Wholesale Price', width: 130,align: "center" },
+        { field: 'priceTotal', headerName: 'Price Total', width: 130,align: "center" },
+        { field: 'firstName', headerName: 'First name', width: 130,align: "center" },
+        { field: 'lastName', headerName: 'Last name', width: 130,align: "center" },
     ];
 
     const onRowsSelectionHandler = (ids: any) => {
@@ -90,8 +70,6 @@ const Cart = () => {
                         <div className="col-lg-6">
                             <div className="content text-center">
                                 <h1 className="mb-3">Cart</h1>
-                                Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which
-
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
                                         <li className="breadcrumb-item"><a href="/">Home</a></li>
@@ -103,47 +81,12 @@ const Cart = () => {
                     </div>
                 </div>
             </section>
-
-
-
             <section className="cart shopping page-wrapper">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
                             <div className="product-list">
                                 <form className="cart-form">
-                                    {/* <TableContainer component={Paper}>
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <Checkbox />
-                                                    <TableCell>Dessert (100g serving)</TableCell>
-                                                    <TableCell align="right">Calories</TableCell>
-                                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {cartItems.map((row) => (
-                                                    <TableRow
-                                                        key={row.name}
-                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    >
-                                                        <Checkbox formEncType="checkbox" name="foo" value={row.id_cart_item} />
-                                                        <TableCell component="th" scope="row">
-                                                            {row.name}
-                                                        </TableCell>
-                                                        <TableCell align="right">{row.quantity}</TableCell>
-                                                        <TableCell align="right">{nf.format(row.priceTotal)}</TableCell>
-                                                        <TableCell align="right">{nf.format(row.wholesale_price)}</TableCell>
-                                                        <TableCell align="right">{row.option1}</TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer> */}
-
                                     <div style={{ height: 400, width: '100%' }}>
                                         <DataGrid
                                             rows={cartItems}

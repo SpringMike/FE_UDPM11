@@ -136,20 +136,18 @@ const OrderHistory2 = () => {
     };
 
     return (
-        <div className="checkout-container">
+        <div className="checkout-container container">
             <section className="page-header">
                 <div className="overly"></div>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Order</h1>
-                                Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which
-
+                                <h1 className="mb-3">Order History</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
                                         <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Cart</li>
+                                        <li className="breadcrumb-item active" aria-current="page">Order History</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -164,12 +162,11 @@ const OrderHistory2 = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell />
-                                    <TableCell>Dessert (100g serving)</TableCell>
-                                    <TableCell align="right">Calories</TableCell>
-                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                                    <TableCell>Product Name</TableCell>
+                                    <TableCell align="right">Options</TableCell>
+                                    <TableCell align="right">Quantity</TableCell>
+                                    <TableCell align="right">Price</TableCell>
+                                    <TableCell align="right">Total Price</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

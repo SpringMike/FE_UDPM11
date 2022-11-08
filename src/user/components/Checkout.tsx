@@ -144,138 +144,108 @@ function Checkout() {
                                 </div>
 
                                 <div className="billing-details mt-5">
-                                    <h4 className="mb-4">Billing Details</h4>
-                                    {/* <form className="checkout-form">
-                                        <div className="row">
-                                            <div className="col-lg-6">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">First Name</label>
-                                                    <input type="text" className="form-control" id="first_name" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="last_name">Last Name</label>
-                                                    <input type="text" className="form-control" id="last_name" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="company_name">Company Name(Optional)</label>
-                                                    <input type="text" className="form-control" id="company_name" placeholder="" />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="company_name">Country</label>
-                                                    <select className="form-control">
-                                                        <option value="">Select an Option</option>
-                                                        <option value="January">January</option>
-                                                        <option value="February">February</option>
-                                                        <option value="March">March</option>
-                                                        <option value="April">April</option>
-                                                        <option value="May">May</option>
-                                                        <option value="June">June</option>
-                                                        <option value="July">July</option>
-                                                        <option value="August">August</option>
-                                                        <option value="September">September</option>
-                                                        <option value="October">October</option>
-                                                        <option value="November">November</option>
-                                                        <option value="December">December</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Street Address</label>
-                                                    <input type="text" className="form-control" id="street" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Apartment, suite, unit etc. (optional) (optional)</label>
-                                                    <input type="text" className="form-control" id="apartment" placeholder="Apartment" />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Town / City </label>
-                                                    <input type="text" className="form-control" id="city" placeholder="Apartment" />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="company_name">District </label>
-                                                    <select className="form-control">
-                                                        <option value="">Select an Option</option>
-                                                        <option value="January">January</option>
-                                                        <option value="February">February</option>
-                                                        <option value="March">March</option>
-                                                        <option value="April">April</option>
-                                                        <option value="May">May</option>
-                                                        <option value="June">June</option>
-                                                        <option value="July">July</option>
-                                                        <option value="August">August</option>
-                                                        <option value="September">September</option>
-                                                        <option value="October">October</option>
-                                                        <option value="November">November</option>
-                                                        <option value="December">December</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Postcode / ZIP (optional)</label>
-                                                    <input type="text" className="form-control" id="postcode" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Phone </label>
-                                                    <input type="text" className="form-control" id="phone" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Email address </label>
-                                                    <input type="text" className="form-control" id="email" placeholder="" />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-lg-12">
-                                                <div className="form-check mb-4">
-                                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                                    <label className="form-check-label" htmlFor="exampleCheck1">Create an account?</label>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-check mb-4">
-                                                    <input type="checkbox" className="form-check-input" id="exampleCheck2" />
-                                                    <label className="form-check-label" htmlFor="exampleCheck2">Ship to a different address?</label>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group mb-4">
-                                                    <label htmlFor="first_name">Order notes (optional)</label>
-                                                    <textarea className="form-control" id="msg" cols={30} rows={5} placeholder="Notes about order e:g: want to say something"></textarea>
-                                                </div>
-                                            </div>
+                                    <h4 className="">Billing Details</h4>
+                                    <div className = "row m-5">
+                                        <div className="col-md-6">
+                                            <Box sx={{ minWidth: 120 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel variant="standard" htmlFor="uncontrolled-native1">
+                                                        Thanh Pho
+                                                    </InputLabel>
+                                                    <NativeSelect
+                                                        defaultValue={30}
+                                                        inputProps={{
+                                                            name: 'Thanh Pho',
+                                                            id: 'uncontrolled-native1',
+                                                        }}
+                                                        onChange={(e) => {
+                                                            setNameTP(e.target.options[e.target.selectedIndex].text)
+                                                            setTP(String(e.target.value))
+                                                        }}
+                                                    >
+                                                        {
+                                                            listTP.map((e) => {
+                                                                return (
+                                                                    <option value={e.ProvinceID}>{e.ProvinceName}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                        {/* <option value={10}>Ten</option>
+                                                <option value={20}>Twenty</option>
+                                                <option value={30}>Thirty</option> */}
+                                                    </NativeSelect>
+                                                </FormControl>
+                                            </Box>
                                         </div>
-                                    </form> */}
+                                        <div className="col-md-6">
+                                            <Box sx={{ minWidth: 120 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel variant="standard" htmlFor="uncontrolled-native1">
+                                                        Huyen
+                                                    </InputLabel>
+                                                    <NativeSelect
+                                                        defaultValue={30}
+                                                        inputProps={{
+                                                            name: 'Thanh Pho',
+                                                            id: 'uncontrolled-native1',
+                                                        }}
+                                                        onChange={(e) => {
+                                                            setNameHy(e.target.options[e.target.selectedIndex].text)
+                                                            setHy(String(e.target.value))
+                                                        }}
+                                                    >
+                                                        {
+                                                            listHy.map((e) => {
+                                                                return (
+                                                                    <option value={e.DistrictID}>{e.DistrictName}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                        {/* <option value={10}>Ten</option>
+                                                <option value={20}>Twenty</option>
+                                                <option value={30}>Thirty</option> */}
+                                                    </NativeSelect>
+                                                </FormControl>
+                                            </Box>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <Box sx={{ minWidth: 120 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel variant="standard" htmlFor="uncontrolled-native1">
+                                                        Xa
+                                                    </InputLabel>
+                                                    <NativeSelect
+                                                        defaultValue={30}
+                                                        inputProps={{
+                                                            name: 'Xa',
+                                                            id: 'uncontrolled-native1',
+                                                        }}
+                                                        onChange={(e) => {
+                                                            setNameXa(e.target.options[e.target.selectedIndex].text)
+                                                            setXa(String(e.target.value))
+                                                        }}
+                                                    >
+                                                        {
+                                                            listXa.map((e) => {
+                                                                return (
+                                                                    <option value={e.WardCode}>{e.WardName}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </NativeSelect>
+                                                </FormControl>
+                                            </Box>
+                                        </div>
+                                    </div>
                                     <TableContainer component={Paper}>
                                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>Dessert (100g serving)</TableCell>
-                                                    <TableCell align="right">Calories</TableCell>
-                                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                                                    <TableCell>Product Name</TableCell>
+                                                    <TableCell align="center">Wholesale Price</TableCell>
+                                                    <TableCell align="center">Quantity</TableCell>
+                                                    <TableCell align="center">Options</TableCell>
+                                                    <TableCell align="center">Price Total</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -287,107 +257,15 @@ function Checkout() {
                                                         <TableCell component="th" scope="row">
                                                             {row.image}
                                                         </TableCell>
-                                                        <TableCell align="right">{row.wholesale_price}</TableCell>
-                                                        <TableCell align="right">{row.quantity}</TableCell>
-                                                        <TableCell align="right">{row.priceTotal}</TableCell>
-                                                        <TableCell align="right">{row.option1}</TableCell>
+                                                        <TableCell align="center">{row.wholesale_price}</TableCell>
+                                                        <TableCell align="center">{row.quantity}</TableCell>
+                                                        <TableCell align="center">{row.priceTotal}</TableCell>
+                                                        <TableCell align="center">{row.option1 + ' - ' + row.option2 + ' - ' + row.option3}</TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
-
-                                    <Box sx={{ minWidth: 120 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                Thanh Pho
-                                            </InputLabel>
-                                            <NativeSelect
-                                                defaultValue={30}
-                                                inputProps={{
-                                                    name: 'Thanh Pho',
-                                                    id: 'uncontrolled-native1',
-                                                }}
-                                                onChange={(e) => {
-                                                    setNameTP(e.target.options[e.target.selectedIndex].text)
-                                                    setTP(String(e.target.value))
-                                                }}
-                                            >
-                                                {
-                                                    listTP.map((e) => {
-                                                        return (
-                                                            <option value={e.ProvinceID}>{e.ProvinceName}</option>
-                                                        )
-                                                    })
-                                                }
-                                                {/* <option value={10}>Ten</option>
-                                                <option value={20}>Twenty</option>
-                                                <option value={30}>Thirty</option> */}
-                                            </NativeSelect>
-                                        </FormControl>
-                                    </Box>
-
-
-
-                                    <Box sx={{ minWidth: 120 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                Huyen
-                                            </InputLabel>
-                                            <NativeSelect
-                                                defaultValue={30}
-                                                inputProps={{
-                                                    name: 'Thanh Pho',
-                                                    id: 'uncontrolled-native1',
-                                                }}
-                                                onChange={(e) => {
-                                                    setNameHy(e.target.options[e.target.selectedIndex].text)
-                                                    setHy(String(e.target.value))
-                                                }}
-                                            >
-                                                {
-                                                    listHy.map((e) => {
-                                                        return (
-                                                            <option value={e.DistrictID}>{e.DistrictName}</option>
-                                                        )
-                                                    })
-                                                }
-                                                {/* <option value={10}>Ten</option>
-                                                <option value={20}>Twenty</option>
-                                                <option value={30}>Thirty</option> */}
-                                            </NativeSelect>
-                                        </FormControl>
-                                    </Box>
-
-
-                                    <Box sx={{ minWidth: 120 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                Xa
-                                            </InputLabel>
-                                            <NativeSelect
-                                                defaultValue={30}
-                                                inputProps={{
-                                                    name: 'Xa',
-                                                    id: 'uncontrolled-native1',
-                                                }}
-                                                onChange={(e) => {
-                                                    setNameXa(e.target.options[e.target.selectedIndex].text)
-                                                    setXa(String(e.target.value))
-                                                }}
-                                            >
-                                                {
-                                                    listXa.map((e) => {
-                                                        return (
-                                                            <option value={e.WardCode}>{e.WardName}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </NativeSelect>
-                                        </FormControl>
-                                    </Box>
-
-
                                 </div>
                             </div>
 
