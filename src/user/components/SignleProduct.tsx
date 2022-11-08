@@ -45,23 +45,7 @@ function SingleProduct() {
     const defaultOption3 = infos.option3
 
 
-    // async function test() {
-
-    //     await getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
-
-    //         console.log(response.data)
-    //         setInfos(response.data)
-    //         console.log("inf 2:" + infos)
-    //     })
-    //     console.log(" op1:" + op1)
-    //     console.log(" op2:" + op2)
-    //     console.log(" op3:" + op3)
-    // }
-
-
-    // useEffect(() => { onChangeOptions() }, [op1])
-    // useEffect(() => { onChangeOptions() }, [op2])
-    // useEffect(() => { onChangeOptions() }, [op3])
+  
     useEffect(() => { onChangeOptions() }, [op1, op2, op3])
 
     const onChangeOptions = () =>
