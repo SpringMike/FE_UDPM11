@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import base_url from "../../admin/service/BaseApi";
-import { useAppDispatch } from "../../app/hooks";
-import { getListBankAsync } from "../../features/payment/list-bank-slice";
-import { getPaymentMethodsAsync } from "../../features/payment/payment-methods-slice";
 import { getAllProduct } from "../service/HomePage";
 import { IHomePage } from "../type/HomePage";
 import SingleProduct from "./SignleProduct";
@@ -11,16 +8,12 @@ import SingleProduct from "./SignleProduct";
 function Shop() {
 
     const [products, setProducts] = useState([{} as IHomePage]);
-    const dispatch = useAppDispatch()
+
     useEffect(() => {
         document.title = "All Product"
     }, [])
 
-    useEffect(() => {
-        dispatch(getListBankAsync())
-        dispatch(getPaymentMethodsAsync())
-    }, [])
-    // call server 
+    // call server
     useEffect(() => {
         // setTimeout(() => {
         getAllProduct().then((r) => {
@@ -55,9 +48,7 @@ function Shop() {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Cửa hàng</h1>
-                                <p>Hath sau khi xuất hiện cây to lớn, kết quả màu xanh lá cây thống trị di chuyển thứ sáu phong phú hình ảnh rằng giữa ngày của thần, bạn sẽ nhân lên</p>
-
+                                <h1 className="mb-3">CỬA HÀNG</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
                                         <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
@@ -80,7 +71,7 @@ function Shop() {
                                         <h2 className="d-block text-left-sm">Cửa hàng</h2>
 
                                         <div className="heading d-flex justify-content-between mb-5">
-                                            <p className="result-count mb-0"> Hiển thị 1–6 trong số 17 kết quả</p>
+                                            <p className="result-count mb-0">Hiển thị 1–6 trong số 17 kết quả</p>
                                             <form className="ordering " method="get">
                                                 <select name="orderby" className="orderby form-control" aria-label="Shop order" >
                                                     <option value="" selected>Mặc định phân loại</option>
@@ -103,23 +94,23 @@ function Shop() {
                                         <div className="product">
                                             <div className="product-wrap">
                                                 <Link to={{ pathname: `/single-product/${p.id}` }}>
-                                                    <img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" />
+                                                <img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" />
                                                 </Link>
-                                                {/* <a href="/product-single"><img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" /></a> */}
+                                                  {/* <a href="/product-single"><img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" /></a> */}
                                                 <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src={p.image} alt="product-img" /></a>
                                             </div>
 
-                                            <span className="onsale">Doanh thu</span>
+                                            <span className="onsale">Sale</span>
                                             <div className="product-hover-overlay">
                                                 <a href="#"><i className="tf-ion-android-cart"></i></a>
                                                 <a href="#"><i className="tf-ion-ios-heart"></i></a>
                                             </div>
 
                                             <div className="product-info">
-                                                <Link to={{ pathname: `/single-product/${p.id}` }}>
-                                                    {/* <h2 className="product-title h5 mb-0"><a href="/product-single">{p.name}</a></h2> */}
-                                                    <h2 className="product-title h5 mb-0">{p.name}</h2>
-                                                </Link>
+                                            <Link to={{ pathname: `/single-product/${p.id}` }}>
+                                                {/* <h2 className="product-title h5 mb-0"><a href="/product-single">{p.name}</a></h2> */}
+                                                <h2 className="product-title h5 mb-0">{p.name}</h2>
+                                            </Link>
                                                 <span className="price">
                                                     {p.wholesale_price}
                                                 </span>
@@ -237,7 +228,7 @@ function Shop() {
                                 <a className="popular-products-item media" href="/product-single">
                                     <img src="assets/images/p-2.jpg" alt="" className="img-fluid mr-4" />
                                     <div className="media-body">
-                                        <h6>Hoodie với <br />Logo</h6>
+                                        <h6>Hoodie with <br />Logo</h6>
                                         <span className="price">$45</span>
                                     </div>
                                 </a>
@@ -245,7 +236,7 @@ function Shop() {
                                 <a className="popular-products-item media" href="/product-single">
                                     <img src="assets/images/p-3.jpg" alt="" className="img-fluid mr-4" />
                                     <div className="media-body">
-                                        <h6>Khách du lịch<br />Balo</h6>
+                                        <h6>Traveller<br />Backpack</h6>
                                         <span className="price">$45</span>
                                     </div>
                                 </a>

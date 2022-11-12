@@ -24,6 +24,7 @@ const Header: React.FC = () => {
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
     const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
+
         localStorage.removeItem('test1')
         showCart(Number(idUser), accessToken).then((response) => {
 
@@ -70,8 +71,8 @@ const Header: React.FC = () => {
                                 <li><a href="#">Blog</a></li>
                                 <li><a href="#">Blog Đơn</a></li>
                                 <li><a href="#">Liên hệ</a></li>
-                                <li><a href="#">404 Page</a></li>
-                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">404 Trang</a></li>
+                                <li><a href="#">Câu hỏi thường gặp</a></li>
                             </ul>
                         </li>
                         <li className="nav-item dropdown dropdown-slide">
@@ -80,8 +81,8 @@ const Header: React.FC = () => {
                                 Cửa hàng.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                                <li><Link to={{ pathname: "/shop" }}>Cửa hàng.</Link></li>
-                                <li><Link to={{ pathname: "/cart" }}>Giỏ Hàng</Link></li>
+                                <li><Link to={{ pathname: "/shop" }}>Cửa hàng</Link></li>
+                                <li><Link to={{ pathname: "/checkout" }}>Thủ tục thanh toán</Link></li>
                             </ul>
                         </li>
 
@@ -103,7 +104,7 @@ const Header: React.FC = () => {
                                     <img className="media-object img- mr-3" src="assets/images/cart-1.jpg" alt="image" />
                                 </a>
                                 <div className="media-body">
-                                    <h6>Ladies Bag</h6>
+                                    <h6>Túi phụ nữ</h6>
                                     <div className="cart-price">
                                         <span>1 x</span>
                                         <span>1250.00</span>
@@ -142,12 +143,12 @@ const Header: React.FC = () => {
                             <i className="tf-ion-ios-person"></i>
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                            <li><Link to={{ pathname: "/history" }}>Lịch sử đơn hàng</Link></li>
-                            <li><Link to={{ pathname: "/dashboard" }}>Dashboard</Link></li>
-                            <li><a type = "button" onClick={onLogout}>Đăng xuất</a></li>
+                            <li><a type = "button" onClick={onLogout}>Logout</a></li>
+                            <li><Link to={{ pathname: "/history" }}>lịch sử đơn hàng</Link></li>
+                            <li><Link to={{ pathname: "/dashboard" }}>Quản trị</Link></li>
                             <li><Link to={{ pathname: "/login" }}>Đăng nhập</Link></li>
-                            <li><Link to={{ pathname: "/signup" }}>Đăng ký</Link></li>
-                            <li><Link to={{ pathname: "/forgot-password" }}>Đổi mật khẩu</Link></li>
+                            <li><Link to={{ pathname: "/signup" }}>Đăng xuất</Link></li>
+                            <li><Link to={{ pathname: "/forgot-password" }}>Quên mật khẩu</Link></li>
                         </ul>
                     </li>
                     <li className="list-inline-item">Xin chào: {name}</li>
