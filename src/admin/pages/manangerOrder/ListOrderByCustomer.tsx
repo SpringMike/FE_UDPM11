@@ -82,7 +82,7 @@ const ListOrderByCustomer = () => {
                     {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
                 </span>
             </div>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={showOrder} />
+            {/*<Table rowSelection={rowSelection} columns={columns} dataSource={showOrder} />*/}
         </div>
     );
 }

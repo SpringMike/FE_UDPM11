@@ -50,17 +50,17 @@ function Login() {
                         <div className="col-lg-6">
                             <div className="login-form border p-5">
                                 <div className="text-center heading">
-                                    <h2 className="mb-2">Login</h2>
-                                    <p className="lead">Don’t have an account? <a href="#">Create a free account</a></p>
+                                    <h2 className="mb-2">Đăng nhập</h2>
+                                    <p className="lead">Không có tài khoản? <a href="#">Tạo một tài khoản miễn phí</a></p>
                                 </div>
                                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                                     <div className="form-group mb-4">
-                                        <label htmlFor="#">Enter username</label>
+                                        <label htmlFor="#">Điền tên đăng nhập</label>
                                         <input type="text" className="form-control" placeholder="Enter Username" {...register('username')} required />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="#">Enter Password</label>
-                                        <a className="float-right" href="">Forget password?</a>
+                                        <label htmlFor="#">Nhập mật khẩu</label>
+                                        <a className="float-right" href="">Quên mật khẩu?</a>
                                         <input type="password" className="form-control" placeholder="Enter Password" {...register('password')} required />
                                     </div>
                                     {loginError && <p className="text-danger my-4">{loginError}</p>}

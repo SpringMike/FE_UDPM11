@@ -9,9 +9,9 @@ function Home() {
                         <div className="row">
                             <div className="col-lg-6 col-12 offset-lg-6 offset-md-6">
                                 <div className="slider-caption">
-                                    <span className="lead">Trendy dresss</span>
-                                    <h1 className="mt-2 mb-5"><span className="text-color">Winter </span>Collection</h1>
-                                    <a href="#" className="btn btn-main">Shop Now</a>
+                                    <span className="lead">Trang phục hợp thời trang</span>
+                                    <h1 className="mt-2 mb-5"><span className="text-color">Mùa đông </span>Bộ sưu tập</h1>
+                                    <a href="#" className="btn btn-main">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@ function Home() {
                                 <div className="item-info">
                                     <p className="mb-0">Stylish Leather watch</p>
                                     <h4 className="mb-4">up to <strong>50% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@ function Home() {
                                 <div className="item-info">
                                     <p className="mb-0">Ladies hand bag</p>
                                     <h4 className="mb-4">up to <strong>40% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@ function Home() {
                                 <div className="item-info">
                                     <p className="mb-0">Trendy shoe</p>
                                     <h4 className="mb-4">up to <strong>50% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,8 @@ function Home() {
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
                             <div className="title text-center">
-                                <h2>New arrivals</h2>
-                                <p>The best Online sales to shop these weekend</p>
+                                <h2>Điểm đến mới</h2>
+                                <p>Bán hàng trực tuyến tốt nhất để mua sắm vào cuối tuần này</p>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Floral Kirby</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Hoa Kirby</a></h2>
                                     <span className="price">
                                         $329.10
                                     </span>
@@ -265,7 +265,7 @@ function Home() {
                         </div>
                         <div className="col-lg-4 col-sm-6 col-md-6">
                             <div className="widget-featured-entries mt-5 mt-lg-0">
-                                <h4 className="mb-4 pb-3">Best selllers</h4>
+                                <h4 className="mb-4 pb-3">Bán chạy nhất</h4>
                                 <div className="media mb-3">
                                     <a className="featured-entry-thumb" href="/product-single">
                                         <img src="assets/images/p-1.jpg" alt="Product thumb" width="64" className="img-fluid mr-3" />
@@ -315,7 +315,7 @@ function Home() {
                         </div>
                         <div className="col-lg-4 col-sm-6 col-md-6">
                             <div className="widget-featured-entries mt-5 mt-lg-0">
-                                <h4 className="mb-4 pb-3">New Arrivals</h4>
+                                <h4 className="mb-4 pb-3">Điểm đến mới</h4>
                                 <div className="media mb-3">
                                     <a className="featured-entry-thumb" href="/product-single">
                                         <img src="assets/images/p-7.jpg" alt="Product thumb" width="64" className="img-fluid mr-3" />

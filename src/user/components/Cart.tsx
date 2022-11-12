@@ -38,9 +38,9 @@ const Cart = () => {
     const columns: GridColDef[] = [
         // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
         // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
-        { field: 'image' , headerName: 'Name', width: 200},
+        { field: 'image'+ ' name' , headerName: 'Name', width: 200},
         // { field: 'image', headerName: 'Image', width: 70 },
-        { field: 'option1', headerName: 'Options', width: 200, align: "center"},
+        { field: 'option1 '+' option2'+' option3', headerName: 'Options', width: 200, align: "center"},
         { field: 'quantity', headerName: 'Quantity', editable: true, width: 130,align: "center" },
         { field: 'wholesale_price', headerName: 'Wholesale Price', width: 130,align: "center" },
         { field: 'priceTotal', headerName: 'Price Total', width: 130,align: "center" },

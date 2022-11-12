@@ -93,9 +93,7 @@ const OrderHistory2 = () => {
                                                 <TableCell component="th" scope="row" >
                                                     {order_item.name.split('-')[0]}
                                                 </TableCell>
-                                                <TableCell>
-                                                    <img src={order_item.image} alt="" />
-                                                </TableCell>
+                                                <TableCell>{order_item.image}</TableCell>
                                                 <TableCell>{order_item.option1 + ',' + order_item.option2 + ',' + order_item.option3}</TableCell>
                                                 <TableCell align="right">{order_item.quantity}</TableCell>
                                                 <TableCell align="right">{order_item.price}</TableCell>
