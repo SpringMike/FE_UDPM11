@@ -30,6 +30,7 @@ import SignleProduct from "./user/components/SignleProduct";
 import { useAuthStore } from './hooks/zustand/auth';
 import OrderHistory from './user/components/OrderHistory';
 import PageCheckout from './user/components/checkout/PageCheckout';
+import ListOrderByCustomer from './admin/pages/manangerOrder/ListOrderByCustomer';
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -143,7 +144,7 @@ const App: React.FC = () => {
                         },
                         {
                             path: "/order-manager",
-                            element: <InventoryList />,
+                            element: <ListOrderByCustomer />,
                         },
                     ],
                 }]
