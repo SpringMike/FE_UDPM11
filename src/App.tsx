@@ -29,6 +29,7 @@ import Shop from "./user/components/Shop";
 import SignleProduct from "./user/components/SignleProduct";
 import { useAuthStore } from './hooks/zustand/auth';
 import OrderHistory from './user/components/OrderHistory';
+import PageCheckout from './user/components/checkout/PageCheckout';
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -83,10 +84,14 @@ const App: React.FC = () => {
                             path: "single-product/:id",
                             element: <SignleProduct />,
                         },
+                        {
+                            path: "page-checkout",
+                            element: <PageCheckout/>,
+                        },
                     ],
                 }]
             break;
-        case 'admin':
+        case 'anonymous':
             routes = [
                 {
                     path: "/",
@@ -136,10 +141,14 @@ const App: React.FC = () => {
                             path: "/add_product",
                             element: <AddProduct />,
                         },
+                        {
+                            path: "/order-manager",
+                            element: <InventoryList />,
+                        },
                     ],
                 }]
             break;
-        case 'anonymous':
+        case 'admin':
             routes = [
                 {
                     path: "/login",

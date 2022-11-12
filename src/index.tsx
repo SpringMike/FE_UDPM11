@@ -1,21 +1,26 @@
 import React from "react";
-import {createRoot} from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import "antd/dist/antd.css";
 import "./index.css";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 root.render(
     // <Provider store={store}>
-        <QueryClientProvider client={new QueryClient()}>
-    <BrowserRouter>
-        <App/>
-    </BrowserRouter>
-     </QueryClientProvider>
+    <QueryClientProvider client={new QueryClient()}>
+
+        <BrowserRouter>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </BrowserRouter>
+    </QueryClientProvider>
     // </Provider>
 );
 

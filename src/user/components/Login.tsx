@@ -53,7 +53,6 @@ function Login() {
                                     <h2 className="mb-2">Login</h2>
                                     <p className="lead">Don’t have an account? <a href="#">Create a free account</a></p>
                                 </div>
-
                                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                                     <div className="form-group mb-4">
                                         <label htmlFor="#">Enter username</label>
@@ -62,7 +61,7 @@ function Login() {
                                     <div className="form-group">
                                         <label htmlFor="#">Enter Password</label>
                                         <a className="float-right" href="">Forget password?</a>
-                                        <input type="text" className="form-control" placeholder="Enter Password" {...register('password')} required />
+                                        <input type="password" className="form-control" placeholder="Enter Password" {...register('password')} required />
                                     </div>
                                     {loginError && <p className="text-danger my-4">{loginError}</p>}
                                     <input type="submit" className="btn btn-main mt-3 btn-block" />

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import base_url from "../../admin/service/BaseApi";
+import { useAppDispatch } from "../../app/hooks";
+import { getListBankAsync } from "../../features/payment/list-bank-slice";
+import { getPaymentMethodsAsync } from "../../features/payment/payment-methods-slice";
 import { getAllProduct } from "../service/HomePage";
 import { IHomePage } from "../type/HomePage";
 import SingleProduct from "./SignleProduct";
@@ -8,11 +11,15 @@ import SingleProduct from "./SignleProduct";
 function Shop() {
 
     const [products, setProducts] = useState([{} as IHomePage]);
-
+    const dispatch = useAppDispatch()
     useEffect(() => {
         document.title = "All Product"
     }, [])
 
+    useEffect(() => {
+        dispatch(getListBankAsync())
+        dispatch(getPaymentMethodsAsync())
+    }, [])
     // call server 
     useEffect(() => {
         // setTimeout(() => {
@@ -96,9 +103,9 @@ function Shop() {
                                         <div className="product">
                                             <div className="product-wrap">
                                                 <Link to={{ pathname: `/single-product/${p.id}` }}>
-                                                <img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" />
+                                                    <img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" />
                                                 </Link>
-                                                  {/* <a href="/product-single"><img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" /></a> */}
+                                                {/* <a href="/product-single"><img className="img-fluid w-100 mb-3 img-first" src={p.image} alt="product-img" /></a> */}
                                                 <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src={p.image} alt="product-img" /></a>
                                             </div>
 
@@ -109,10 +116,10 @@ function Shop() {
                                             </div>
 
                                             <div className="product-info">
-                                            <Link to={{ pathname: `/single-product/${p.id}` }}> 
-                                                {/* <h2 className="product-title h5 mb-0"><a href="/product-single">{p.name}</a></h2> */}
-                                                <h2 className="product-title h5 mb-0">{p.name}</h2>
-                                            </Link>
+                                                <Link to={{ pathname: `/single-product/${p.id}` }}>
+                                                    {/* <h2 className="product-title h5 mb-0"><a href="/product-single">{p.name}</a></h2> */}
+                                                    <h2 className="product-title h5 mb-0">{p.name}</h2>
+                                                </Link>
                                                 <span className="price">
                                                     {p.wholesale_price}
                                                 </span>
