@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {Avatar} from "@mui/material";
 
 
 const OrderHistory2 = () => {
@@ -62,11 +63,11 @@ const OrderHistory2 = () => {
                     <TableCell component="th" scope="row">
                         {row.id}
                     </TableCell>
-                    <TableCell align="right">{row.total_quantity}</TableCell>
-                    <TableCell align="right">{row.total_price}</TableCell>
-                    <TableCell align="right">{row.fee_money}</TableCell>
-                    <TableCell align="right">{row.totalPrice}</TableCell>
-                    <TableCell align="right">{row.created_time}</TableCell>
+                    <TableCell align="center">{row.total_quantity}</TableCell>
+                    <TableCell align="center">{row.total_price} </TableCell>
+                    <TableCell align="center">{row.fee_money} </TableCell>
+                    <TableCell align="center">{row.totalPrice} </TableCell>
+                    <TableCell align="center">{row.created_time}</TableCell>
 
                 </TableRow>
                 <TableRow>
@@ -80,40 +81,40 @@ const OrderHistory2 = () => {
                                 <Table size="small" aria-label="purchases" >
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell colSpan={2}>Sản phẩm</TableCell>
+                                            <TableCell align="center" colSpan={2}>Sản phẩm</TableCell>
                                             <TableCell align="center">Loại</TableCell>
-                                            <TableCell align="right">Số lượng</TableCell>
-                                            <TableCell align="right">Đơn giá ($)</TableCell>
-                                            <TableCell align="right">Thành tiền ($)</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Đơn giá (VNĐ)</TableCell>
+                                            <TableCell align="center">Thành tiền (VNĐ)</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {row.order_item?.map((order_item) => (
                                             <TableRow key={order_item.id}>
-                                                <TableCell component="th" scope="row" >
+                                                <TableCell align="right">
+                                                    <Avatar src={order_item.image}/>
+                                                </TableCell>
+                                                <TableCell align="left" component="th" scope="row" >
                                                     {order_item.name.split('-')[0]}
                                                 </TableCell>
-                                                <TableCell>
-                                                    <img src={order_item.image} alt="" />
-                                                </TableCell>
                                                 <TableCell>{order_item.option1 + ',' + order_item.option2 + ',' + order_item.option3}</TableCell>
-                                                <TableCell align="right">{order_item.quantity}</TableCell>
-                                                <TableCell align="right">{order_item.price}</TableCell>
-                                                <TableCell align="right">{order_item.total_price}</TableCell>
+                                                <TableCell align="center">{order_item.quantity}</TableCell>
+                                                <TableCell align="center">{order_item.price}</TableCell>
+                                                <TableCell align="center">{order_item.total_price}</TableCell>
                                             </TableRow>
                                         ))}
                                         <TableRow>
                                             <TableCell rowSpan={3} colSpan={3}/>
-                                            <TableCell colSpan={2}>Subtotal</TableCell>
-                                            <TableCell align="right">{row.total_price}</TableCell>
+                                            <TableCell colSpan={2}>Tổng phụ:</TableCell>
+                                            <TableCell align="center">{row.total_price} VNĐ</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell colSpan={2}>shipping fee</TableCell>
-                                            <TableCell align="right">{row.fee_money}</TableCell>
+                                            <TableCell colSpan={2}>Phí vận chuyển:</TableCell>
+                                            <TableCell align="center">{row.fee_money} VNĐ</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell colSpan={2}>Total</TableCell>
-                                            <TableCell align="right">{row.totalPrice}</TableCell>
+                                            <TableCell colSpan={2}>Tổng:</TableCell>
+                                            <TableCell align="center">{row.totalPrice} VNĐ</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -145,11 +146,11 @@ const OrderHistory2 = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Order History</h1>
+                                <h1 className="mb-3">LỊCH SỬ ĐƠN HÀNG</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Order History</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">lịch sử đơn hàng</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -164,11 +165,12 @@ const OrderHistory2 = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell />
-                                    <TableCell>Product Name</TableCell>
-                                    <TableCell align="right">Options</TableCell>
-                                    <TableCell align="right">Quantity</TableCell>
-                                    <TableCell align="right">Price</TableCell>
-                                    <TableCell align="right">Total Price</TableCell>
+                                    <TableCell align="center">Mã sản phẩm</TableCell>
+                                    <TableCell align="center">Số lượng</TableCell>
+                                    <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                    <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                    <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                    <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

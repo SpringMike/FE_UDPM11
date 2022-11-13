@@ -9,9 +9,9 @@ function Home() {
                         <div className="row">
                             <div className="col-lg-6 col-12 offset-lg-6 offset-md-6">
                                 <div className="slider-caption">
-                                    <span className="lead">Trendy dresss</span>
+                                    <span className="lead">Trang phục hợp thời trang</span>
                                     <h1 className="mt-2 mb-5"><span className="text-color">Winter </span>Collection</h1>
-                                    <a href="#" className="btn btn-main">Shop Now</a>
+                                    <a href="#" className="btn btn-main">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -25,9 +25,9 @@ function Home() {
                             <div className="cat-item mb-4 mb-lg-0">
                                 <img src="assets/images/cat-1.jpg" alt="" className="img-fluid" />
                                 <div className="item-info">
-                                    <p className="mb-0">Stylish Leather watch</p>
+                                    <p className="mb-0">Đồng hồ da thời trang</p>
                                     <h4 className="mb-4">up to <strong>50% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -35,9 +35,9 @@ function Home() {
                             <div className="cat-item mb-4 mb-lg-0">
                                 <img src="assets/images/cat-2.jpg" alt="" className="img-fluid" />
                                 <div className="item-info">
-                                    <p className="mb-0">Ladies hand bag</p>
+                                    <p className="mb-0">Túi xách tay nữ</p>
                                     <h4 className="mb-4">up to <strong>40% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -45,9 +45,9 @@ function Home() {
                             <div className="cat-item">
                                 <img src="assets/images/cat-3.jpg" alt="" className="img-fluid" />
                                 <div className="item-info">
-                                    <p className="mb-0">Trendy shoe</p>
+                                    <p className="mb-0">Giày hợp thời trang</p>
                                     <h4 className="mb-4">up to <strong>50% </strong>off</h4>
-                                    <a href="#" className="read-more">Shop now</a>
+                                    <a href="#" className="read-more">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,8 @@ function Home() {
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
                             <div className="title text-center">
-                                <h2>New arrivals</h2>
-                                <p>The best Online sales to shop these weekend</p>
+                                <h2>Điểm đến mới</h2>
+                                <p>Bán hàng trực tuyến tốt nhất để mua sắm vào cuối tuần này</p>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Floral Kirby</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Hoa Kirby</a></h2>
                                     <span className="price">
                                         $329.10
                                     </span>
@@ -102,7 +102,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Open knit switer</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Áo len đan hở</a></h2>
                                     <span className="price">
                                         $29.10
                                     </span>
@@ -124,7 +124,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Official trendy</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Hợp thời trang chính thức</a></h2>
                                     <span className="price">
                                         $350.00 – $355.00
                                     </span>
@@ -145,7 +145,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Frock short</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Đuôi ngắn</a></h2>
                                     <span className="price">
                                         $249
                                     </span>
@@ -166,7 +166,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Sleeve dress</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Đầm tay</a></h2>
                                     <span className="price">
                                         $59.10
                                     </span>
@@ -187,7 +187,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Stylish dress</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Ăn mặc thời trang</a></h2>
                                     <span className="price">
                                         $99.00
                                     </span>
@@ -208,7 +208,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Body suite</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Bộ body</a></h2>
                                     <span className="price">
                                         $329.10
                                     </span>
@@ -229,7 +229,7 @@ function Home() {
                                 </div>
 
                                 <div className="product-info">
-                                    <h2 className="product-title h5 mb-0"><a href="#">Sleeve linen shirt</a></h2>
+                                    <h2 className="product-title h5 mb-0"><a href="#">Áo sơ mi vải lanh</a></h2>
                                     <span className="price">
                                         <del>60<pre wp-pre-tag-3=""></pre></del>
                                         $50.10
@@ -246,12 +246,12 @@ function Home() {
                     <div className="row align-items-center">
                         <div className="col-lg-6 offset-lg-6">
                             <div className="ads-content">
-                                <span className="h5 deal">Deal of the day 50% Off</span>
-                                <h2 className="mt-3 text-white">Trendy Suit</h2>
-                                <p className="text-md mt-3 text-white">Hurry up! Limited time offer.Grab ot now!</p>
+                                <span className="h5 deal">Ưu đãi trong ngày Giảm giá 50%</span>
+                                <h2 className="mt-3 text-white">Bộ đồ hợp thời trang</h2>
+                                <p className="text-md mt-3 text-white">Nhanh lên! Ưu đãi trong thời gian có hạn.</p>
 
                                 <div id="simple-timer" className="syotimer mb-5"></div>
-                                <a href="#" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </a>
+                                <a href="#" className="btn btn-main"><i className="ti-bag mr-2"></i>Mua ngay </a>
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@ function Home() {
                         </div>
                         <div className="col-lg-4 col-sm-6 col-md-6">
                             <div className="widget-featured-entries mt-5 mt-lg-0">
-                                <h4 className="mb-4 pb-3">Best selllers</h4>
+                                <h4 className="mb-4 pb-3">Bán chạy nhất</h4>
                                 <div className="media mb-3">
                                     <a className="featured-entry-thumb" href="/product-single">
                                         <img src="assets/images/p-1.jpg" alt="Product thumb" width="64" className="img-fluid mr-3" />
@@ -373,8 +373,8 @@ function Home() {
                             <div className="feature-block">
                                 <i className="tf-ion-android-bicycle"></i>
                                 <div className="content">
-                                    <h5>Free Shipping</h5>
-                                    <p>On all order over $39.00</p>
+                                    <h5>Miễn phí vận chuyển</h5>
+                                    <p>Trên tất cả các đơn đặt hàng $39.00</p>
                                 </div>
                             </div>
                         </div>
@@ -382,8 +382,8 @@ function Home() {
                             <div className="feature-block">
                                 <i className="tf-wallet"></i>
                                 <div className="content">
-                                    <h5>30 Days Return</h5>
-                                    <p>Money back Guarantee</p>
+                                    <h5>30 ngày trở lại</h5>
+                                    <p>Đảm bảo lại tiền</p>
                                 </div>
                             </div>
                         </div>
@@ -391,8 +391,8 @@ function Home() {
                             <div className="feature-block">
                                 <i className="tf-key"></i>
                                 <div className="content">
-                                    <h5>Secure Checkout</h5>
-                                    <p>100% Protected by paypal</p>
+                                    <h5>Kiểm tra an toàn</h5>
+                                    <p>100% được bảo vệ bởi paypal</p>
                                 </div>
                             </div>
                         </div>
@@ -400,8 +400,8 @@ function Home() {
                             <div className="feature-block">
                                 <i className="tf-clock"></i>
                                 <div className="content">
-                                    <h5>24/7 Support</h5>
-                                    <p>All time customer support </p>
+                                    <h5>Hỗ trợ 24/7</h5>
+                                    <p>Hỗ trợ khách hàng mọi lúc </p>
                                 </div>
                             </div>
                         </div>
