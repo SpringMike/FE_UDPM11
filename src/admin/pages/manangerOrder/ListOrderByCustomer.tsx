@@ -1,10 +1,11 @@
 import { Button, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
-import { getAllOrder } from '../../service/ManagerOrderAdmin';
+import { getAllOrder, updateStatusOrderByAdmin } from '../../service/ManagerOrderAdmin';
 import { IShowOrder } from '../../type/ShowOrderType';
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import * as Antd from 'antd'
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 const ListOrderByCustomer = () => {
 
@@ -50,6 +51,7 @@ const ListOrderByCustomer = () => {
         getAllOrder().then((res) => {
             setShowOrder(res.data)
         })
+        localStorage.removeItem('test2')
     }, [])
 
     const [loading, setLoading] = useState(false);
@@ -79,7 +81,6 @@ const ListOrderByCustomer = () => {
             setSelectedId(listId);
         }
     };
-    const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
         console.log(key);
         if (key === "1") {
@@ -118,22 +119,70 @@ const ListOrderByCustomer = () => {
         }
     };
 
-    const updateStatus = (status: any) => {
-        console.log(status);
-        //call api
+
+
+    const columns1: GridColDef[] = [
+        // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
+        // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
+        { field: 'id', headerName: 'Ảnh', width: 70, headerAlign: 'center', align: 'center', },
+        { field: 'status', headerName: 'Trang Thai', width: 70, headerAlign: 'center', align: 'center', },
+    ];
+
+    const onRowsSelectionHandler = (ids: any) => {
+        const idsCItems: string[] = [];
+        const selectedRowsData = ids.map((id: any) => showOrder.find((row) => row.id === id));
+        selectedRowsData.forEach((e: any) => {
+            let { id } = e;
+            idsCItems.push(id)
+        });
+        localStorage.setItem('test2', JSON.stringify(idsCItems))
+        // console.log(selectedRowsData);
     };
+
+
+    const updateStatus = (status: any) => {
+        console.log( JSON.parse(localStorage.getItem('test2') || '{}'))
+        console.log(status);
+        updateStatusOrderByAdmin(status, JSON.parse(localStorage.getItem('test2') || '{}')).then((res) => {
+            console.log(res.data);
+        })
+    };
+
+
+    const hasSelected = rowSelection != null;
+
     return (
+
+
         <div >
             <Tabs defaultActiveKey="1" onChange={onChangeTab}>
                 <Tabs.TabPane tab="Chờ xác nhận" key="1">
-                    <Button type="primary" onClick={start} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
+                    <Button type="primary" onClick={
+                        () => {
+                            updateStatus(6)
+                        }
+                    }  disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Xác nhận
                     </Button>
-                    <div></div>
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                    <div style={{ height: 400, width: '100%' }}>
+                        <DataGrid
+                            rows={showOrder}
+                            columns={columns1}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            getRowId={(showOrder) => showOrder.id}
+                            onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+                            checkboxSelection
+                        />
+                    </div>
+                    {/* <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} /> */}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ lấy hàng" key="2">
-                    <Button type="primary" onClick={start} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }} >
+                    <Button type="primary" onClick={
+                        () => {
+                            updateStatus(6)
+                        }
+                    } disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }} >
                         Shipper đã lấy hàng
                     </Button>
                     <div></div>

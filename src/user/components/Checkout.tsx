@@ -17,7 +17,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { IInfoHuyen, IInfoMoneyFee, IInfoTP, IInfoXa } from "../type/InfoGHN";
 import AddAddress from "../../admin/components/AddAddress";
-import {Avatar, NativeSelect, TextField} from "@mui/material";
+import { Avatar, NativeSelect, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
     const accessToken = useAuthStore((e) => e.accessToken)
@@ -99,16 +100,17 @@ function Checkout() {
     }, [hy, xa, tp])
 
 
-
+    const navigate = useNavigate();
     const addOrder123 = () => {
         console.log('OKOKOOKk' + (nameXa + ' ' + nameHy + ' ' + nameTP) + 'comming' + id_cart_item_local + moneyFeeShip.total + accessToken)
         addOrderPush((nameXa + ' ' + nameHy + ' ' + nameTP), 'comming', id_cart_item_local, moneyFeeShip.total, accessToken).then((res) => {
             console.log('12313123123' + res)
+            navigate("/page-checkout")
         }, (err) => {
             console.log(err)
         })
     }
-
+    
 
     return (
         <div className="checkout-container">
@@ -143,7 +145,7 @@ function Checkout() {
 
                                 <div className="billing-details mt-5">
                                     <h4 className="">Chi tiết thanh toán</h4>
-                                    <div className = "row m-5">
+                                    <div className="row m-5">
                                         <div className="col-md-6">
                                             <Box sx={{ minWidth: 120 }}>
                                                 <FormControl fullWidth>
@@ -165,7 +167,7 @@ function Checkout() {
                                                         {
                                                             listTP.map((e) => {
                                                                 return (
-                                                                        <option value={e.ProvinceID}>{e.ProvinceName}</option>
+                                                                    <option value={e.ProvinceID}>{e.ProvinceName}</option>
                                                                 )
                                                             })
                                                         }
@@ -256,7 +258,7 @@ function Checkout() {
                                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                     >
                                                         <TableCell component="th" scope="row">
-                                                            <Avatar src={row.image}/>
+                                                            <Avatar src={row.image} />
                                                         </TableCell>
                                                         <TableCell align="center">{row.option1 + ' - ' + row.option2 + ' - ' + row.option3}</TableCell>
                                                         <TableCell align="center">{row.quantity}</TableCell>
@@ -327,9 +329,9 @@ function Checkout() {
                                     </div>
 
                                     <button className="btn btn-main btn-small d-flex justify-content-center"
-                                            onClick={() => {
-                                                addOrder123()
-                                            }}
+                                        onClick={() => {
+                                            addOrder123()
+                                        }}
                                     >Đặt hàng</button>
                                 </div>
                             </div>

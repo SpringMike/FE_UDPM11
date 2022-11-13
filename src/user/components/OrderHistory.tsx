@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { IHistory, IOrderItem } from "../type/History";
-import { getHistoryOrder, getOrderItemHistory } from "../service/HistoryOrder";
+import { getHistoryOrder, getOrderItemHistory, updateStatusDeliverySuccessful } from "../service/HistoryOrder";
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -16,28 +16,98 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {Avatar} from "@mui/material";
+import { Avatar, Button, Tabs } from "@mui/material";
+import Tab from '@mui/material/Tab';
 
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 const OrderHistory2 = () => {
-    const idUser = useAuthStore((e) => e.id);
+    let value_new: number;
+
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        console.log(newValue)
+        if (newValue == 0) {
+            value_new = 5;
+        } else if (newValue == 1) {
+            value_new = 6
+        } else if (newValue == 2) {
+            value_new = 7
+        } else if (newValue == 3) {
+            value_new = 8
+        }
+
+        onClickHistory(value_new)
+        setValue(newValue);
+    };
+
+
+
     const accessToken = useAuthStore((e) => e.accessToken);
     // let item : IOrderItem;
     const [history, setHistory] = useState([] as IHistory[]);
     const [orderItem, setOrderItem] = useState([] as IOrderItem[]);
 
-    useEffect(() => {
-        getHistoryOrder(accessToken).then((res: any) => {
+    // useEffect(() => {
+    //     getHistoryOrder(6, accessToken).then((res: any) => {
+    //         const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
+    //         setHistory(newResult)
+    //     })
+    // }, [])
+
+    const onClickHistory = (status_id: number) => {
+        getHistoryOrder(status_id, accessToken).then((res: any) => {
             const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
             setHistory(newResult)
         })
-    }, [])
+    }
+    const onClickUpdateStatus = (status_id: number, id_order: number) => {
+        updateStatusDeliverySuccessful(status_id, id_order, accessToken).then((res) => {
+            console.log(res.data);
+        }, (err) => {
+            console.log(err);
+
+        })
+    }
     useEffect(() => {
         history.map((history) => (
             getOrderItemHistory(history.id, accessToken).then((res: any) => {
                 setOrderItem(res.data)
                 res.data.map((order_item: IOrderItem) => (
-                    console.log(order_item),
+                    // console.log(order_item),
                     history.order_item.push(order_item)
                 ))
             })
@@ -68,7 +138,13 @@ const OrderHistory2 = () => {
                     <TableCell align="center">{row.fee_money} </TableCell>
                     <TableCell align="center">{row.totalPrice} </TableCell>
                     <TableCell align="center">{row.created_time}</TableCell>
-
+                    <Button hidden={value == 2 ? false : true} onClick={
+                        () => {
+                            onClickUpdateStatus(8, row.id)
+                        }
+                    }>
+                        Xac Nhan
+                    </Button>
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -92,7 +168,7 @@ const OrderHistory2 = () => {
                                         {row.order_item?.map((order_item) => (
                                             <TableRow key={order_item.id}>
                                                 <TableCell align="right">
-                                                    <Avatar src={order_item.image}/>
+                                                    <Avatar src={order_item.image} />
                                                 </TableCell>
                                                 <TableCell align="left" component="th" scope="row" >
                                                     {order_item.name.split('-')[0]}
@@ -104,7 +180,7 @@ const OrderHistory2 = () => {
                                             </TableRow>
                                         ))}
                                         <TableRow>
-                                            <TableCell rowSpan={3} colSpan={3}/>
+                                            <TableCell rowSpan={3} colSpan={3} />
                                             <TableCell colSpan={2}>Tổng phụ:</TableCell>
                                             <TableCell align="center">{row.total_price} VNĐ</TableCell>
                                         </TableRow>
@@ -137,6 +213,8 @@ const OrderHistory2 = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+    // ---------------------------------------------------------
+
 
     return (
         <div className="checkout-container container">
@@ -159,38 +237,154 @@ const OrderHistory2 = () => {
                 </div>
             </section>
             <section>
-                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                    <TableContainer>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell align="center">Mã sản phẩm</TableCell>
-                                    <TableCell align="center">Số lượng</TableCell>
-                                    <TableCell align="center">Giá tiền (VNĐ)</TableCell>
-                                    <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
-                                    <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
-                                    <TableCell align="center">Ngày tạo hoá đơn</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => (
-                                        <Row key={row.id} row={row} />
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                        component="div"
-                        count={history.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
+                <Box sx={{ width: '100%' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab label="Chờ xác nhận" {...a11yProps(0)} />
+                            <Tab label="Chờ lấy hàng" {...a11yProps(1)} />
+                            <Tab label="Đang giao hàng" {...a11yProps(2)} />
+                            <Tab label="Đã nhận được hàng" {...a11yProps(3)} />
+                        </Tabs>
+                    </Box>
+                    <TabPanel value={value} index={0}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                            <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => (
+                                                <Row key={row.id} row={row} />
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                            <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => (
+                                                <Row key={row.id} row={row} />
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                            <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                            <TableCell align="center">Xác nhận đơn hàng</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => (
+                                                <Row key={row.id} row={row} />
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                            <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => (
+                                                <Row key={row.id} row={row} />
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                </Box>
+
 
             </section>
         </div>
