@@ -18,6 +18,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Avatar, Button, Tabs } from "@mui/material";
 import Tab from '@mui/material/Tab';
+import moment from "moment/moment";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -114,6 +115,9 @@ const OrderHistory2 = () => {
         ));
     }, [history])
 
+    const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9}
+
+
     function Row(props: { row: IHistory }) {
         const { row } = props;
         const [open, setOpen] = React.useState(false);
@@ -134,10 +138,18 @@ const OrderHistory2 = () => {
                         {row.id}
                     </TableCell>
                     <TableCell align="center">{row.total_quantity}</TableCell>
-                    <TableCell align="center">{row.total_price} </TableCell>
-                    <TableCell align="center">{row.fee_money} </TableCell>
-                    <TableCell align="center">{row.totalPrice} </TableCell>
-                    <TableCell align="center">{row.created_time}</TableCell>
+                    <TableCell align="center">
+                        {new Intl.NumberFormat('vi-VN', config).format(row.total_price)}
+                    </TableCell>
+                    <TableCell align="center">
+                        {new Intl.NumberFormat('vi-VN', config).format(row.fee_money)}
+                    </TableCell>
+                    <TableCell align="center">
+                        {new Intl.NumberFormat('vi-VN', config).format(row.totalPrice)}
+                    </TableCell>
+                    <TableCell align="center">
+                        {moment(row.created_time).format('DD/MM/YYYY')}
+                    </TableCell>
                     <Button hidden={value == 2 ? false : true} onClick={
                         () => {
                             onClickUpdateStatus(8, row.id)
@@ -175,22 +187,32 @@ const OrderHistory2 = () => {
                                                 </TableCell>
                                                 <TableCell>{order_item.option1 + ',' + order_item.option2 + ',' + order_item.option3}</TableCell>
                                                 <TableCell align="center">{order_item.quantity}</TableCell>
-                                                <TableCell align="center">{order_item.price}</TableCell>
-                                                <TableCell align="center">{order_item.total_price}</TableCell>
+                                                <TableCell align="center">
+                                                    {new Intl.NumberFormat('vi-VN', config).format(order_item.price)}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    {new Intl.NumberFormat('vi-VN', config).format(order_item.total_price)}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                         <TableRow>
                                             <TableCell rowSpan={3} colSpan={3} />
                                             <TableCell colSpan={2}>Tổng phụ:</TableCell>
-                                            <TableCell align="center">{row.total_price} VNĐ</TableCell>
+                                            <TableCell align="center">
+                                                {new Intl.NumberFormat('vi-VN', config).format(row.total_price)}
+                                            </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={2}>Phí vận chuyển:</TableCell>
-                                            <TableCell align="center">{row.fee_money} VNĐ</TableCell>
+                                            <TableCell align="center">
+                                                {new Intl.NumberFormat('vi-VN', config).format(row.fee_money)}
+                                            </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={2}>Tổng:</TableCell>
-                                            <TableCell align="center">{row.totalPrice} VNĐ</TableCell>
+                                            <TableCell align="center">
+                                                {new Intl.NumberFormat('vi-VN', config).format(row.totalPrice)}
+                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>

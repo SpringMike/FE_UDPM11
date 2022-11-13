@@ -110,7 +110,9 @@ function Checkout() {
             console.log(err)
         })
     }
-    
+    const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9}
+
+
 
     return (
         <div className="checkout-container">
@@ -262,8 +264,12 @@ function Checkout() {
                                                         </TableCell>
                                                         <TableCell align="center">{row.option1 + ' - ' + row.option2 + ' - ' + row.option3}</TableCell>
                                                         <TableCell align="center">{row.quantity}</TableCell>
-                                                        <TableCell align="center">{row.wholesale_price}</TableCell>
-                                                        <TableCell align="center">{row.priceTotal}</TableCell>
+                                                        <TableCell align="center">
+                                                            {new Intl.NumberFormat('vi-VN', config).format(row.wholesale_price)}
+                                                        </TableCell>
+                                                        <TableCell align="center">
+                                                            {new Intl.NumberFormat('vi-VN', config).format(row.priceTotal)}
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
@@ -287,15 +293,21 @@ function Checkout() {
                                     <ul className="summary-prices list-unstyled mb-4">
                                         <li className="d-flex justify-content-between">
                                             <span >Tổng phụ:</span>
-                                            <span className="h5">{totalPrice} VNĐ</span>
+                                            <span className="h5">
+                                                {new Intl.NumberFormat('vi-VN', config).format(totalPrice)}
+                                            </span>
                                         </li>
                                         <li className="d-flex justify-content-between">
                                             <span >Phí vận chuyển:</span>
-                                            <span className="h5">{moneyFeeShip.total} </span>
+                                            <span className="h5">
+                                                {new Intl.NumberFormat('vi-VN', config).format(moneyFeeShip.total)}
+                                            </span>
                                         </li>
                                         <li className="d-flex justify-content-between">
                                             <span>Tổng:</span>
-                                            <span className="h5">{moneyFeeShip.total + totalPrice} </span>
+                                            <span className="h5">
+                                                {new Intl.NumberFormat('vi-VN', config).format(moneyFeeShip.total + totalPrice)}
+                                            </span>
                                         </li>
                                     </ul>
 

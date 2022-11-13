@@ -36,6 +36,7 @@ const Cart = () => {
         setTotalPrice(Number(sumPrice))
     }, [cartItems]);
 
+    const config = { style: 'currency', currency: 'VND', maximumFractionDigits: 9}
     const columns: GridColDef[] = [
         // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
         // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
@@ -66,7 +67,7 @@ const Cart = () => {
                 renderCell: (params) => {
                     return (
                         <>
-                            {params.value}
+                            {new Intl.NumberFormat('vi-VN', config).format(params.value)}
                         </>
                     );
                 }
@@ -75,7 +76,7 @@ const Cart = () => {
                 renderCell: (params) => {
                     return (
                         <>
-                            {params.value }
+                            {new Intl.NumberFormat('vi-VN', config).format(params.value)}
                         </>
                     );
                 }

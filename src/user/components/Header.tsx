@@ -143,11 +143,11 @@ const Header: React.FC = () => {
                             <i className="tf-ion-ios-person"></i>
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                            <li><a type = "button" onClick={onLogout}>Logout</a></li>
+                            <li><a type = "button" onClick={onLogout}>Đăng xuất</a></li>
                             <li><Link to={{ pathname: "/history" }}>lịch sử đơn hàng</Link></li>
                             <li><Link to={{ pathname: "/dashboard" }}>Quản trị</Link></li>
                             <li><Link to={{ pathname: "/login" }}>Đăng nhập</Link></li>
-                            <li><Link to={{ pathname: "/signup" }}>Đăng xuất</Link></li>
+                            <li><Link to={{ pathname: "/signup" }}>Đăng ký</Link></li>
                             <li><Link to={{ pathname: "/forgot-password" }}>Quên mật khẩu</Link></li>
                         </ul>
                     </li>
