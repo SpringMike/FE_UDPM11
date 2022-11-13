@@ -1,10 +1,11 @@
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {Avatar, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { showCart } from "../service/SignleProduct";
 import { ICartItem } from "../type/CartItem";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import {DataGrid, GridColDef, GridColumnHeaderParams, GridValueGetterParams} from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom";
+import button from "../../admin/UI/Button";
 const Cart = () => {
     let nf = new Intl.NumberFormat();
     const idUser = useAuthStore((e) => e.id);
@@ -38,14 +39,55 @@ const Cart = () => {
     const columns: GridColDef[] = [
         // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
         // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
-        { field: 'image' , headerName: 'Name', width: 200},
-        // { field: 'image', headerName: 'Image', width: 70 },
-        { field: 'option1', headerName: 'Options', width: 200, align: "center"},
-        { field: 'quantity', headerName: 'Quantity', editable: true, width: 130,align: "center" },
-        { field: 'wholesale_price', headerName: 'Wholesale Price', width: 130,align: "center" },
-        { field: 'priceTotal', headerName: 'Price Total', width: 130,align: "center" },
-        { field: 'firstName', headerName: 'First name', width: 130,align: "center" },
-        { field: 'lastName', headerName: 'Last name', width: 130,align: "center" },
+        { field: 'image', headerName: 'Ảnh', width: 70, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        <Avatar src={params.value}/>
+                        {params.value.username}
+                    </>
+                );
+            }
+        },
+        { field: 'name' , headerName: 'Tên sản phẩm', width: 150, headerAlign: 'center', align: 'center',
+                renderCell: (params) => {
+                    return (
+                        <>
+                            {params.value.split('-')[0]}
+                        </>
+                    );
+                }
+            },
+        { field: 'option1', headerName: 'Màu', width: 70, headerAlign: 'center', align: 'center',},
+        { field: 'option2', headerName: 'Kích cỡ', width: 70, headerAlign: 'center', align: 'center',},
+        { field: 'option3', headerName: 'Chất liệu', width: 100, headerAlign: 'center', align: 'center',},
+        { field: 'quantity', headerName: 'Số lượng', editable: true, width: 130,headerAlign: 'center', align: 'center', },
+        { field: 'wholesale_price', headerName: 'Giá tiền (VNĐ)', width: 130, headerAlign: 'center', align: 'center',
+                renderCell: (params) => {
+                    return (
+                        <>
+                            {params.value}
+                        </>
+                    );
+                }
+            },
+        { field: 'priceTotal', headerName: 'Tổng tiền (VNĐ)', width: 150, headerAlign: 'center', align: 'center',
+                renderCell: (params) => {
+                    return (
+                        <>
+                            {params.value }
+                        </>
+                    );
+                }
+            },
+        { field: '', headerName:'Xoá', width: 100, headerAlign: 'center', align: 'center',
+            renderCell: (params: GridColumnHeaderParams) => (
+                <a type = "button">
+                    <span role="img" aria-label="enjoy">
+                  💀
+                    </span>
+                </a>
+            ),},
     ];
 
     const onRowsSelectionHandler = (ids: any) => {
@@ -69,11 +111,11 @@ const Cart = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Cart</h1>
+                                <h1 className="mb-3">GIỎ HÀNG</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Cart</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -104,9 +146,9 @@ const Cart = () => {
                                             <td colSpan={6} className="actions">
                                                 <div className="coupon">
                                                     <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" />
-                                                    <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+                                                    <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Áp dụng phiếu giảm giá</button>
                                                     <span className="float-right mt-3 mt-lg-0">
-                                                        <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled>Update cart</button>
+                                                        <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled>Cập nhật giỏ hàng</button>
                                                     </span>
                                                 </div>
                                                 <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
@@ -122,26 +164,26 @@ const Cart = () => {
                     <div className="row justify-content-end">
                         <div className="col-lg-4">
                             <div className="cart-info card p-4 mt-4">
-                                <h4 className="mb-4">Cart totals</h4>
+                                <h4 className="mb-4">Tổng số giỏ hàng</h4>
                                 <ul className="list-unstyled mb-4">
                                     <li className="d-flex justify-content-between pb-2 mb-3">
-                                        <h5>Subtotal</h5>
-                                        <span>{nf.format(totalPrice)}</span>
+                                        <h5>Tổng phụ:</h5>
+                                        <span>{nf.format(totalPrice)} VNĐ</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2 mb-3">
-                                        <h5>Shipping</h5>
-                                        <span>Free</span>
+                                        <h5>Phí vận chuyển:</h5>
+                                        <span>Miễn phí</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2">
-                                        <h5>Total</h5>
-                                        <span>{nf.format(totalPrice)}</span>
+                                        <h5>Tổng:</h5>
+                                        <span>{nf.format(totalPrice)} VNĐ</span>
                                     </li>
                                 </ul>
                                 <button className="btn btn-main btn-small"
                                     onClick={() => {
                                         navigate('/checkout')
                                     }}
-                                >Proceed to checkout</button>
+                                >Tiến hành kiểm tra</button>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { IInfoHuyen, IInfoMoneyFee, IInfoTP, IInfoXa } from "../type/InfoGHN";
 import AddAddress from "../../admin/components/AddAddress";
-import { NativeSelect, TextField } from "@mui/material";
+import { Avatar, NativeSelect, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function Checkout() {
@@ -105,12 +105,12 @@ function Checkout() {
         console.log('OKOKOOKk' + (nameXa + ' ' + nameHy + ' ' + nameTP) + 'comming' + id_cart_item_local + moneyFeeShip.total + accessToken)
         addOrderPush((nameXa + ' ' + nameHy + ' ' + nameTP), 'comming', id_cart_item_local, moneyFeeShip.total, accessToken).then((res) => {
             console.log('12313123123' + res)
-            navigate('/page-checkout')
+            navigate("/page-checkout")
         }, (err) => {
             console.log(err)
         })
     }
-
+    
 
     return (
         <div className="checkout-container">
@@ -120,13 +120,11 @@ function Checkout() {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Checkout</h1>
-                                <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
-
+                                <h1 className="mb-3">THỦ TỤC THANH TOÁN</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Checkout</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Thủ tục thanh toán</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -141,18 +139,18 @@ function Checkout() {
                             <div className="col-lg-8 pr-5">
                                 <div className="coupon-notice " data-toggle="modal" data-target="#coupon-modal">
                                     <div className="bg-light p-3">
-                                        Have a coupon? <a href="/checkout" className="showcoupon" >Click here to enter your code</a>
+                                        Có phiếu giảm giá? <a href="/checkout" className="showcoupon" >Bấm vào đây để nhập mã của bạn</a>
                                     </div>
                                 </div>
 
                                 <div className="billing-details mt-5">
-                                    <h4 className="">Billing Details</h4>
+                                    <h4 className="">Chi tiết thanh toán</h4>
                                     <div className="row m-5">
                                         <div className="col-md-6">
                                             <Box sx={{ minWidth: 120 }}>
                                                 <FormControl fullWidth>
                                                     <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                        Thanh Pho
+                                                        Thành phố
                                                     </InputLabel>
                                                     <NativeSelect
                                                         defaultValue={30}
@@ -165,6 +163,7 @@ function Checkout() {
                                                             setTP(String(e.target.value))
                                                         }}
                                                     >
+                                                        <option aria-label="None" value="" />
                                                         {
                                                             listTP.map((e) => {
                                                                 return (
@@ -183,12 +182,12 @@ function Checkout() {
                                             <Box sx={{ minWidth: 120 }}>
                                                 <FormControl fullWidth>
                                                     <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                        Huyen
+                                                        Huyện
                                                     </InputLabel>
                                                     <NativeSelect
                                                         defaultValue={30}
                                                         inputProps={{
-                                                            name: 'Thanh Pho',
+                                                            name: 'Huyen',
                                                             id: 'uncontrolled-native1',
                                                         }}
                                                         onChange={(e) => {
@@ -196,6 +195,7 @@ function Checkout() {
                                                             setHy(String(e.target.value))
                                                         }}
                                                     >
+                                                        <option aria-label="None" value="" />
                                                         {
                                                             listHy.map((e) => {
                                                                 return (
@@ -214,7 +214,7 @@ function Checkout() {
                                             <Box sx={{ minWidth: 120 }}>
                                                 <FormControl fullWidth>
                                                     <InputLabel variant="standard" htmlFor="uncontrolled-native1">
-                                                        Xa
+                                                        Xã
                                                     </InputLabel>
                                                     <NativeSelect
                                                         defaultValue={30}
@@ -227,6 +227,7 @@ function Checkout() {
                                                             setXa(String(e.target.value))
                                                         }}
                                                     >
+                                                        <option aria-label="None" value="" />
                                                         {
                                                             listXa.map((e) => {
                                                                 return (
@@ -243,11 +244,11 @@ function Checkout() {
                                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>Product Name</TableCell>
-                                                    <TableCell align="center">Wholesale Price</TableCell>
-                                                    <TableCell align="center">Quantity</TableCell>
-                                                    <TableCell align="center">Options</TableCell>
-                                                    <TableCell align="center">Price Total</TableCell>
+                                                    <TableCell align="center" >Tên sản phẩm</TableCell>
+                                                    <TableCell align="center">Tùy chọn</TableCell>
+                                                    <TableCell align="center">Số lượng</TableCell>
+                                                    <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                                    <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -257,12 +258,12 @@ function Checkout() {
                                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                     >
                                                         <TableCell component="th" scope="row">
-                                                            {row.image}
+                                                            <Avatar src={row.image} />
                                                         </TableCell>
-                                                        <TableCell align="center">{row.wholesale_price}</TableCell>
-                                                        <TableCell align="center">{row.quantity}</TableCell>
-                                                        <TableCell align="center">{row.priceTotal}</TableCell>
                                                         <TableCell align="center">{row.option1 + ' - ' + row.option2 + ' - ' + row.option3}</TableCell>
+                                                        <TableCell align="center">{row.quantity}</TableCell>
+                                                        <TableCell align="center">{row.wholesale_price}</TableCell>
+                                                        <TableCell align="center">{row.priceTotal}</TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
@@ -274,10 +275,10 @@ function Checkout() {
 
                             <div className="col-md-6 col-lg-4">
                                 <div className="product-checkout-details mt-5 mt-lg-0">
-                                    <h4 className="mb-4 border-bottom pb-4">Order Summary</h4>
+                                    <h4 className="mb-4 border-bottom pb-4">Tóm tắt theo thứ tự</h4>
 
                                     <div className="media product-card">
-                                        <p>Kirby Shirt</p>
+                                        <p>Áo sơ mi Kirby</p>
                                         <div className="media-body text-right">
                                             <p className="h5">1 x $249</p>
                                         </div>
@@ -285,16 +286,16 @@ function Checkout() {
 
                                     <ul className="summary-prices list-unstyled mb-4">
                                         <li className="d-flex justify-content-between">
-                                            <span >Subtotal:</span>
-                                            <span className="h5">{totalPrice}</span>
+                                            <span >Tổng phụ:</span>
+                                            <span className="h5">{totalPrice} VNĐ</span>
                                         </li>
                                         <li className="d-flex justify-content-between">
-                                            <span >Shipping:</span>
-                                            <span className="h5">{moneyFeeShip.total}</span>
+                                            <span >Phí vận chuyển:</span>
+                                            <span className="h5">{moneyFeeShip.total} </span>
                                         </li>
                                         <li className="d-flex justify-content-between">
-                                            <span>Total</span>
-                                            <span className="h5">{moneyFeeShip.total + totalPrice}</span>
+                                            <span>Tổng:</span>
+                                            <span className="h5">{moneyFeeShip.total + totalPrice} </span>
                                         </li>
                                     </ul>
 
@@ -302,42 +303,43 @@ function Checkout() {
                                         <div className="form-check mb-3">
                                             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked />
                                             <label className="form-check-label" htmlFor="exampleRadios1">
-                                                Direct bank transfer
+                                                Chuyển khoản trực tiếp
                                             </label>
 
                                             <div className="alert alert-secondary mt-3" role="alert">
-                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                                Thực hiện thanh toán của bạn trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng ID đơn đặt hàng của bạn làm tham chiếu thanh toán. Đơn đặt hàng của bạn sẽ không được chuyển cho đến khi tiền đã hết trong tài khoản của chúng tôi.
                                             </div>
                                         </div>
 
                                         <div className="form-check mb-3">
                                             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" />
                                             <label className="form-check-label" htmlFor="exampleRadios2">
-                                                Check payments
+                                                Kiểm tra các khoản thanh toán
                                             </label>
                                         </div>
 
                                         <div className="form-check mb-3">
                                             <input type="checkbox" className="form-check-input" id="exampleCheck3" />
-                                            <label className="form-check-label" htmlFor="exampleCheck3">I have read and agree to the website terms and conditions *</label>
+                                            <label className="form-check-label" htmlFor="exampleCheck3">Tôi đã đọc và đồng ý với các điều khoản và điều kiện của trang web *</label>
                                         </div>
                                     </form>
 
                                     <div className="info mt-4 border-top pt-4 mb-5">
-                                        Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#">privacy policy</a>.
+                                        Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn đặt hàng, hỗ trợ trải nghiệm của bạn trên toàn bộ trang web này và cho các mục đích khác được mô tả trong <a href="#">Chính sách bảo mật</a>.
                                     </div>
 
-                                    <button className="btn btn-main btn-small"
+                                    <button className="btn btn-main btn-small d-flex justify-content-center"
                                         onClick={() => {
                                             addOrder123()
                                         }}
-                                    >Place Order</button>
+                                    >Đặt hàng</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
 
 
             <div className="modal fade" id="coupon-modal" tabIndex={-1} role="dialog">

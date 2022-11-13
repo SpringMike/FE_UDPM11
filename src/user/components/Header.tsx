@@ -55,36 +55,34 @@ const Header: React.FC = () => {
                 <div className="collapse navbar-collapse " id="main-navbar">
                     <ul className="navbar-nav mx-auto">
                         <li className="nav-item active">
-                            <Link className="nav-link" to={{ pathname: "/home-user" }}>Home</Link>
+                            <Link className="nav-link" to={{ pathname: "/home-user" }}>Trang chủ</Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">About Us</a>
+                            <a className="nav-link" href="#">Giới thiệu</a>
                         </li>
 
                         <li className="nav-item dropdown dropdown-slide">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-delay="350"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Pages.
+                                Các trang.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown4">
-                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Về chúng tôi</a></li>
                                 <li><a href="#">Blog</a></li>
-                                <li><a href="#">Blog Single</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">404 Page</a></li>
-                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Blog Đơn</a></li>
+                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="#">404 Trang</a></li>
+                                <li><a href="#">Câu hỏi thường gặp</a></li>
                             </ul>
                         </li>
                         <li className="nav-item dropdown dropdown-slide">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-delay="350"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Shop.
+                                Cửa hàng.
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                                <li><Link to={{ pathname: "/shop" }}>Shop</Link></li>
-                                <li><Link to={{ pathname: "/checkout" }}>Checkout</Link></li>
-                                <li><Link to={{ pathname: "/cart" }}>Cart</Link></li>
-                                <li><Link to={{ pathname: "/history" }}>Order History</Link></li>
+                                <li><Link to={{ pathname: "/shop" }}>Cửa hàng</Link></li>
+                                <li><Link to={{ pathname: "/checkout" }}>Thủ tục thanh toán</Link></li>
                             </ul>
                         </li>
 
@@ -106,7 +104,7 @@ const Header: React.FC = () => {
                                     <img className="media-object img- mr-3" src="assets/images/cart-1.jpg" alt="image" />
                                 </a>
                                 <div className="media-body">
-                                    <h6>Ladies Bag</h6>
+                                    <h6>Túi phụ nữ</h6>
                                     <div className="cart-price">
                                         <span>1 x</span>
                                         <span>1250.00</span>
@@ -130,11 +128,11 @@ const Header: React.FC = () => {
                             </div>
 
                             <div className="cart-summary">
-                                <span className="h6">Total</span>
+                                <span className="h6">Tổng:</span>
                                 <span className="total-price h6">$1799.00</span>
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link className="btn btn-small btn-transparent btn-block" to={{ pathname: "/cart" }}>View Cart</Link>
-                                    <Link className="btn btn-small btn-main btn-block" to={{ pathname: "/checkout" }}>Checkout</Link>
+                                    <Link className="btn btn-small btn-transparent btn-block" to={{ pathname: "/cart" }}>Xem giỏ hàng</Link>
+                                    <Link className="btn btn-small btn-main btn-block" to={{ pathname: "/checkout" }}>Thủ tục thanh toán</Link>
                                 </div>
                             </div>
                         </div>
@@ -146,13 +144,14 @@ const Header: React.FC = () => {
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
                             <li><a type = "button" onClick={onLogout}>Logout</a></li>
-                            <li><Link to={{ pathname: "/dashboard" }}>Dashboard</Link></li>
-                            <li><Link to={{ pathname: "/login" }}>Login Page</Link></li>
-                            <li><Link to={{ pathname: "/signup" }}>SignUp Page</Link></li>
-                            <li><Link to={{ pathname: "/forgot-password" }}>Forgot Password</Link></li>
+                            <li><Link to={{ pathname: "/history" }}>lịch sử đơn hàng</Link></li>
+                            <li><Link to={{ pathname: "/dashboard" }}>Quản trị</Link></li>
+                            <li><Link to={{ pathname: "/login" }}>Đăng nhập</Link></li>
+                            <li><Link to={{ pathname: "/signup" }}>Đăng xuất</Link></li>
+                            <li><Link to={{ pathname: "/forgot-password" }}>Quên mật khẩu</Link></li>
                         </ul>
                     </li>
-                    <li className="list-inline-item">Hi {name}</li>
+                    <li className="list-inline-item">Xin chào: {name}</li>
                 </ul>
             </div>
         </nav>
