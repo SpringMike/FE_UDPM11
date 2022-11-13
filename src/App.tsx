@@ -92,7 +92,7 @@ const App: React.FC = () => {
                     ],
                 }]
             break;
-        case 'admin':
+        case 'anonymous':
             routes = [
                 {
                     path: "/",
@@ -149,7 +149,7 @@ const App: React.FC = () => {
                     ],
                 }]
             break;
-        case 'anonymous':
+        case 'admin':
             routes = [
                 {
                     path: "/login",

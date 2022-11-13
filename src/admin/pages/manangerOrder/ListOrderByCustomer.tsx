@@ -1,11 +1,11 @@
-import { Button, Table, Tabs } from 'antd';
+import { Button, Checkbox, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
-import { getAllOrder, updateStatusOrderByAdmin } from '../../service/ManagerOrderAdmin';
+import { findAllOrderByStatus, getAllOrder, updateStatusOrderByAdmin } from '../../service/ManagerOrderAdmin';
 import { IShowOrder } from '../../type/ShowOrderType';
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import * as Antd from 'antd'
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { text } from 'stream/consumers';
+
 
 const ListOrderByCustomer = () => {
 
@@ -33,7 +33,7 @@ const ListOrderByCustomer = () => {
         {
             title: 'Ngày Mua',
             dataIndex: 'created_time',
-        },
+        }
     ];
     const newColumn = [
         ...columns,
@@ -41,18 +41,30 @@ const ListOrderByCustomer = () => {
             title: 'Action',
             dataIndex: '',
             key: 'x',
-            render: () => <div><button>Xác nhận</button> <button style={{ marginRight: 16 }}>Huỷ đơn</button> <Button shape="circle" icon={<EyeOutlined />} /></div>,
+            render: () => <div><Button type="primary" ghost style={{ marginRight: 16 }}>Xác nhận</Button >
+                <Button danger style={{ marginRight: 16 }}>Huỷ đơn</Button >
+                <Button shape="circle" icon={<EyeOutlined />} /></div>,
         },
     ]
     const [showOrder, setShowOrder] = useState([] as IShowOrder[])
     const [newColumns, setNewColumns] = useState(newColumn as ColumnsType<IShowOrder>)
+    const [listId, setListId] = useState([] as number[])
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
+        setReload(true);
         getAllOrder().then((res) => {
-            setShowOrder(res.data)
-        })
-        localStorage.removeItem('test2')
+            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
+            setShowOrder(newResult)
+            console.log(res.data)
+            setReload(false);
+        }, (err) => {
+            setReload(false);
+            console.log('OUT', err);
+        });
+
     }, [])
+
 
     const [loading, setLoading] = useState(false);
     // const load = () => (
@@ -60,48 +72,65 @@ const ListOrderByCustomer = () => {
     //   {loading ? <Antd.Spin spinning={true}></Antd.Spin>: <PlusOutlined />}
     // </div>
     //   );
-    const start = () => {
+    const start = (status_id: number) => {
         setLoading(true);
-        // ajax request after empty completing
-        setTimeout(() => {
+        updateStatusOrderByAdmin(status_id, listId).then((res) => {
             setLoading(false);
-        }, 1000);
+            console.log(res.data);
+        })
+
     };
 
     const [selectedRows, setSelectedRows] = useState<IShowOrder[]>([]);
     const [selectedId, setSelectedId] = useState<number[]>([]);
-    const rowSelection = {
-        onChange: (selectedRowKeys: React.Key[], selectedRows: IShowOrder[]) => {
-            setSelectedRows(selectedRows);
-            console.log("selectedRows: ", selectedRows);
-            let listId: number[] = [];
-            selectedRows.map((e) => {
-                listId.push(e.id);
-            });
-            setSelectedId(listId);
-        }
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+    const onSelectChange = (
+        newSelectedRowKeys: React.Key[],
+        selectedRows: IShowOrder[]
+    ) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        console.log('selectedRows changed: ', selectedRows);
+        setSelectedRowKeys(newSelectedRowKeys);
+        setSelectedRows(selectedRows);
+        let getListId: number[] = []
+        selectedRows.map((obj: IShowOrder) => { getListId.push(obj.id) })
+        setListId(getListId)
+        console.log(getListId)
     };
+
+    const rowSelection = {
+        selectedRowKeys,
+        onselect: selectedRowKeys,
+        onChange: onSelectChange,
+    };
+
+
+    const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
         console.log(key);
-        if (key === "1") {
+        if (key === "5") {
             const newColumn = [
                 ...columns,
                 {
                     title: 'Action',
                     dataIndex: '',
                     key: 'x',
-                    render: () => <div><button style={{ marginRight: 16 }}>Xác nhận</button> <button style={{ marginRight: 16 }}>Huỷ đơn</button> <Button shape="circle" icon={<EyeOutlined />} /></div>,
+                    render: () => <div><Button type="primary" ghost style={{ marginRight: 16 }}>Xác nhận</Button >
+                        <Button danger style={{ marginRight: 16 }}>Huỷ đơn</Button >
+                        <Button shape="circle" icon={<EyeOutlined />} /></div>,
                 },
             ]
             setNewColumns(newColumn)
-        } else if (key === "2") {
-            const newColumn = [
+        } else if (key === "6") {
+            const newColumn: ColumnsType<IShowOrder> = [
                 ...columns,
                 {
                     title: 'Action',
                     dataIndex: '',
                     key: 'x',
-                    render: () => <div><button style={{ marginRight: 16 }}>Shipper đã lấy hàng</button> <Button shape="circle" icon={<EyeOutlined />} /></div>,
+                    render: () => <div><Button type="primary" ghost style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button> <Button shape="circle" icon={<EyeOutlined />} /></div>,
                 },
             ]
             setNewColumns(newColumn)
@@ -112,93 +141,50 @@ const ListOrderByCustomer = () => {
                     title: 'Action',
                     dataIndex: '',
                     key: 'x',
-                    render: () => <div><Button shape="circle" icon={<EyeOutlined />} /></div>,
+                    render: () => <div><Button shape="circle" type="primary" icon={<EyeOutlined />} /></div>,
                 },
             ]
             setNewColumns(newColumn)
         }
     };
 
+    const updateStatus = (status_id: number) => {
 
+        updateStatusOrderByAdmin(status_id, listId).then((res) => {
 
-    const columns1: GridColDef[] = [
-        // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
-        // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
-        { field: 'id', headerName: 'Ảnh', width: 70, headerAlign: 'center', align: 'center', },
-        { field: 'status', headerName: 'Trang Thai', width: 70, headerAlign: 'center', align: 'center', },
-    ];
-
-    const onRowsSelectionHandler = (ids: any) => {
-        const idsCItems: string[] = [];
-        const selectedRowsData = ids.map((id: any) => showOrder.find((row) => row.id === id));
-        selectedRowsData.forEach((e: any) => {
-            let { id } = e;
-            idsCItems.push(id)
-        });
-        localStorage.setItem('test2', JSON.stringify(idsCItems))
-        // console.log(selectedRowsData);
-    };
-
-
-    const updateStatus = (status: any) => {
-        console.log( JSON.parse(localStorage.getItem('test2') || '{}'))
-        console.log(status);
-        updateStatusOrderByAdmin(status, JSON.parse(localStorage.getItem('test2') || '{}')).then((res) => {
-            console.log(res.data);
         })
     };
 
 
-    const hasSelected = rowSelection != null;
 
     return (
-
-
         <div >
-            <Tabs defaultActiveKey="1" onChange={onChangeTab}>
-                <Tabs.TabPane tab="Chờ xác nhận" key="1">
-                    <Button type="primary" onClick={
-                        () => {
-                            updateStatus(6)
-                        }
-                    }  disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
+            <Tabs defaultActiveKey="1" onChange={onChangeTab} >
+                <Tabs.TabPane tab="Chờ xác nhận" key="5">
+                    <Button type="primary" loading={loading} onClick={() => start(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Xác nhận
                     </Button>
-                    <div style={{ height: 400, width: '100%' }}>
-                        <DataGrid
-                            rows={showOrder}
-                            columns={columns1}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            getRowId={(showOrder) => showOrder.id}
-                            onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
-                            checkboxSelection
-                        />
-                    </div>
-                    {/* <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} /> */}
+                    <div></div>
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Chờ lấy hàng" key="2">
-                    <Button type="primary" onClick={
-                        () => {
-                            updateStatus(6)
-                        }
-                    } disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }} >
+                <Tabs.TabPane tab="Chờ lấy hàng" key="6">
+                    <Button type="primary" loading={loading} onClick={() => start(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }} >
                         Shipper đã lấy hàng
                     </Button>
                     <div></div>
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Đang giao hàng" key="3">
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                <Tabs.TabPane tab="Đang giao hàng" key="7">
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Giao hàng thành công" key="4">
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                <Tabs.TabPane tab="Giao hàng thành công" key="8">
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Giao hàng thất bại" key="5">
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                <Tabs.TabPane tab="Giao hàng thất bại" key="9">
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Đã huỷ" key="6">
-                    <Table rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} />
+                <Tabs.TabPane tab="Đã huỷ" key="[10,11]">
+                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
 

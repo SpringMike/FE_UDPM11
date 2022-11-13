@@ -10,6 +10,6 @@ export interface IShowOrder {
     total_quantity: number;
     status: number;
     type: number;
-    created_time: string;
+    created_time: Date;
     code: string;
 }

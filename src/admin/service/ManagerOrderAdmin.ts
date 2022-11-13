@@ -16,3 +16,7 @@ export const updateStatusOrderByAdmin = async (status_id: number, list_id_order:
     return await axios.put(`${base_url}/manager-oder/update-multiple/${status_id}`, list_id_order, { headers })
 }
 
+
+export const findAllOrderByStatus = async (status_id: number) => {
+    return await axios.put(`${base_url}/manager-oder/findAll/by/${status_id}`, { headers })
+}
