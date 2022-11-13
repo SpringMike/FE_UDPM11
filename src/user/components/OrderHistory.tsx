@@ -138,7 +138,7 @@ const OrderHistory2 = () => {
                     <TableCell align="center">{row.fee_money} </TableCell>
                     <TableCell align="center">{row.totalPrice} </TableCell>
                     <TableCell align="center">{row.created_time}</TableCell>
-                    <Button onClick={
+                    <Button hidden={value == 2 ? false : true} onClick={
                         () => {
                             onClickUpdateStatus(8, row.id)
                         }
@@ -334,7 +334,6 @@ const OrderHistory2 = () => {
                                         {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((row) => (
                                                 <Row key={row.id} row={row} />
-
                                             ))}
                                     </TableBody>
                                 </Table>
