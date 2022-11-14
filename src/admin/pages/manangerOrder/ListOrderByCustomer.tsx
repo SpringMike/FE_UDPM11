@@ -351,9 +351,6 @@ const ListOrderByCustomer = () => {
             });
         })
     };
-
-
-
     return (
         <><div>
             <Tabs defaultActiveKey="5" onChange={onChangeTab}>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { IHistory, IOrderItem } from "../type/History";
-import { getHistoryOrder, getOrderItemHistory, updateStatusDeliverySuccessful } from "../service/HistoryOrder";
+import { getHistoryOrder, getOrderItemHistory, updateStatus } from "../service/HistoryOrder";
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
@@ -57,6 +58,7 @@ const OrderHistory2 = () => {
 
 
     const [value, setValue] = React.useState(0);
+    const [currentStatus, setCurrentStatus] = React.useState(5);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(newValue)
@@ -68,10 +70,13 @@ const OrderHistory2 = () => {
             value_new = 7
         } else if (newValue == 3) {
             value_new = 8
+        } else if (newValue == 4) {
+            value_new = 10
         }
 
         onClickHistory(value_new)
         setValue(newValue);
+        setCurrentStatus(newValue);
     };
 
 
@@ -80,26 +85,32 @@ const OrderHistory2 = () => {
     // let item : IOrderItem;
     const [history, setHistory] = useState([] as IHistory[]);
     const [orderItem, setOrderItem] = useState([] as IOrderItem[]);
+    const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     getHistoryOrder(6, accessToken).then((res: any) => {
-    //         const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
-    //         setHistory(newResult)
-    //     })
-    // }, [])
+    useEffect(() => {
+        setLoading(false)
+        getHistoryOrder(5, accessToken).then((res: any) => {
+            setLoading(true)
+            const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
+            setHistory(newResult)
+        })
+    }, [])
 
     const onClickHistory = (status_id: number) => {
+        setLoading(false)
         getHistoryOrder(status_id, accessToken).then((res: any) => {
+        setLoading(true)
             const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
             setHistory(newResult)
         })
     }
     const onClickUpdateStatus = (status_id: number, id_order: number) => {
-        updateStatusDeliverySuccessful(status_id, id_order, accessToken).then((res) => {
+        updateStatus(status_id, id_order, accessToken).then((res) => {
             console.log(res.data);
+            console.log(currentStatus);
+            onClickHistory(currentStatus)
         }, (err) => {
             console.log(err);
-
         })
     }
     useEffect(() => {
@@ -138,18 +149,19 @@ const OrderHistory2 = () => {
                     <TableCell align="center">{row.fee_money} </TableCell>
                     <TableCell align="center">{row.totalPrice} </TableCell>
                     <TableCell align="center">{row.created_time}</TableCell>
-                    <Button hidden={value == 2 ? false : true} onClick={
-                        () => {
-                            onClickUpdateStatus(8, row.id)
-                        }
-                    }>
-                        Xac Nhan
-                    </Button>
+                    <TableCell align="center">
+                        <Button hidden={value === 2 ? false : true} onClick={() => { onClickUpdateStatus(8, row.id) }}>
+                            Đã nhận được hàng</Button>
+
+                        <Button hidden={value === 0 ? false : true} onClick={() => { onClickUpdateStatus(10, row.id) }}>
+                            Huỷ đơn hàng</Button>
+                    </TableCell>
+
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Box sx={{ margin: 1 }}>
+                            <Box sx={{ margin: 1, alignContent: "center" }}>
                                 <Typography variant="h6" gutterBottom component="div">
                                     Chi tiết
                                 </Typography>
@@ -165,23 +177,24 @@ const OrderHistory2 = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        
+
                                         {row.order_item?.map((order_item) => (
                                             <TableRow key={order_item.id}>
-                                                <TableCell align="right">
-                                                    <Avatar src={order_item.image} />
+                                                <TableCell align="left" width={100}>
+                                                    {/* <Avatar src={order_item.image} /> */}
+                                                    <img src={order_item.image} width={100} />
                                                 </TableCell>
                                                 <TableCell align="left" component="th" scope="row" >
                                                     {order_item.name.split('-')[0]}
                                                 </TableCell>
-                                                <TableCell>{order_item.option1 + ',' + order_item.option2 + ',' + order_item.option3}</TableCell>
+                                                <TableCell align="center">{order_item.option1 + ',' + order_item.option2 + ',' + order_item.option3}</TableCell>
                                                 <TableCell align="center">{order_item.quantity}</TableCell>
                                                 <TableCell align="center">{order_item.price}</TableCell>
                                                 <TableCell align="center">{order_item.total_price}</TableCell>
                                             </TableRow>
                                         ))}
                                         <TableRow>
-                                            <TableCell rowSpan={3} colSpan={3} />
+                                            <TableCell rowSpan={4} colSpan={3} />
                                             <TableCell colSpan={2}>Tổng phụ:</TableCell>
                                             <TableCell align="center">{row.total_price} VNĐ</TableCell>
                                         </TableRow>
@@ -192,6 +205,10 @@ const OrderHistory2 = () => {
                                         <TableRow>
                                             <TableCell colSpan={2}>Tổng:</TableCell>
                                             <TableCell align="center">{row.totalPrice} VNĐ</TableCell>
+                                        </TableRow>
+                                        <TableRow hidden={value === 3 ? false : true}>
+                                            <TableCell colSpan={2}></TableCell>
+                                            <TableCell align="center"> <Button variant="outlined" color="error">Yêu cầu trả hàng</Button></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -245,7 +262,11 @@ const OrderHistory2 = () => {
                             <Tab label="Chờ lấy hàng" {...a11yProps(1)} />
                             <Tab label="Đang giao hàng" {...a11yProps(2)} />
                             <Tab label="Đã nhận được hàng" {...a11yProps(3)} />
+                            <Tab label="Đã huỷ" {...a11yProps(4)} />
                         </Tabs>
+                    </Box>
+                    <Box sx={{ width: '100%' }} hidden={loading}>
+                        <LinearProgress />
                     </Box>
                     <TabPanel value={value} index={0}>
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -260,6 +281,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                            <TableCell align="center">Huỷ Đơn</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -351,6 +373,40 @@ const OrderHistory2 = () => {
                         </Paper>
                     </TabPanel>
                     <TabPanel value={value} index={3}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
+                                            <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Ngày tạo hoá đơn</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => (
+                                                <Row key={row.id} row={row} />
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={4}>
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                             <TableContainer>
                                 <Table aria-label="collapsible table">

@@ -27,7 +27,7 @@ export const getOrderItemHistory = async (id_order: number, accessToken: string)
     );
 };
 
-export const updateStatusDeliverySuccessful = async (status_id: number, id_order: number, accessToken: string) => {
+export const updateStatus = async (status_id: number, id_order: number, accessToken: string) => {
     let config = {
         headers: {
             token: accessToken
