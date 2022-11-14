@@ -20,3 +20,7 @@ export const getOrderItemsByIdOrder = async (id_order: number) => {
     return await axios.get(`${base_url}/manager-oder/showItem/${id_order}`, { headers })
 }
 
+
+export const findAllOrderByStatus = async (status_id: number) => {
+    return await axios.put(`${base_url}/manager-oder/findAll/by/${status_id}`, { headers })
+}
