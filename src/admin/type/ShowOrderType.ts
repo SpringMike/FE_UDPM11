@@ -13,3 +13,15 @@ export interface IShowOrder {
     created_time: Date;
     code: string;
 }
+export interface IShowOrderItems {
+    id: number;
+    quantity: number;
+    price: number;
+    total_price: number;
+    image: string;
+    name: string;
+    option1: string;
+    option2: string;
+    option3: string;
+    megerOp: string;
+}
