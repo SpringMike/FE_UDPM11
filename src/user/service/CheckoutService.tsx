@@ -61,3 +61,15 @@ export const addOrderPush = (address: string, note: string, id_cart_items: numbe
         })
     );
 };
+
+
+export const getAmount = async (accessToken: string) => {
+    let config = {
+        headers: {
+            token: accessToken
+        }
+    }
+    return (
+        await axios.get(`${base_url_public}/cart/getAmount`, config)
+    );
+};

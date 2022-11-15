@@ -11,32 +11,42 @@ import { makeOneClickPaymentAsync } from "../../../features/payment/make-one-cli
 import { makePaymentAsync } from "../../../features/payment/make-payment-slice";
 import { Button, Section } from "../common";
 import PaymentMethods from "./payment-methods";
+import { getAmount } from "../../service/CheckoutService";
+import { IAmount } from "../../type/Payment";
 // import { getListBankAsync } from "../../features/payment/list-bank-slice";
 // import { getPaymentMethodsAsync } from "../../features/payment/payment-methods-slice";
 
 export interface PaymentMethodsFormData {
-    paymentOption: string
+  paymentOption: string
 }
 
 
 function PageCheckout() {
 
-    let  paymentAmount = 5000 // ve sau thay cai nay nhe pe Duc
-    let  paymentID = Math.random() // ve sau thay cai nay nhe pe Duc
+  const[amount, setAmout] = useState({} as IAmount)
+  const accessToken = useAuthStore((e) => e.accessToken)
+  useEffect(() => {
+    getAmount(accessToken).then((res) => {
+      setAmout(res.data)
+    })
+  })
 
-    const dispatch = useAppDispatch()
+  let paymentAmount = amount.total // ve sau thay cai nay nhe pe Duc
+  let paymentID = amount.id// ve sau thay cai nay nhe pe Duc
 
-    // useEffect(() => {
-    //     dispatch(getListBankAsync())
-    //     dispatch(getPaymentMethodsAsync())
-    // }, [])
+  const dispatch = useAppDispatch()
+
+  // useEffect(() => {
+  //     dispatch(getListBankAsync())
+  //     dispatch(getPaymentMethodsAsync())
+  // }, [])
 
 
-    
-    // console.log('this is bug1 ' + paymentMethods)
-    // console.log('this is bug2 ' + paymentMethodsStatus)
-    // console.log('this is bug3 ' + listBank)
-    const userId = useAuthStore((state) => state.id)
+
+  // console.log('this is bug1 ' + paymentMethods)
+  // console.log('this is bug2 ' + paymentMethodsStatus)
+  // console.log('this is bug3 ' + listBank)
+  const userId = useAuthStore((state) => state.id)
 
   const {
     paymentSubmitted,
@@ -103,7 +113,7 @@ function PageCheckout() {
   }
 
   return (
-    <>      
+    <>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Section className="pt-0 mb-4">
           <PaymentMethods
@@ -117,11 +127,10 @@ function PageCheckout() {
         <Section>
           <div className="flex justify-between items-center sm:pt-7 mb-12">
             <Button
-              className={`w-fit ${
-                watchPaymentOption === 'DOMESTIC' && domesticBank === ''
-                  ? '!cursor-not-allowed'
-                  : ''
-              }`}
+              className={`w-fit ${watchPaymentOption === 'DOMESTIC' && domesticBank === ''
+                ? '!cursor-not-allowed'
+                : ''
+                }`}
               posting={paymentPosting || oneClickPosting || onePaySubmitted || paymentSubmitted}
               disabled={paymentPosting || oneClickPosting || (watchPaymentOption === 'DOMESTIC' && domesticBank === '') || onePaySubmitted || paymentSubmitted}
             >
