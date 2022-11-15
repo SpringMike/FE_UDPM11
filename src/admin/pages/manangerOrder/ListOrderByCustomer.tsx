@@ -99,7 +99,7 @@ const ListOrderByCustomer = () => {
             const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
             setShowOrder(newResult)
             const newShowOrder: IShowOrder[] = []
-            res.data.map((e: IShowOrder) => {
+            newResult.map((e: IShowOrder) => {
                 if (e.status === 5) {
                     newShowOrder.push(e)
                 }
