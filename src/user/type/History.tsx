@@ -10,7 +10,10 @@ export interface IHistory {
     fee_money: number;
     created_time: string;
     totalPrice: number;
-    order_item: IOrderItem[]
+    order_item: IOrderItem[];
+    isReturn: boolean;
+    date_main:Date;
+    
 }
 
 
@@ -26,5 +29,6 @@ export interface IOrderItem {
     price: number;
     total_price: number;
     quantity: number;
+    id_product: number
 }
 

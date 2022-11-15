@@ -26,30 +26,32 @@ import ModalJoy from '@mui/joy/Modal';
 import ModalJoyDialog from '@mui/joy/ModalDialog';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import TypographyJoy from '@mui/joy/Typography';
+import Swal from 'sweetalert2'
+import moment from "moment";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-    
+
 }
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
-    
-return (
-    <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-    >
-        {value === index && (
-            <Box sx={{ p: 3 }}>
-                <Typography>{children}</Typography>
-            </Box>
-        )}
-    </div>
-);
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
 function a11yProps(index: number) {
     return {
@@ -99,7 +101,7 @@ const OrderHistory2 = () => {
     const handleClick = (event: React.MouseEvent<unknown>, orderItem: IOrderItem) => {
         const selectedIndex = selected.indexOf(orderItem);
         let newSelected: IOrderItem[] = [];
-    
+        console.log('09123881237322879', orderItem.id);
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selected, orderItem);
         } else if (selectedIndex === 0) {
@@ -115,22 +117,43 @@ const OrderHistory2 = () => {
         console.log(newSelected)
         setSelected(newSelected);
     };
-    const returnOrderbyIdOrder = (idOrder:number, note:string) => {
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    const returnOrderbyIdOrder = (idOrder: number, note: string) => {
         let totalQuantityReturn: number = 0;
         let totalPriceReturn: number = 0;
         let idOrderItem: number[] = [];
-        selected.map((e)=>{
+        selected.map((e) => {
             totalQuantityReturn += e.quantity
             totalPriceReturn += e.total_price
             idOrderItem.push(e.id)
         })
-        console.log("data"+ note,idOrder,totalPriceReturn,totalQuantityReturn,idOrderItem,accessToken)
-        returnOrder(note,idOrder,totalPriceReturn,totalQuantityReturn,idOrderItem,accessToken).then((res)=>{
+        console.log("data" + note, idOrder, totalPriceReturn, totalQuantityReturn, idOrderItem, accessToken)
+        returnOrder(note, idOrder, totalPriceReturn, totalQuantityReturn, idOrderItem, accessToken).then((res) => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Trả hàng thành công '
+            })
             console.log(res.data)
+        }, (err) => {
+            Toast.fire({
+                icon: 'error',
+                title: 'Quá hạn trả hàng '
+            })
         })
     };
     const isSelected = (orderItem: IOrderItem) => selected.indexOf(orderItem) !== -1;
-    
+
     // let item : IOrderItem;
     const [history, setHistory] = useState([] as IHistory[]);
     const [loading, setLoading] = useState(false);
@@ -185,6 +208,22 @@ const OrderHistory2 = () => {
             })
         ));
     }, [history])
+
+    function checkDate(date_start: Date) {
+        console.log(date_start);
+        let date_now = new Date().getTime();
+        let date_compare = new Date(date_start).getTime();
+        const startDate = moment(date_now);
+        const timeEnd = moment(date_compare);
+        const diff = startDate.diff(timeEnd);
+        const diffDuration = moment.duration(diff);
+
+        if (diffDuration.days() > 3) {
+            return true
+        } else {
+            return false
+        }
+    }
 
     function Row(props: { row: IHistory }) {
         const { row } = props;
@@ -308,7 +347,13 @@ const OrderHistory2 = () => {
                                         </TableRow>
                                         <TableRow hidden={value === 3 ? false : true}>
                                             <TableCell colSpan={2}></TableCell>
-                                            <TableCell align="center"> <Button variant="contained" color="error" onClick={() => { setOpenModalReturn(row.id);setSelected([]) }}>Yêu cầu trả hàng</Button></TableCell>
+                                            <TableCell align="center"> <Button
+                                                hidden={row.isReturn || checkDate(row.date_main) }
+                                                variant="contained" color="error" onClick={() => { 
+                                                    setOpenModalReturn(row.id); setSelected([]); checkDate(row.date_main) }}>Yêu cầu trả hàng</Button></TableCell>
+
+                                            <TableCell hidden={!row.isReturn} >Hoá đơn đã trả hàng</TableCell>
+                                            <TableCell hidden={!checkDate(row.date_main)} >Hoá đơn quá hạn trả</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -344,7 +389,7 @@ const OrderHistory2 = () => {
                                                     <Checkbox
                                                         color="primary"
                                                         checked={row.order_item.length === selected.length}
-                                                        onChange={(e)=>handleSelectAllClick(e,row.order_item)}
+                                                        onChange={(e) => handleSelectAllClick(e, row.order_item)}
                                                         inputProps={{
                                                             'aria-label': 'select all desserts',
                                                         }}
@@ -392,7 +437,7 @@ const OrderHistory2 = () => {
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModalReturn(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" color="error" onClick={() => { returnOrderbyIdOrder(row.id,"note chưa cho nhập");setOpenModalReturn(0) }}>
+                                    <Button variant="text" color="error" onClick={() => { returnOrderbyIdOrder(row.id, "note chưa cho nhập"); setOpenModalReturn(0) }}>
                                         Trả hàng
                                     </Button>
                                 </Box>
