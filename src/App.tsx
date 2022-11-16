@@ -30,7 +30,8 @@ import SignleProduct from "./user/components/SignleProduct";
 import { useAuthStore } from './hooks/zustand/auth';
 import OrderHistory from './user/components/OrderHistory';
 import PageCheckout from './user/components/checkout/PageCheckout';
-import ListOrderByCustomer from './admin/pages/manangerOrder/ListOrderByCustomer';
+import OrderPurchaseMananger from './admin/pages/manangerOrder/OrderPurchaseMananger';
+import OrderReturnMananger from './admin/pages/manangerOrder/OrderReturnMananger';
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -92,7 +93,7 @@ const App: React.FC = () => {
                     ],
                 }]
             break;
-        case 'admin':
+        case 'anonymous':
             routes = [
                 {
                     path: "/",
@@ -144,12 +145,16 @@ const App: React.FC = () => {
                         },
                         {
                             path: "/order-manager",
-                            element: <ListOrderByCustomer />,
+                            element: <OrderPurchaseMananger />,
+                        },
+                        {
+                            path: "/order-return-manager",
+                            element: <OrderReturnMananger />,
                         },
                     ],
                 }]
             break;
-        case 'anonymous':
+        case 'admin':
             routes = [
                 {
                     path: "/login",

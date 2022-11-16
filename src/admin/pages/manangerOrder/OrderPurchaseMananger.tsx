@@ -8,7 +8,7 @@ import { text } from 'stream/consumers';
 import { removeAllListeners } from 'process';
 
 
-const ListOrderByCustomer = () => {
+const OrderPurchaseMananger = () => {
 
     const columns: ColumnsType<IShowOrder> = [
         {
@@ -56,7 +56,8 @@ const ListOrderByCustomer = () => {
         },
         {
             title: 'Phân loại',
-            dataIndex: 'megerOp',
+            dataIndex: '',
+            render: (IShowOrderItems:IShowOrderItems) => <div>{IShowOrderItems.option1+","+IShowOrderItems.option2+","+IShowOrderItems.option3}</div>
         },
         {
             title: 'Số lượng',
@@ -118,7 +119,6 @@ const ListOrderByCustomer = () => {
         setIsModalOpen(true);
         setReloadTableItem(true);
         getOrderItemsByIdOrder(idOrder).then((res) => {
-            const newResult = res.data.map((obj: IShowOrderItems,) => ({ ...obj, megerOp: obj.option1 + "," + obj.option2 + "," + obj.option3 }))
             setShowOrderItems(res.data)
             setReloadTableItem(false);
         }, (err) => {
@@ -388,4 +388,4 @@ const ListOrderByCustomer = () => {
     );
 }
 
-export default ListOrderByCustomer
+export default OrderPurchaseMananger
