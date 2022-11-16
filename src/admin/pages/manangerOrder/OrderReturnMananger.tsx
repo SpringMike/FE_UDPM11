@@ -23,7 +23,7 @@ const OrderReturnMananger = () => {
         },
         {
             title: 'Người Mua',
-            dataIndex: 'name_user',
+            dataIndex: 'account_name',
         },
         {
             title: 'Lý do trả hàng',
