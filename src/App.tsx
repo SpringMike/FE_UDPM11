@@ -98,7 +98,6 @@ const App: React.FC = () => {
                 {
                     path: "/",
                     element: <Dashboard />,
-
                     children: [
                         {
                             path: "dashboard",
@@ -152,7 +151,13 @@ const App: React.FC = () => {
                             element: <OrderReturnMananger />,
                         },
                     ],
-                }]
+                    
+                },
+                {
+                    path: "/login",
+                    element: <Login />,
+                }
+            ]
             break;
         case 'admin':
             routes = [

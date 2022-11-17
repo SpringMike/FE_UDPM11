@@ -6,10 +6,17 @@ import { IShowOrder, IShowOrderItems } from '../../type/ShowOrderType';
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { text } from 'stream/consumers';
 import { removeAllListeners } from 'process';
+import Swal from 'sweetalert2';
 
 
 const OrderPurchaseMananger = () => {
-
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
     const columns: ColumnsType<IShowOrder> = [
         {
             title: 'Id',
@@ -145,6 +152,10 @@ const OrderPurchaseMananger = () => {
         setReload(true);
         updateStatusOrderByAdmin(status_id, listId).then((res) => {
             setLoading(false);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật trạng thái thành công '
+              })
             getAllOrder().then((res) => {
                 const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
@@ -160,6 +171,10 @@ const OrderPurchaseMananger = () => {
                 setReload(false);
             }, (err) => {
                 setReload(false);
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Cập nhật trạng thái thất bại '
+                  })
                 console.log('OUT', err);
             });
         })
@@ -328,6 +343,10 @@ const OrderPurchaseMananger = () => {
         listId.push(idOrder)
         updateStatusOrderByAdmin(status_id, listId).then((res) => {
             setReload(true);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật trạng thái thành công '
+              })
             getAllOrder().then((res) => {
                 const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
@@ -346,6 +365,10 @@ const OrderPurchaseMananger = () => {
                 setShowOrderByStatus(newShowOrder)
                 setReload(false);
             }, (err) => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Cập nhật trạng thái thất bại '
+                  })
                 setReload(false);
                 console.log('OUT', err);
             });

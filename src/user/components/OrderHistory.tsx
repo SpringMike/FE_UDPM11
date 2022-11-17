@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
-import { IHistory, IOrderItem } from "../type/History";
-import { getHistoryOrder, getOrderItemHistory, returnOrder, updateStatus } from "../service/HistoryOrder";
+import { IHistory, IOrderItem,IOrderReturnItem,IOrderReturn } from "../type/History";
+import { getHistoryOrder, getHistoryOrderReturn, getOrderItemHistory, getOrderReturnItemHistory, returnOrder, updateStatus } from "../service/HistoryOrder";
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Avatar, Button, Tabs, Checkbox } from "@mui/material";
+import { Avatar, Button, Tabs, Checkbox, TextField } from "@mui/material";
 import Tab from '@mui/material/Tab';
 import BoxJoy from '@mui/joy/Box';
 import ButtonJoy from '@mui/joy/Button';
@@ -27,30 +27,32 @@ import ModalJoyDialog from '@mui/joy/ModalDialog';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import TypographyJoy from '@mui/joy/Typography';
 import moment from "moment";
+import { Margin } from "@mui/icons-material";
+import Swal from "sweetalert2";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-    
+
 }
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
-    
-return (
-    <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-    >
-        {value === index && (
-            <Box sx={{ p: 3 }}>
-                <Typography>{children}</Typography>
-            </Box>
-        )}
-    </div>
-);
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
 function a11yProps(index: number) {
     return {
@@ -59,6 +61,13 @@ function a11yProps(index: number) {
     };
 }
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+})
 
 const OrderHistory2 = () => {
     let value_new: number;
@@ -68,6 +77,7 @@ const OrderHistory2 = () => {
     const [currentStatus, setCurrentStatus] = React.useState(5);
     const [openModal, setOpenModal] = React.useState(0);
     const [openModalReturn, setOpenModalReturn] = React.useState(0);
+    const [note, setNote] = React.useState('');
     const [selected, setSelected] = React.useState<IOrderItem[]>([]);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(newValue)
@@ -100,7 +110,7 @@ const OrderHistory2 = () => {
     const handleClick = (event: React.MouseEvent<unknown>, orderItem: IOrderItem) => {
         const selectedIndex = selected.indexOf(orderItem);
         let newSelected: IOrderItem[] = [];
-    
+
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selected, orderItem);
         } else if (selectedIndex === 0) {
@@ -116,24 +126,37 @@ const OrderHistory2 = () => {
         console.log(newSelected)
         setSelected(newSelected);
     };
-    const returnOrderbyIdOrder = (idOrder:number, note:string) => {
+    const returnOrderbyIdOrder = (idOrder: number) => {
         let totalQuantityReturn: number = 0;
         let totalPriceReturn: number = 0;
         let idOrderItem: number[] = [];
-        selected.map((e)=>{
+        selected.map((e) => {
             totalQuantityReturn += e.quantity
             totalPriceReturn += e.total_price
             idOrderItem.push(e.id)
         })
-        console.log("data"+ note,idOrder,totalPriceReturn,totalQuantityReturn,idOrderItem,accessToken)
-        returnOrder(note,idOrder,totalPriceReturn,totalQuantityReturn,idOrderItem,accessToken).then((res)=>{
+        console.log("data" + note, idOrder, totalPriceReturn, totalQuantityReturn, idOrderItem, accessToken)
+        returnOrder(note, idOrder, totalPriceReturn, totalQuantityReturn, idOrderItem, accessToken).then((res) => {
             console.log(res.data)
+            onClickHistory(8)
+            Toast.fire({
+                icon: 'success',
+                title: 'Yêu cầu thành công'
+            })
+        }, (err) => {
+            console.log(err);
+            Toast.fire({
+                icon: 'error',
+                title: 'Yêu cầu thất bại'
+            })
         })
     };
     const isSelected = (orderItem: IOrderItem) => selected.indexOf(orderItem) !== -1;
-    
+    const hasSelected = selected.length > 0;
+
     // let item : IOrderItem;
     const [history, setHistory] = useState([] as IHistory[]);
+    const [historyReturn, setHistoryReturn] = useState([] as IOrderReturn[]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -144,6 +167,17 @@ const OrderHistory2 = () => {
             setHistory(newResult)
         })
     }, [])
+
+    useEffect(() => {
+        historyReturn.map((historyReturn) => (
+            getOrderReturnItemHistory(historyReturn.id, accessToken).then((res: any) => {
+                res.data.map((order_item: IOrderReturnItem) => (
+                    console.log(order_item),
+                    historyReturn.order_item.push(order_item)
+                ))
+            })
+        ));
+    }, [historyReturn])
 
 
 
@@ -163,6 +197,14 @@ const OrderHistory2 = () => {
             })
             setHistory(resResult)
         }
+        if(currentStatus == 5){
+            getHistoryOrderReturn(accessToken).then((res: any) => {
+                setLoading(false)
+                console.log(res.data);
+                const newResult = res.data.map((obj: IOrderReturn) => ({ ...obj, order_item: [] }))
+                setHistoryReturn(newResult)
+            })
+        }
         getHistoryOrder(status_id, accessToken).then((res: any) => {
             setLoading(false)
             const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
@@ -172,8 +214,33 @@ const OrderHistory2 = () => {
     const onClickUpdateStatus = (status_id: number, id_order: number) => {
         updateStatus(status_id, id_order, accessToken).then((res) => {
             onClickHistory(currentStatus)
+            if (currentStatus == 0) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Huỷ đơn hàng thành công'
+                })
+            }
+            if (currentStatus == 2) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Nhận đơn hàng thành công'
+                })
+            }
+
         }, (err) => {
             console.log(err);
+            if (currentStatus == 0) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Huỷ đơn hàng thất bại'
+                })
+            }
+            if (currentStatus == 2) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Nhận đơn hàng thất bại'
+                })
+            }
         })
     }
     useEffect(() => {
@@ -186,7 +253,7 @@ const OrderHistory2 = () => {
             })
         ));
     }, [history])
-    
+
     function checkDate(date_start: Date) {
         console.log(date_start);
         let date_now = new Date().getTime();
@@ -324,7 +391,7 @@ const OrderHistory2 = () => {
                                         </TableRow>
                                         <TableRow hidden={value === 3 ? false : true}>
                                             <TableCell colSpan={2}></TableCell>
-                                            <TableCell align="right" hidden={row.isReturn || checkDate(row.date_main) }> <Button variant="contained" color="error" onClick={() => { setOpenModalReturn(row.id);setSelected([]) }}>Yêu cầu trả hàng</Button></TableCell>
+                                            <TableCell align="right" hidden={row.isReturn || checkDate(row.date_main)}> <Button variant="contained" color="error" onClick={() => { setOpenModalReturn(row.id); setSelected([]) }}>Yêu cầu trả hàng</Button></TableCell>
                                             <TableCell hidden={!row.isReturn} >Hoá đơn đã trả hàng</TableCell>
                                             <TableCell hidden={!checkDate(row.date_main)} >Hoá đơn quá hạn trả</TableCell>
                                         </TableRow>
@@ -362,7 +429,7 @@ const OrderHistory2 = () => {
                                                     <Checkbox
                                                         color="primary"
                                                         checked={row.order_item.length === selected.length}
-                                                        onChange={(e)=>handleSelectAllClick(e,row.order_item)}
+                                                        onChange={(e) => handleSelectAllClick(e, row.order_item)}
                                                         inputProps={{
                                                             'aria-label': 'select all desserts',
                                                         }}
@@ -405,12 +472,13 @@ const OrderHistory2 = () => {
                                             ))}
                                         </TableBody>
                                     </Table>
+                                <TextField fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined" onChange={(e) => { setNote(e.target.value) }} />
                                 </TypographyJoy>
-                                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }} >
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModalReturn(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" color="error" onClick={() => { returnOrderbyIdOrder(row.id,"note chưa cho nhập");setOpenModalReturn(0) }}>
+                                    <Button variant="text" disabled={!hasSelected } color="error" type="submit" onClick={() => {  setOpenModalReturn(0) }}>
                                         Trả hàng
                                     </Button>
                                 </Box>
@@ -421,7 +489,79 @@ const OrderHistory2 = () => {
             </React.Fragment >
         );
     }
+    function RowReturn(props: { row: IOrderReturn }) {
+        const { row } = props;
+        const [open, setOpen] = React.useState(false);
+        return (
+            <React.Fragment>
+                <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} hover>
+                    <TableCell>
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setOpen(!open)}
+                        >
+                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                        {row.id}
+                    </TableCell>
+                    <TableCell align="center">{row.total_quantity_return}</TableCell>
+                    <TableCell align="center">{row.total_price_return} </TableCell>
+                    <TableCell align="center">{row.note} </TableCell>
+                    <TableCell align="center">{row.status_return} </TableCell>
+                    <TableCell align="center">{row.create_date}</TableCell>
 
+                </TableRow>
+                <TableRow>
+                    <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={8}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Box sx={{ margin: 1, alignContent: "center" }}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    Chi tiết
+                                </Typography>
+                                <div>Địa chỉ nhận :  {/*{row.diachi}*/}</div>
+                                <Table size="small" aria-label="purchases" >
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={2}>Sản phẩm</TableCell>
+                                            <TableCell align="center">Loại</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Đơn giá (VNĐ)</TableCell>
+                                            <TableCell align="center">Thành tiền (VNĐ)</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {row.order_item?.map((order_item) => (
+                                            <TableRow key={order_item.name}>
+                                                <TableCell align="left" width={100}>
+                                                    {/* <Avatar src={order_item.image} /> */}
+                                                    <img src={order_item.image} width={100} />
+                                                </TableCell>
+                                                <TableCell align="left" component="th" scope="row" >
+                                                    {order_item.name.split('-')[0]}
+                                                </TableCell>
+                                                <TableCell align="center">{order_item.optionProduct}</TableCell>
+                                                <TableCell align="center">{order_item.quantity}</TableCell>
+                                                <TableCell align="center">{order_item.price}</TableCell>
+                                                <TableCell align="center">{order_item.totalPrice}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                        <TableRow>
+                                            <TableCell rowSpan={4} colSpan={3} />
+                                            <TableCell colSpan={2}>Tổng:</TableCell>
+                                            <TableCell align="center">{row.total_quantity_return} VNĐ</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </TableRow>
+            </React.Fragment >
+        );
+    }
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -433,7 +573,7 @@ const OrderHistory2 = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-    
+
     // ---------------------------------------------------------
 
 
@@ -466,6 +606,7 @@ const OrderHistory2 = () => {
                             <Tab label="Đang giao hàng" {...a11yProps(2)} />
                             <Tab label="Đã nhận được hàng" {...a11yProps(3)} />
                             <Tab label="Đã huỷ" {...a11yProps(4)} />
+                            <Tab label="Yêu cầu trả hàng" {...a11yProps(4)} />
                         </Tabs>
                     </Box>
 
@@ -476,7 +617,7 @@ const OrderHistory2 = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
-                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
                                             <TableCell align="center">Số lượng</TableCell>
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
@@ -520,7 +661,7 @@ const OrderHistory2 = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
-                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
                                             <TableCell align="center">Số lượng</TableCell>
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
@@ -564,7 +705,7 @@ const OrderHistory2 = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
-                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
                                             <TableCell align="center">Số lượng</TableCell>
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
@@ -609,7 +750,7 @@ const OrderHistory2 = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
-                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
                                             <TableCell align="center">Số lượng</TableCell>
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
@@ -653,7 +794,7 @@ const OrderHistory2 = () => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell />
-                                            <TableCell align="center">Mã sản phẩm</TableCell>
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
                                             <TableCell align="center">Số lượng</TableCell>
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
@@ -674,6 +815,49 @@ const OrderHistory2 = () => {
                                             {history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                                 .map((row) => (
                                                     <Row key={row.id} row={row} />
+                                                ))}
+                                        </TableBody>}
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                component="div"
+                                count={history.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={5}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                            <TableContainer>
+                                <Table aria-label="collapsible table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell />
+                                            <TableCell align="center">Mã hoá đơn</TableCell>
+                                            <TableCell align="center">Số lượng</TableCell>
+                                            <TableCell align="center">Giá tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Lý do trả hàng</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
+                                            <TableCell align="center">Ngày tạo yêu cầu</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    {loading ? <Box sx={{
+                                        left: 0,
+                                        magin: 10,
+                                        right: 0,
+                                        position: 'absolute',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}><CircularProgress /></Box>
+                                        : <TableBody>
+                                            {historyReturn.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((row) => (
+                                                    <RowReturn key={row.id} row={row} />
                                                 ))}
                                         </TableBody>}
                                 </Table>

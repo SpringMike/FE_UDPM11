@@ -32,7 +32,7 @@ export const getAllOrderReturn = async () => {
 }
 
 export const updateStatusReturnOrderByAdmin = async (status_id: number, id_order: number) => {
-    return await axios.put(`${base_url}/manager-oder/update-return-satus/${status_id}?idOrderReturn=${id_order}`, { headers })
+    return await axios.put(`${base_url}/manager-oder/update-return-status/${status_id}?idOrderReturn=${id_order}`, { headers })
 
 }
 export const getOrderReturnItemsByIdOrder = async (id_order_return: number) => {

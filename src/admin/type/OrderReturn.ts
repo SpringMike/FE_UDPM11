@@ -10,12 +10,13 @@ export interface OrderReturnItemResponse {
 
 export interface OrderReturnResponse {
     id: number;
-    id_user: number;
-    name_user: string;
+    account_id: number;
+    account_name: string;
     note: string;
     id_order_purchase: number;
     createDate: Date;
     statusReturn: number;
     totalPriceReturn: number;
     totalQuantityReturn: number;
+    order_item:OrderReturnItemResponse[]
 }
