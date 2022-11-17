@@ -6,10 +6,17 @@ import { OrderReturnResponse, OrderReturnItemResponse } from '../../type/OrderRe
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { text } from 'stream/consumers';
 import { removeAllListeners } from 'process';
+import Swal from 'sweetalert2';
 
 
 const OrderReturnMananger = () => {
-
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
     const columns: ColumnsType<OrderReturnResponse> = [
         {
             title: 'Id',
@@ -283,6 +290,10 @@ const OrderReturnMananger = () => {
         updateStatusReturnOrderByAdmin(status_id, idOrder).then((res) => {
             console.log(res.data);
             setReload(true);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật trạng thái thành công '
+              })
             getAllOrderReturn().then((res) => {
                 const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
@@ -307,6 +318,10 @@ const OrderReturnMananger = () => {
             }, (err) => {
                 setReload(false);
                 console.log('OUT', err);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Cập nhật trạng thái thất bại '
+                  })
             });
         })
     };

@@ -13,8 +13,6 @@ export const getHistoryOrder = async (status_id: number, accessToken: string) =>
         await axios.get(`${base_url_public}/history/by/${status_id}`, config)
     );
 };
-
-
 export const getOrderItemHistory = async (id_order: number, accessToken: string) => {
 
     let config = {
@@ -24,6 +22,30 @@ export const getOrderItemHistory = async (id_order: number, accessToken: string)
     }
     return (
         await axios.get(`${base_url_public}/history/${id_order}`, config)
+    );
+};
+
+
+export const getHistoryOrderReturn = async ( accessToken: string) => {
+    let config = {
+        headers: {
+            token: accessToken
+        }
+    }
+    return (
+        await axios.get(`${base_url_public}/order/return/getAll`, config)
+    );
+};
+
+export const getOrderReturnItemHistory = async (id_orderReturn: number, accessToken: string) => {
+
+    let config = {
+        headers: {
+            token: accessToken
+        }
+    }
+    return (
+        await axios.get(`${base_url_public}/order/return/detail/${id_orderReturn}`, config)
     );
 };
 
