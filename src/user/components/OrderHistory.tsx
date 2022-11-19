@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
-import { IHistory, IOrderItem,IOrderReturnItem,IOrderReturn } from "../type/History";
+import { IHistory, IOrderItem, IOrderReturnItem, IOrderReturn } from "../type/History";
 import { getHistoryOrder, getHistoryOrderReturn, getOrderItemHistory, getOrderReturnItemHistory, returnOrder, updateStatus } from "../service/HistoryOrder";
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
@@ -185,6 +185,7 @@ const OrderHistory2 = () => {
         setPage(0);
         setLoading(true)
         if (status_id === 10) {
+
             let resResult: IHistory[] = []
             getHistoryOrder(status_id, accessToken).then((res: any) => {
                 setLoading(false)
@@ -197,19 +198,20 @@ const OrderHistory2 = () => {
             })
             setHistory(resResult)
         }
-        if(currentStatus == 5){
+        else if (currentStatus == 5) {
             getHistoryOrderReturn(accessToken).then((res: any) => {
                 setLoading(false)
                 console.log(res.data);
                 const newResult = res.data.map((obj: IOrderReturn) => ({ ...obj, order_item: [] }))
                 setHistoryReturn(newResult)
             })
+        } else {
+            getHistoryOrder(status_id, accessToken).then((res: any) => {
+                setLoading(false)
+                const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
+                setHistory(newResult)
+            })
         }
-        getHistoryOrder(status_id, accessToken).then((res: any) => {
-            setLoading(false)
-            const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
-            setHistory(newResult)
-        })
     }
     const onClickUpdateStatus = (status_id: number, id_order: number) => {
         updateStatus(status_id, id_order, accessToken).then((res) => {
@@ -472,13 +474,13 @@ const OrderHistory2 = () => {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                <TextField fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined" onChange={(e) => { setNote(e.target.value) }} />
+                                    <TextField fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined" onChange={(e) => { setNote(e.target.value) }} />
                                 </TypographyJoy>
                                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }} >
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModalReturn(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" disabled={!hasSelected } color="error" type="submit" onClick={() => {  setOpenModalReturn(0) }}>
+                                    <Button variant="text" disabled={!hasSelected} color="error" type="submit" onClick={() => { setOpenModalReturn(0); returnOrderbyIdOrder(row.id) }}>
                                         Trả hàng
                                     </Button>
                                 </Box>
