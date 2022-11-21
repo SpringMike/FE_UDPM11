@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
-import { IHistory, IOrderItem,IOrderReturnItem,IOrderReturn } from "../type/History";
+import { IHistory, IOrderItem, IOrderReturnItem, IOrderReturn } from "../type/History";
 import { getHistoryOrder, getHistoryOrderReturn, getOrderItemHistory, getOrderReturnItemHistory, returnOrder, updateStatus } from "../service/HistoryOrder";
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
@@ -17,9 +17,8 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Avatar, Button, Tabs, Checkbox, TextField } from "@mui/material";
+import { Button, Tabs, Checkbox, TextField } from "@mui/material";
 import Tab from '@mui/material/Tab';
-import BoxJoy from '@mui/joy/Box';
 import ButtonJoy from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import ModalJoy from '@mui/joy/Modal';
@@ -27,7 +26,6 @@ import ModalJoyDialog from '@mui/joy/ModalDialog';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import TypographyJoy from '@mui/joy/Typography';
 import moment from "moment";
-import { Margin } from "@mui/icons-material";
 import Swal from "sweetalert2";
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -71,26 +69,28 @@ const Toast = Swal.mixin({
 
 const OrderHistory2 = () => {
     let value_new: number;
-    const accessToken = useAuthStore((e) => e.accessToken);
-
     const [value, setValue] = React.useState(0);
+    const accessToken = useAuthStore((e) => e.accessToken);
     const [currentStatus, setCurrentStatus] = React.useState(5);
     const [openModal, setOpenModal] = React.useState(0);
     const [openModalReturn, setOpenModalReturn] = React.useState(0);
     const [note, setNote] = React.useState('');
     const [selected, setSelected] = React.useState<IOrderItem[]>([]);
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         console.log(newValue)
-        if (newValue == 0) {
+        if (newValue === 0) {
             value_new = 5;
-        } else if (newValue == 1) {
+        } else if (newValue === 1) {
             value_new = 6
-        } else if (newValue == 2) {
+        } else if (newValue === 2) {
             value_new = 7
-        } else if (newValue == 3) {
+        } else if (newValue === 3) {
             value_new = 8
-        } else if (newValue == 4) {
+        } else if (newValue === 4) {
             value_new = 10
+        } else if (newValue === 5) {
+            value_new = 12
         }
 
         onClickHistory(value_new)
@@ -106,7 +106,9 @@ const OrderHistory2 = () => {
         }
         setSelected([]);
     };
-
+    const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNote(event.target.value);
+    };
     const handleClick = (event: React.MouseEvent<unknown>, orderItem: IOrderItem) => {
         const selectedIndex = selected.indexOf(orderItem);
         let newSelected: IOrderItem[] = [];
@@ -159,6 +161,7 @@ const OrderHistory2 = () => {
     const [historyReturn, setHistoryReturn] = useState([] as IOrderReturn[]);
     const [loading, setLoading] = useState(false);
 
+
     useEffect(() => {
         setLoading(true)
         getHistoryOrder(5, accessToken).then((res: any) => {
@@ -196,31 +199,43 @@ const OrderHistory2 = () => {
                 resResult.concat(newResult)
             })
             setHistory(resResult)
-        }
-        if(currentStatus == 5){
+        } else if (status_id === 12) {
             getHistoryOrderReturn(accessToken).then((res: any) => {
                 setLoading(false)
                 console.log(res.data);
                 const newResult = res.data.map((obj: IOrderReturn) => ({ ...obj, order_item: [] }))
                 setHistoryReturn(newResult)
             })
+        } else {
+            getHistoryOrder(status_id, accessToken).then((res: any) => {
+                setLoading(false)
+                const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
+                setHistory(newResult)
+            })
         }
-        getHistoryOrder(status_id, accessToken).then((res: any) => {
-            setLoading(false)
-            const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
-            setHistory(newResult)
-        })
     }
-    const onClickUpdateStatus = (status_id: number, id_order: number) => {
-        updateStatus(status_id, id_order, accessToken).then((res) => {
-            onClickHistory(currentStatus)
-            if (currentStatus == 0) {
+    const onClickUpdateStatus = (status_id: number, order: IHistory) => {
+        const index = history.indexOf(order)
+        updateStatus(status_id, order.id, accessToken).then((res) => {
+            let newList: IHistory[] = [];
+            if (index === 0) {
+                newList = newList.concat(history.slice(1));
+            } else if (index === selected.length - 1) {
+                newList = newList.concat(history.slice(0, -1));
+            } else if (index > 0) {
+                newList = newList.concat(
+                    history.slice(0, index),
+                    history.slice(index + 1),
+                );
+            }
+            setHistory(newList)
+            if (currentStatus === 0) {
                 Toast.fire({
                     icon: 'success',
                     title: 'Huỷ đơn hàng thành công'
                 })
             }
-            if (currentStatus == 2) {
+            if (currentStatus === 2) {
                 Toast.fire({
                     icon: 'success',
                     title: 'Nhận đơn hàng thành công'
@@ -229,13 +244,13 @@ const OrderHistory2 = () => {
 
         }, (err) => {
             console.log(err);
-            if (currentStatus == 0) {
+            if (currentStatus === 0) {
                 Toast.fire({
                     icon: 'error',
                     title: 'Huỷ đơn hàng thất bại'
                 })
             }
-            if (currentStatus == 2) {
+            if (currentStatus === 2) {
                 Toast.fire({
                     icon: 'error',
                     title: 'Nhận đơn hàng thất bại'
@@ -291,9 +306,16 @@ const OrderHistory2 = () => {
                     <TableCell align="center">{row.total_price} </TableCell>
                     <TableCell align="center">{row.fee_money} </TableCell>
                     <TableCell align="center">{row.totalPrice} </TableCell>
+                    <TableCell align="center" hidden={!(row.status === 5)}>Chờ xác nhận</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 6)}>Chờ xác ship lấy hàng</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 7)}>Đang giao hàng</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 8)}>Giao hàng thành công</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 9)}>Giao hàng thất bại</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 10)}>Huỷ bởi người dùng</TableCell>
+                    <TableCell align="center" hidden={!(row.status === 11)}>Huỷ bởi admin</TableCell>
                     <TableCell align="center">{row.created_time}</TableCell>
                     <TableCell align="center">
-                        <Button hidden={value === 2 ? false : true} onClick={() => { onClickUpdateStatus(8, row.id) }}>
+                        <Button hidden={value === 2 ? false : true} onClick={() => { onClickUpdateStatus(8, row) }}>
                             Đã nhận được hàng</Button>
                         {/* <Button hidden={value === 0 ? false : true} onClick={() => { console.log(row.id)}}>
                             Huỷ đơn hàng</Button> */}
@@ -306,7 +328,7 @@ const OrderHistory2 = () => {
                         <ModalJoy
                             aria-labelledby="alert-dialog-ModalJoy-title"
                             aria-describedby="alert-dialog-ModalJoy-description"
-                            open={row.id == openModal}
+                            open={row.id === openModal}
                             onClose={() => setOpenModal(0)}
 
                         >
@@ -333,7 +355,7 @@ const OrderHistory2 = () => {
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModal(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" color="error" onClick={() => { onClickUpdateStatus(10, row.id); setOpenModal(0) }}>
+                                    <Button variant="text" color="error" onClick={() => { onClickUpdateStatus(10, row); setOpenModal(0) }}>
                                         Huỷ đơn
                                     </Button>
                                 </Box>
@@ -391,7 +413,7 @@ const OrderHistory2 = () => {
                                         </TableRow>
                                         <TableRow hidden={value === 3 ? false : true}>
                                             <TableCell colSpan={2}></TableCell>
-                                            <TableCell align="right" hidden={row.isReturn || checkDate(row.date_main)}> <Button variant="contained" color="error" onClick={() => { setOpenModalReturn(row.id); setSelected([]) }}>Yêu cầu trả hàng</Button></TableCell>
+                                            <TableCell align="right" > <Button variant="contained" color="error" onClick={() => { setOpenModalReturn(row.id); setSelected([]); setNote('') }}>Yêu cầu trả hàng</Button></TableCell>
                                             <TableCell hidden={!row.isReturn} >Hoá đơn đã trả hàng</TableCell>
                                             <TableCell hidden={!checkDate(row.date_main)} >Hoá đơn quá hạn trả</TableCell>
                                         </TableRow>
@@ -402,7 +424,7 @@ const OrderHistory2 = () => {
                         <ModalJoy
                             aria-labelledby="alert-dialog-ModalJoy-title"
                             aria-describedby="alert-dialog-ModalJoy-description"
-                            open={row.id == openModalReturn}
+                            open={row.id === openModalReturn}
                             onClose={() => setOpenModalReturn(0)}
                         >
                             <ModalJoyDialog variant="outlined" role="alertdialog">
@@ -472,13 +494,14 @@ const OrderHistory2 = () => {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                <TextField fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined" onChange={(e) => { setNote(e.target.value) }} />
+                                    <TextField autoComplete="off" fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined"
+                                        onChange={handleChangeInput} />
                                 </TypographyJoy>
-                                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }} >
+                                <Box component="form" sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }} >
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModalReturn(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" disabled={!hasSelected } color="error" type="submit" onClick={() => {  setOpenModalReturn(0) }}>
+                                    <Button variant="text" disabled={!hasSelected} color="error" type="submit" onClick={() => { returnOrderbyIdOrder(row.id); setOpenModalReturn(0) }}>
                                         Trả hàng
                                     </Button>
                                 </Box>
@@ -510,7 +533,11 @@ const OrderHistory2 = () => {
                     <TableCell align="center">{row.total_quantity_return}</TableCell>
                     <TableCell align="center">{row.total_price_return} </TableCell>
                     <TableCell align="center">{row.note} </TableCell>
-                    <TableCell align="center">{row.status_return} </TableCell>
+                    <TableCell align="center" hidden={!(row.status_return === 12)}>Chờ xem xét</TableCell>
+                    <TableCell align="center" hidden={!(row.status_return === 13)}>Shop đợi nhận hàng hoàn</TableCell>
+                    <TableCell align="center" hidden={!(row.status_return === 14)}>Từ chối yêu cầu</TableCell>
+                    <TableCell align="center" hidden={!(row.status_return === 15)}>Shop đã nhận được hàng hoàn</TableCell>
+                    <TableCell align="center" hidden={!(row.status_return === 16)}>Shop đã hoàn tiền</TableCell>
                     <TableCell align="center">{row.create_date}</TableCell>
 
                 </TableRow>
@@ -622,6 +649,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                             <TableCell align="center">Huỷ Đơn</TableCell>
                                         </TableRow>
@@ -666,6 +694,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -710,6 +739,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                             <TableCell align="center">Xác nhận đơn hàng</TableCell>
                                         </TableRow>
@@ -755,6 +785,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -799,6 +830,7 @@ const OrderHistory2 = () => {
                                             <TableCell align="center">Giá tiền (VNĐ)</TableCell>
                                             <TableCell align="center">Phí vận chuyển (VNĐ)</TableCell>
                                             <TableCell align="center">Tổng tiền (VNĐ)</TableCell>
+                                            <TableCell align="center">Trạng thái</TableCell>
                                             <TableCell align="center">Ngày tạo hoá đơn</TableCell>
                                         </TableRow>
                                     </TableHead>
