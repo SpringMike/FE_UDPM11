@@ -1,13 +1,21 @@
-import { Avatar, Button, ButtonBase, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Avatar, Input, Button } from "@mui/material";
 import React, { useEffect, useState } from "react"
 import { useAuthStore } from "../../hooks/zustand/auth";
 import { showCart } from "../service/SignleProduct";
 import { ICartItem } from "../type/CartItem";
-import { DataGrid, GridColDef, GridColumnHeaderParams, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridCellEditCommitParams, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom";
-import button from "../../admin/UI/Button";
 import { deleteCart, updateQuantityCart } from "../service/HistoryOrder";
+import Swal from 'sweetalert2';
+import DeleteIcon from '@mui/icons-material/Delete';
 const Cart = () => {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
     let nf = new Intl.NumberFormat();
     const idUser = useAuthStore((e) => e.id);
     const accessToken = useAuthStore((e) => e.accessToken);
@@ -15,16 +23,19 @@ const Cart = () => {
     console.log('access', idUser)
     const [cartItems, setCartItems] = useState([] as ICartItem[]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [loading, setLoading] = useState(false);
     let navigate = useNavigate()
+
     useEffect(() => {
-
         localStorage.removeItem('test1')
+        setLoading(true)
         showCart(Number(idUser), accessToken).then((response) => {
-
+            setLoading(false)
             console.log(response.data)
             setCartItems(response.data)
         },
             (err) => {
+                setLoading(false)
                 console.log('OUT', err);
             });
     }, []);
@@ -38,26 +49,69 @@ const Cart = () => {
     }, [cartItems]);
 
     const onClickUpdateQuantityCart = (quantity: number, id_cart_item: number) => {
+        console.log(quantity);
+        console.log(id_cart_item);
+        setLoading(true) 
         updateQuantityCart(quantity, id_cart_item, accessToken).then((res) => {
             console.log(res.data);
-
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thành công '
+            })
+        showCart(Number(idUser), accessToken).then((response) => {
+            setLoading(false)
+            console.log(response.data)
+            setCartItems(response.data)
+        },
+            (err) => {
+                setLoading(false)
+                console.log('OUT', err);
+            });
         }, (err) => {
-            console.log(err);
+            Toast.fire({
+                icon: 'error',
+                title: err.response.data.description
+            })
+            console.log(err.response.data.description);
+            showCart(Number(idUser), accessToken).then((response) => {
+                setLoading(false)
+                console.log(response.data)
+                setCartItems(response.data)
+            },
+                (err) => {
+                    setLoading(false)
+                    console.log('OUT', err);
+                });
         })
     }
 
     const onClickDeleteCartItem = (id_cart_item: number[]) => {
+        setLoading(true)
         deleteCart(id_cart_item, accessToken).then((res) => {
             console.log(res.data);
-
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thành công '
+            })
+            showCart(Number(idUser), accessToken).then((response) => {
+                setLoading(false)
+                console.log(response.data)
+                setCartItems(response.data)
+            },
+                (err) => {
+                    setLoading(false)
+                    console.log('OUT', err);
+                });
         }, (err) => {
             console.log(err);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thất bại '
+            })
         })
     }
 
     const columns: GridColDef[] = [
-        // { field: 'id_cart_item', headerName: 'Cart Item Id', width: 70 },
-        // { field: 'id_product_variant', headerName: 'Product Variant Id', width: 70 },
         {
             field: 'image', headerName: 'Ảnh', width: 70, headerAlign: 'center', align: 'center',
             renderCell: (params) => {
@@ -82,7 +136,14 @@ const Cart = () => {
         { field: 'option1', headerName: 'Màu', width: 70, headerAlign: 'center', align: 'center', },
         { field: 'option2', headerName: 'Kích cỡ', width: 70, headerAlign: 'center', align: 'center', },
         { field: 'option3', headerName: 'Chất liệu', width: 100, headerAlign: 'center', align: 'center', },
-        { field: 'quantity', headerName: 'Số lượng', type: 'number', editable: true, width: 130, headerAlign: 'center', align: 'center', },
+        { field: 'quantity', headerName: 'Số lượng', width: 130, headerAlign: 'center', align: 'center', type: 'number',
+            renderCell: (params) => {
+                return (
+                    <Input inputProps={{ min: 1, style: { textAlign: 'center' } }} type="number" minRows={1} value={params.row.quantity} onChange={() => { console.log(params);
+                     }} disableUnderline={true} />
+                );
+            }
+        },
         {
             field: 'wholesale_price', headerName: 'Giá tiền (VNĐ)', width: 130, headerAlign: 'center', align: 'center',
             renderCell: (params) => {
@@ -110,28 +171,18 @@ const Cart = () => {
                     <>
                         <Button color="error"
                             onClick={() => {
-                                const id : number[] = [];
+                                const id: number[] = [];
                                 let id_main = params.row.id_cart_item
                                 id.push(id_main)
                                 onClickDeleteCartItem(id)
                             }}
                         >
-                            Xoá
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                onClickUpdateQuantityCart(params.row.quantity, params.row.id_cart_item)
-                                console.log(params);
-                            }}
-                        >
-                            Sửa
+                            <DeleteIcon />
                         </Button>
                     </>
                 )
             }
-
-
-        },
+        }
     ];
 
     const onRowsSelectionHandler = (ids: any) => {
@@ -142,7 +193,6 @@ const Cart = () => {
             idsCItems.push(id_cart_item)
         });
         localStorage.setItem('test1', JSON.stringify(idsCItems))
-        // console.log(selectedRowsData);
     };
 
 
@@ -183,6 +233,7 @@ const Cart = () => {
                                             Xoá
                                         </Button>
                                         <DataGrid
+                                            loading={loading}
                                             rows={cartItems}
                                             columns={columns}
                                             pageSize={5}
@@ -190,6 +241,11 @@ const Cart = () => {
                                             getRowId={(cartItems) => cartItems.id_cart_item}
                                             onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                                             checkboxSelection
+                                            onCellEditCommit={(params: GridCellEditCommitParams) => {
+                                                // Clicking outside the cell vs enter/tab yields different results.
+                                                console.log(params);
+                                                onClickUpdateQuantityCart(params.value, Number(params.id))
+                                            }}
                                         />
                                     </div>
 

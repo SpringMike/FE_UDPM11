@@ -7,6 +7,7 @@ import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { text } from 'stream/consumers';
 import { removeAllListeners } from 'process';
 import Swal from 'sweetalert2';
+import Tag from 'antd/es/tag';
 
 
 const OrderReturnMananger = () => {
@@ -47,6 +48,12 @@ const OrderReturnMananger = () => {
         {
             title: 'Trạng Thái',
             dataIndex: 'statusReturn',
+            render: (statusReturn) => <div>   <Tag color="cyan" hidden={!(statusReturn === 12)}>Chờ xem xét</Tag>
+                <Tag color="cyan" hidden={!(statusReturn === 13)}>Shop đợi nhận hàng hoàn</Tag>
+                <Tag color="red" hidden={!(statusReturn === 14)}>Từ chối yêu cầu</Tag>
+                <Tag color="cyan" hidden={!(statusReturn=== 15)}>Shop đã nhận được hàng hoàn</Tag>
+                <Tag color="cyan" hidden={!(statusReturn === 16)}>Shop đã hoàn tiền</Tag>
+            </div>
         },
         {
             title: 'Ngày yêu cầu',
@@ -90,7 +97,7 @@ const OrderReturnMananger = () => {
             key: 'x',
             render: (id) => <div>
                 <Button type="ghost" color='info' onClick={() => { updateStatus(13, id) }} style={{ marginRight: 16 }}>Đồng ý</Button >
-                <Button danger  onClick={() => { updateStatus(11, id) }} style={{ marginRight: 14 }}>Từ chối</Button >
+                <Button danger onClick={() => { updateStatus(11, id) }} style={{ marginRight: 14 }}>Từ chối</Button >
                 <Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} />
             </div>,
         },
@@ -293,25 +300,25 @@ const OrderReturnMananger = () => {
             Toast.fire({
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
-              })
+            })
             getAllOrderReturn().then((res) => {
                 const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
                 const newShowOrder: OrderReturnResponse[] = []
                 newResult.map((e: OrderReturnResponse) => {
-                    if(status_id == 14){
+                    if (status_id == 14) {
                         if (e.statusReturn === 12) {
                             newShowOrder.push(e)
                         }
-                    }else if(status_id == 15){
+                    } else if (status_id == 15) {
                         if (e.statusReturn === 13) {
                             newShowOrder.push(e)
                         }
-                    }else{
+                    } else {
                         if (e.statusReturn === (status_id - 1)) {
                             newShowOrder.push(e)
                         }
-                        }
+                    }
                 })
                 setShowOrderByStatus(newShowOrder)
                 setReload(false);
@@ -321,7 +328,7 @@ const OrderReturnMananger = () => {
                 Toast.fire({
                     icon: 'error',
                     title: 'Cập nhật trạng thái thất bại '
-                  })
+                })
             });
         })
     };
@@ -329,19 +336,19 @@ const OrderReturnMananger = () => {
         <><div>
             <Tabs defaultActiveKey="5" onChange={onChangeTab}>
                 <Tabs.TabPane tab="Các yêu cầu trả hàng" key="12">
-                    <Table key={1}  columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ nhận hàng" key="13">
-                    <Table key={1}  columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã nhận được hàng" key="15">
-                    <Table key={1}  columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã hoàn tiền" key="16">
-                    <Table key={1}  columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã từ chối" key="14">
-                    <Table key={1}  columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
         </div>

@@ -5,6 +5,7 @@ export interface IShowOrder {
     account_id: number;
     account_name: string;
     address_id: string;
+    phone_customer: string;
     note: string;
     total_price: number;
     total_quantity: number;

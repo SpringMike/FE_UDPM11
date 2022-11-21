@@ -1,4 +1,4 @@
-import { Button, Checkbox, Modal, Table, Tabs, Image } from 'antd';
+import { Button, Checkbox, Modal, Table, Tabs, Image, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { getAllOrder, updateStatusOrderByAdmin, getOrderItemsByIdOrder } from '../../service/ManagerOrderAdmin';
@@ -28,6 +28,10 @@ const OrderPurchaseMananger = () => {
             dataIndex: 'account_name',
         },
         {
+            title: 'Số điện thoại',
+            dataIndex: 'phone_customer',
+        },
+        {
             title: 'Tổng số lượng',
             dataIndex: 'total_quantity',
         },
@@ -38,6 +42,14 @@ const OrderPurchaseMananger = () => {
         {
             title: 'Trạng Thái',
             dataIndex: 'status',
+            render: (status) => <div>   <Tag color="cyan" hidden={!(status === 5)}>Chờ xác nhận</Tag>
+                                        <Tag color="cyan" hidden={!(status === 6)}>Chờ xác ship lấy hàng</Tag>
+                                        <Tag color="cyan" hidden={!(status === 7)}>Đang giao hàng</Tag>
+                                        <Tag color="cyan" hidden={!(status === 8)}>Giao hàng thành công</Tag>
+                                        <Tag color="red" hidden={!(status === 9)}>Giao hàng thất bại</Tag>
+                                        <Tag color="red" hidden={!(status === 10)}>Huỷ bởi người dùng</Tag>
+                                        <Tag color="red" hidden={!(status === 11)}>Huỷ bởi admin</Tag>
+                                </div>
         },
         {
             title: 'Ngày Mua',
@@ -64,7 +76,7 @@ const OrderPurchaseMananger = () => {
         {
             title: 'Phân loại',
             dataIndex: '',
-            render: (IShowOrderItems:IShowOrderItems) => <div>{IShowOrderItems.option1+","+IShowOrderItems.option2+","+IShowOrderItems.option3}</div>
+            render: (IShowOrderItems: IShowOrderItems) => <div>{IShowOrderItems.option1 + "," + IShowOrderItems.option2 + "," + IShowOrderItems.option3}</div>
         },
         {
             title: 'Số lượng',
@@ -147,15 +159,16 @@ const OrderPurchaseMananger = () => {
     //   {loading ? <Antd.Spin spinning={true}></Antd.Spin>: <PlusOutlined />}
     // </div>
     //   );
+    // action_by: đợi api security của minh 
     const updateMultiple = (status_id: number) => {
         setLoading(true);
         setReload(true);
-        updateStatusOrderByAdmin(status_id, listId).then((res) => {
+        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then((res) => {
             setLoading(false);
             Toast.fire({
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
-              })
+            })
             getAllOrder().then((res) => {
                 const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
@@ -174,7 +187,7 @@ const OrderPurchaseMananger = () => {
                 Toast.fire({
                     icon: 'success',
                     title: 'Cập nhật trạng thái thất bại '
-                  })
+                })
                 console.log('OUT', err);
             });
         })
@@ -341,12 +354,12 @@ const OrderPurchaseMananger = () => {
     const updateStatus = (status_id: number, idOrder: number) => {
         const listId: number[] = []
         listId.push(idOrder)
-        updateStatusOrderByAdmin(status_id, listId).then((res) => {
+        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then((res) => {
             setReload(true);
             Toast.fire({
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
-              })
+            })
             getAllOrder().then((res) => {
                 const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
                 setShowOrder(newResult)
@@ -368,7 +381,7 @@ const OrderPurchaseMananger = () => {
                 Toast.fire({
                     icon: 'success',
                     title: 'Cập nhật trạng thái thất bại '
-                  })
+                })
                 setReload(false);
                 console.log('OUT', err);
             });
