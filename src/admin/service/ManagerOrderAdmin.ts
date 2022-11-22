@@ -38,3 +38,9 @@ export const updateStatusReturnOrderByAdmin = async (status_id: number, id_order
 export const getOrderReturnItemsByIdOrder = async (id_order_return: number) => {
     return await axios.get(`${base_url}/manager-oder/showItem/orderReturn/${id_order_return}`, { headers })
 }
+
+// search
+
+export const searchOrderAll = async (query: String) => {
+    return await axios.get(`${base_url}/manager-oder/searchAllOrder?query=${query}`, { headers })
+}

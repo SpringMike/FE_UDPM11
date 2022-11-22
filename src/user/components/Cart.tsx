@@ -136,7 +136,7 @@ const Cart = () => {
         { field: 'option1', headerName: 'Màu', width: 70, headerAlign: 'center', align: 'center', },
         { field: 'option2', headerName: 'Kích cỡ', width: 70, headerAlign: 'center', align: 'center', },
         { field: 'option3', headerName: 'Chất liệu', width: 100, headerAlign: 'center', align: 'center', },
-        { field: 'quantity', headerName: 'Số lượng', width: 130, headerAlign: 'center', align: 'center', type: 'number',
+        { field: 'quantity', headerName: 'Số lượng', editable: true, width: 130, headerAlign: 'center', align: 'center', type: 'number',
             renderCell: (params) => {
                 return (
                     <Input inputProps={{ min: 1, style: { textAlign: 'center' } }} type="number" minRows={1} value={params.row.quantity} onChange={() => { console.log(params);

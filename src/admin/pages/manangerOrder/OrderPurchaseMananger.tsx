@@ -1,12 +1,15 @@
 import { Button, Checkbox, Modal, Table, Tabs, Image, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
-import { getAllOrder, updateStatusOrderByAdmin, getOrderItemsByIdOrder } from '../../service/ManagerOrderAdmin';
+import { getAllOrder, updateStatusOrderByAdmin, getOrderItemsByIdOrder, searchOrderAll } from '../../service/ManagerOrderAdmin';
 import { IShowOrder, IShowOrderItems } from '../../type/ShowOrderType';
 import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { text } from 'stream/consumers';
 import { removeAllListeners } from 'process';
 import Swal from 'sweetalert2';
+import { Input, Space } from 'antd';
+
+const { Search } = Input;
 
 
 const OrderPurchaseMananger = () => {
@@ -42,19 +45,30 @@ const OrderPurchaseMananger = () => {
         {
             title: 'Trạng Thái',
             dataIndex: 'status',
-            render: (status) => <div>   <Tag color="cyan" hidden={!(status === 5)}>Chờ xác nhận</Tag>
-                                        <Tag color="cyan" hidden={!(status === 6)}>Chờ xác ship lấy hàng</Tag>
-                                        <Tag color="cyan" hidden={!(status === 7)}>Đang giao hàng</Tag>
-                                        <Tag color="cyan" hidden={!(status === 8)}>Giao hàng thành công</Tag>
-                                        <Tag color="red" hidden={!(status === 9)}>Giao hàng thất bại</Tag>
-                                        <Tag color="red" hidden={!(status === 10)}>Huỷ bởi người dùng</Tag>
-                                        <Tag color="red" hidden={!(status === 11)}>Huỷ bởi admin</Tag>
-                                </div>
+            render: (status) => <div>
+                <Tag color="cyan" hidden={!(status === 5)}>Chờ xác nhận</Tag>
+                <Tag color="cyan" hidden={!(status === 6)}>Chờ xác ship lấy hàng</Tag>
+                <Tag color="cyan" hidden={!(status === 7)}>Đang giao hàng</Tag>
+                <Tag color="cyan" hidden={!(status === 8)}>Giao hàng thành công</Tag>
+                <Tag color="red" hidden={!(status === 9)}>Giao hàng thất bại</Tag>
+                <Tag color="red" hidden={!(status === 10)}>Huỷ bởi người dùng</Tag>
+                <Tag color="red" hidden={!(status === 11)}>Huỷ bởi admin</Tag>
+            </div>
         },
         {
             title: 'Ngày Mua',
             dataIndex: 'created_time',
-        }
+        },
+        {
+            title: 'Hành động',
+            dataIndex: '',
+            key: 'x',
+            render: (IShowOrder: IShowOrder) => <div>
+                <Button hidden={!(IShowOrder.status === 5)} type="primary" onClick={() => { updateStatus(6, IShowOrder.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
+                <Button hidden={!(IShowOrder.status === 6)} danger onClick={() => { updateStatus(11, IShowOrder.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
+                <Button shape="circle" onClick={() => { showModal(IShowOrder.id) }} icon={<EyeOutlined />} />
+            </div>,
+        },
     ];
     const columnsForOrderItem: ColumnsType<IShowOrderItems> = [
         {
@@ -387,34 +401,51 @@ const OrderPurchaseMananger = () => {
             });
         })
     };
+    const onSearch = (value: string) => {
+        searchOrderAll(value).then(res => {
+            console.log(res.data);
+        }, (err) => {
+            console.log(err);
+        })
+    }
     return (
         <><div>
             <Tabs defaultActiveKey="5" onChange={onChangeTab}>
+                <Tabs.TabPane tab="Tất cả" key="20">
+                    <Search
+                        addonBefore="https://"
+                        placeholder="input search text"
+                        allowClear
+                        onSearch={onSearch}
+                        style={{ width: 304 }}
+                    />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ xác nhận" key="5">
                     <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Xác nhận
                     </Button>
                     <div></div>
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ lấy hàng" key="6">
                     <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Shipper đã lấy hàng
                     </Button>
                     <div></div>
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đang giao hàng" key="7">
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Giao hàng thành công" key="8">
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Giao hàng thất bại" key="9">
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã huỷ" key="10,11">
-                    <Table key={1} rowSelection={rowSelection} columns={newColumns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
         </div>
