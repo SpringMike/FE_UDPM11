@@ -1,15 +1,12 @@
-import { Button, Checkbox, Modal, Table, Tabs, Image, Tag } from 'antd';
+import { Button, Modal, Table, Tabs, Image, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getAllOrder, updateStatusOrderByAdmin, getOrderItemsByIdOrder, searchOrderAll } from '../../service/ManagerOrderAdmin';
 import { IShowOrder, IShowOrderItems } from '../../type/ShowOrderType';
-import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { text } from 'stream/consumers';
-import { removeAllListeners } from 'process';
+import { EyeOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
-import { Input, Space } from 'antd';
-
-const { Search } = Input;
+import { Input } from 'antd';
+import { debounce } from '@mui/material';
 
 
 const OrderPurchaseMananger = () => {
@@ -49,7 +46,7 @@ const OrderPurchaseMananger = () => {
                 <Tag color="cyan" hidden={!(status === 5)}>Chờ xác nhận</Tag>
                 <Tag color="cyan" hidden={!(status === 6)}>Chờ xác ship lấy hàng</Tag>
                 <Tag color="cyan" hidden={!(status === 7)}>Đang giao hàng</Tag>
-                <Tag color="cyan" hidden={!(status === 8)}>Giao hàng thành công</Tag>
+                <Tag color="green" hidden={!(status === 8)}>Giao hàng thành công</Tag>
                 <Tag color="red" hidden={!(status === 9)}>Giao hàng thất bại</Tag>
                 <Tag color="red" hidden={!(status === 10)}>Huỷ bởi người dùng</Tag>
                 <Tag color="red" hidden={!(status === 11)}>Huỷ bởi admin</Tag>
@@ -63,10 +60,11 @@ const OrderPurchaseMananger = () => {
             title: 'Hành động',
             dataIndex: '',
             key: 'x',
-            render: (IShowOrder: IShowOrder) => <div>
-                <Button hidden={!(IShowOrder.status === 5)} type="primary" onClick={() => { updateStatus(6, IShowOrder.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
-                <Button hidden={!(IShowOrder.status === 6)} danger onClick={() => { updateStatus(11, IShowOrder.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
-                <Button shape="circle" onClick={() => { showModal(IShowOrder.id) }} icon={<EyeOutlined />} />
+            render: (data: IShowOrder) => <div>
+                <Button hidden={!(data.status === 5)} type="primary" onClick={() => { updateStatus(6, data.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
+                <Button hidden={!(data.status === 5)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
+                <Button hidden={!(data.status === 6)} danger onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
+                <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },
     ];
@@ -90,7 +88,7 @@ const OrderPurchaseMananger = () => {
         {
             title: 'Phân loại',
             dataIndex: '',
-            render: (IShowOrderItems: IShowOrderItems) => <div>{IShowOrderItems.option1 + "," + IShowOrderItems.option2 + "," + IShowOrderItems.option3}</div>
+            render: (data: IShowOrderItems) => <div>{data.option1 + "," + data.option2 + "," + data.option3}</div>
         },
         {
             title: 'Số lượng',
@@ -105,41 +103,21 @@ const OrderPurchaseMananger = () => {
             dataIndex: 'total_price',
         }
     ];
-    const newColumn: ColumnsType<IShowOrder> = [
-        ...columns,
-        {
-            title: 'Hành động',
-            dataIndex: 'id',
-            key: 'x',
-            render: (id) => <div>
-                <Button type="primary" onClick={() => { updateStatus(6, id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
-                <Button danger onClick={() => { updateStatus(11, id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
-                <Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} />
-            </div>,
-        },
-    ]
     const [showOrder, setShowOrder] = useState([] as IShowOrder[])
     const [showOrderItems, setShowOrderItems] = useState([] as IShowOrderItems[])
     const [showOrderByStatus, setShowOrderByStatus] = useState([] as IShowOrder[])
-    const [newColumns, setNewColumns] = useState(newColumn as ColumnsType<IShowOrder>)
     const [listId, setListId] = useState([] as number[])
     const [reload, setReload] = useState(false);
     const [reloadTableItem, setReloadTableItem] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentTab, setCurrentTab] = useState("1");
+    const [keyword, setKeyword] = useState('');
 
     useEffect(() => {
         setReload(true);
         getAllOrder().then((res) => {
             const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
             setShowOrder(newResult)
-            const newShowOrder: IShowOrder[] = []
-            newResult.map((e: IShowOrder) => {
-                if (e.status === 5) {
-                    newShowOrder.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrder)
-            console.log(newShowOrder)
             console.log(newResult)
             setReload(false);
         }, (err) => {
@@ -159,7 +137,45 @@ const OrderPurchaseMananger = () => {
             console.log('OUT', err);
         });
     };
+    const debounceDropDown = useCallback(debounce((nextValue: string) => loadData(nextValue), 700), [currentTab])
 
+    const loadData = (value: string) => {
+        searchOrderAll(value).then(res => {
+            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
+            setShowOrder(newResult)
+            let newShowOrder: IShowOrder[] = []
+            console.log(Number(currentTab));
+            if (currentTab === "10,11") {
+                newShowOrder = [];
+                newResult.map((e: IShowOrder) => {
+                    if (e.status === 11 || e.status === 10) {
+                        newShowOrder.push(e)
+                    }
+                })
+                setShowOrderByStatus(newShowOrder)
+            } else {
+                newShowOrder = [];
+                newResult.map((e: IShowOrder) => {
+                    if (e.status === Number(currentTab)) {
+                        newShowOrder.push(e)
+                    }
+                })
+                console.log(newShowOrder);
+                setShowOrderByStatus(newShowOrder)
+            }
+            setReload(false);
+        }, (err) => {
+            console.log(err);
+            setReload(false);
+
+        })
+    }
+    function handleInputOnchange(e: any) {
+        setReload(true);
+        const { value } = e.target;
+        setKeyword(value);
+        debounceDropDown(value);
+    }
     const handleOk = () => {
         setIsModalOpen(false);
     };
@@ -168,16 +184,12 @@ const OrderPurchaseMananger = () => {
     };
 
     const [loading, setLoading] = useState(false);
-    // const load = () => (
-    // <div style={{ width: '100%' ,height:'100%', border: '1px dotted black', display: "flex", padding: 50, justifyContent: "center" }}>
-    //   {loading ? <Antd.Spin spinning={true}></Antd.Spin>: <PlusOutlined />}
-    // </div>
-    //   );
+
     // action_by: đợi api security của minh 
     const updateMultiple = (status_id: number) => {
         setLoading(true);
         setReload(true);
-        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then((res) => {
+        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then(() => {
             setLoading(false);
             Toast.fire({
                 icon: 'success',
@@ -188,7 +200,7 @@ const OrderPurchaseMananger = () => {
                 setShowOrder(newResult)
                 const newShowOrder: IShowOrder[] = []
                 res.data.map((e: IShowOrder) => {
-                    if (e.status === (status_id - 1)) {
+                    if (e.status === Number(currentTab)) {
                         newShowOrder.push(e)
                     }
                 })
@@ -235,6 +247,7 @@ const OrderPurchaseMananger = () => {
 
     const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
+        setCurrentTab(key);
         if (key === "5") {
             newShowOrder = [];
             showOrder.map((e: IShowOrder) => {
@@ -244,20 +257,6 @@ const OrderPurchaseMananger = () => {
             })
             console.log(newShowOrder)
             setShowOrderByStatus(newShowOrder)
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div>
-                        <Button type="primary" onClick={() => { updateStatus(6, id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
-                        <Button danger onClick={() => { updateStatus(11, id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
-                        <Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} />
-                    </div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
         if (key === "6") {
             newShowOrder = [];
@@ -267,20 +266,6 @@ const OrderPurchaseMananger = () => {
                 }
             })
             setShowOrderByStatus(newShowOrder)
-
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div>
-                        <Button type="primary" onClick={() => { updateStatus(7, id) }} ghost style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button>
-                        <Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} />
-                    </div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
         if (key === "7") {
             newShowOrder = [];
@@ -292,16 +277,6 @@ const OrderPurchaseMananger = () => {
 
             setShowOrderByStatus(newShowOrder)
 
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div><Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} /></div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
         if (key === "8") {
             newShowOrder = [];
@@ -311,17 +286,6 @@ const OrderPurchaseMananger = () => {
                 }
             })
             setShowOrderByStatus(newShowOrder)
-
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div><Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} /></div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
         if (key === "9") {
             newShowOrder = [];
@@ -331,17 +295,6 @@ const OrderPurchaseMananger = () => {
                 }
             })
             setShowOrderByStatus(newShowOrder)
-
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div><Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} /></div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
         if (key === "10,11") {
             newShowOrder = [];
@@ -352,73 +305,38 @@ const OrderPurchaseMananger = () => {
             })
             setShowOrderByStatus(newShowOrder)
             console.log(key + newShowOrder)
-            const newColumn: ColumnsType<IShowOrder> = [
-                ...columns,
-                {
-                    title: 'Hành động',
-                    dataIndex: 'id',
-                    key: 'x',
-                    render: (id) => <div><Button shape="circle" onClick={() => { showModal(id) }} icon={<EyeOutlined />} /></div>,
-                },
-            ]
-            setNewColumns(newColumn)
         }
     };
 
     const updateStatus = (status_id: number, idOrder: number) => {
+        setReload(true);
         const listId: number[] = []
         listId.push(idOrder)
-        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then((res) => {
-            setReload(true);
+        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then(() => {
             Toast.fire({
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
             })
-            getAllOrder().then((res) => {
-                const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
-                setShowOrder(newResult)
-                const newShowOrder: IShowOrder[] = []
-                res.data.map((e: IShowOrder) => {
-                    if (status_id === 10 || status_id === 11) {
-                        if (e.status === (5)) {
-                            newShowOrder.push(e)
-                        }
-                    } else {
-                        if (e.status === (status_id - 1)) {
-                            newShowOrder.push(e)
-                        }
-                    }
-                })
-                setShowOrderByStatus(newShowOrder)
-                setReload(false);
-            }, (err) => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Cập nhật trạng thái thất bại '
-                })
-                setReload(false);
-                console.log('OUT', err);
-            });
+            loadData(keyword)
+            setReload(false);
+        }, (error) => {
+            Toast.fire({
+                icon: 'error',
+                title: 'Cập nhật trạng thái thất bại '
+            })
         })
     };
-    const onSearch = (value: string) => {
-        searchOrderAll(value).then(res => {
-            console.log(res.data);
-        }, (err) => {
-            console.log(err);
-        })
-    }
+    type PositionType = 'right';
+
+    const OperationsSlot: Record<PositionType, React.ReactNode> = {
+        right: <Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 }}
+            className="tabs-extra-demo-button"
+            placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+    };
     return (
         <><div>
-            <Tabs defaultActiveKey="5" onChange={onChangeTab}>
-                <Tabs.TabPane tab="Tất cả" key="20">
-                    <Search
-                        addonBefore="https://"
-                        placeholder="input search text"
-                        allowClear
-                        onSearch={onSearch}
-                        style={{ width: 304 }}
-                    />
+            <Tabs defaultActiveKey={currentTab} tabBarExtraContent={OperationsSlot} onChange={onChangeTab}>
+                <Tabs.TabPane tab="Tất cả" key="1">
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ xác nhận" key="5">
