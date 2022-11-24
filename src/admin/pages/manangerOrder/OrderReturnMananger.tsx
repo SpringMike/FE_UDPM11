@@ -5,10 +5,11 @@ import { getAllOrderReturn, getOrderReturnItemsByIdOrder, searchOrderReturnAll, 
 import { OrderReturnResponse, OrderReturnItemResponse } from '../../type/OrderReturn';
 import { EyeOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
-import { Input } from 'antd';
+import { Input, DatePicker } from 'antd';
 import { debounce } from '@mui/material';
 
 const OrderReturnMananger = () => {
+    const { RangePicker } = DatePicker;
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -29,7 +30,7 @@ const OrderReturnMananger = () => {
         },
         {
             title: 'Người Mua',
-            dataIndex: 'name_user',
+            dataIndex: 'account_name',
         },
         {
             title: 'Lý do trả hàng',
@@ -47,11 +48,11 @@ const OrderReturnMananger = () => {
             title: 'Trạng Thái',
             dataIndex: 'statusReturn',
             render: (statusReturn) => <div>   <Tag color="cyan" hidden={!(statusReturn === 12)}>Chờ xem xét</Tag>
-            <Tag color="cyan" hidden={!(statusReturn === 13)}>Shop đợi nhận hàng hoàn</Tag>
-            <Tag color="red" hidden={!(statusReturn === 14)}>Từ chối yêu cầu</Tag>
-            <Tag color="cyan" hidden={!(statusReturn=== 15)}>Shop đã nhận được hàng hoàn</Tag>
-            <Tag color="green" hidden={!(statusReturn === 16)}>Shop đã hoàn tiền</Tag>
-        </div>
+                <Tag color="cyan" hidden={!(statusReturn === 13)}>Shop đợi nhận hàng hoàn</Tag>
+                <Tag color="red" hidden={!(statusReturn === 14)}>Từ chối yêu cầu</Tag>
+                <Tag color="cyan" hidden={!(statusReturn === 15)}>Shop đã nhận được hàng hoàn</Tag>
+                <Tag color="green" hidden={!(statusReturn === 16)}>Shop đã hoàn tiền</Tag>
+            </div>
         },
         {
             title: 'Ngày yêu cầu',
@@ -63,9 +64,9 @@ const OrderReturnMananger = () => {
             title: 'Hành động',
             dataIndex: '',
             key: 'x',
-            render: (data:OrderReturnResponse) => <div>
+            render: (data: OrderReturnResponse) => <div>
                 <Button hidden={!(data.statusReturn === 12)} type="ghost" color='info' onClick={() => { updateStatus(13, data.id) }} style={{ marginRight: 16 }}>Đồng ý</Button >
-                <Button hidden={!(data.statusReturn === 12)} danger  onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 14 }}>Từ chối</Button >
+                <Button hidden={!(data.statusReturn === 12)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 14 }}>Từ chối</Button >
                 <Button hidden={!(data.statusReturn === 13)} type="primary" onClick={() => { updateStatus(15, data.id) }} ghost style={{ marginRight: 16 }}>Đã nhân được hàng</Button>
                 <Button hidden={!(data.statusReturn === 16)} type="primary" onClick={() => { updateStatus(16, data.id) }} ghost style={{ marginRight: 16 }}>Đã hoàn tiền</Button>
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
@@ -101,7 +102,7 @@ const OrderReturnMananger = () => {
             dataIndex: 'totalPrice',
         }
     ];
-   
+
     const [showOrder, setShowOrder] = useState([] as OrderReturnResponse[])
     const [newShowOrder, setNewShowOrder] = useState([] as OrderReturnResponse[])
     const [showOrderItems, setShowOrderItems] = useState([] as OrderReturnItemResponse[])
@@ -115,7 +116,7 @@ const OrderReturnMananger = () => {
     useEffect(() => {
         setReload(true);
         getAllOrderReturn().then((res) => {
-            const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index,createDateString: new Date(obj.createDate).toDateString() }))
+            const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index, createDateString: new Date(obj.createDate).toLocaleString() }))
             setShowOrder(newResult)
             setNewShowOrder(newResult)
             console.log(newResult)
@@ -234,11 +235,11 @@ const OrderReturnMananger = () => {
             })
             loadData(keyword)
             setReload(false);
-        }, (err)=>{
+        }, (err) => {
             Toast.fire({
                 icon: 'error',
                 title: 'Cập nhật trạng thất bại công '
-              })
+            })
         })
     };
     const debounceDropDown = useCallback(debounce((nextValue: string) => loadData(nextValue), 700), [currentTab])
@@ -264,79 +265,66 @@ const OrderReturnMananger = () => {
     const filterDate = (startDate: any, endDate: any) => {
         let filterPass = true
         const newShowOrder: OrderReturnResponse[] = showOrder.filter(row => {
-            const date = new Date(row.createDate)
-            if (startDate) {
-                filterPass = filterPass && (new Date(startDate) < date)
-            }
-            if (endDate) {
-                filterPass = filterPass && (new Date(endDate) > date)
-            }
+            filterPass = true
+            const date = new Date(row.createDateString)
+             if (startDate && endDate) {
+                filterPass = filterPass && (new Date(startDate) < date) && (new Date(endDate) > date)
+             }
             //if filterPass comes back `false` the row is filtered out
             return filterPass
-        })
-            .map((obj: OrderReturnResponse) => ({ ...obj }))
-        console.log(newShowOrder)
+        }).map((obj: OrderReturnResponse) => ({ ...obj }))
         setNewShowOrder(newShowOrder)
     }
     const [dateFilter, setDateFilter] = useState<{ start: any, end: any }>({ start: null, end: null })
     useEffect(() => {
         filterDate(dateFilter.start, dateFilter.end)
-        let newShowOrderByStatus: OrderReturnResponse[] = []
-        console.log(Number(currentTab));
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === Number(currentTab)) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            console.log(newShowOrderByStatus);
-            setShowOrderByStatus(newShowOrderByStatus)
-
-    }, [dateFilter])
-    useEffect(() => {
-        filterDate(dateFilter.start, dateFilter.end)
-        let newShowOrderByStatus: OrderReturnResponse[] = []
-        console.log(Number(currentTab));
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === Number(currentTab)) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            console.log(newShowOrderByStatus);
-            setShowOrderByStatus(newShowOrderByStatus)
-        
     }, [showOrder])
+    useEffect(() => {
+        let newShowOrderByStatus: OrderReturnResponse[] = []
+        console.log(Number(currentTab));
+        newShowOrderByStatus = [];
+        showOrder.map((e: OrderReturnResponse) => {
+            if (e.statusReturn === Number(currentTab)) {
+                newShowOrderByStatus.push(e)
+            }
+        })
+        console.log(newShowOrderByStatus);
+        setShowOrderByStatus(newShowOrderByStatus)
+    }, [newShowOrder])
     const onChangeRangePicker = (dates: any, dateStrings: any) => {
         setDateFilter({ start: (dateStrings[0] === "") ? null : dateStrings[0], end: (dateStrings[1] === "") ? null : dateStrings[1] })
+        filterDate((dateStrings[0] === "") ? null : dateStrings[0], (dateStrings[1] === "") ? null : dateStrings[1])
     }
     type PositionType = 'right';
 
     const OperationsSlot: Record<PositionType, React.ReactNode> = {
-        right: <Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 }}
+        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
             className="tabs-extra-demo-button"
-            placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+            placeholder="Tìm kiếm theo mã đơn hàng mua, Tên người mua" />
+
+            <RangePicker showTime onChange={onChangeRangePicker} /></>
+
     };
     return (
         <><div>
             <Tabs defaultActiveKey="5" onChange={onChangeTab} tabBarExtraContent={OperationsSlot}>
                 <Tabs.TabPane tab="Tất cả" key="1">
-                    <Table key={1}  columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Các yêu cầu trả hàng" key="12">
-                    <Table key={1}  columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ nhận hàng" key="13">
-                    <Table key={1}  columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã nhận được hàng" key="15">
-                    <Table key={1}  columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã hoàn tiền" key="16">
-                    <Table key={1}  columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã từ chối" key="14">
-                    <Table key={1}  columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
         </div>

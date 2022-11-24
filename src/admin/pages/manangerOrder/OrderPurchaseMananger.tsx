@@ -120,7 +120,7 @@ const OrderPurchaseMananger = () => {
     useEffect(() => {
         setReload(true);
         getAllOrder().then((res) => {
-            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index, createDateString: new Date(obj.created_time).toDateString() }))
+            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index, createDateString: new Date(obj.created_time).toLocaleString() }))
             setShowOrder(newResult)
             setNewShowOrder(newResult)
             console.log(newResult)
@@ -315,74 +315,51 @@ const OrderPurchaseMananger = () => {
     const filterDate = (startDate: any, endDate: any) => {
         let filterPass = true
         const newShowOrder: IShowOrder[] = showOrder.filter(row => {
-            const date = new Date(row.created_time)
-            if (startDate) {
-                filterPass = filterPass && (new Date(startDate) < date)
-            }
-            if (endDate) {
-                filterPass = filterPass && (new Date(endDate) > date)
-            }
+            filterPass = true
+            const date = new Date(row.createDateString)
+             if (startDate && endDate) {
+                filterPass = filterPass && (new Date(startDate) < date) && (new Date(endDate) > date)
+             }
             //if filterPass comes back `false` the row is filtered out
             return filterPass
-        })
-            .map((obj: IShowOrder) => ({ ...obj }))
-        console.log(newShowOrder)
+        }).map((obj: IShowOrder) => ({ ...obj }))
         setNewShowOrder(newShowOrder)
     }
     const [dateFilter, setDateFilter] = useState<{ start: any, end: any }>({ start: null, end: null })
     useEffect(() => {
         filterDate(dateFilter.start, dateFilter.end)
-        let newShowOrderByStatus: IShowOrder[] = []
-        console.log(Number(currentTab));
-        if (currentTab === "10,11") {
-            newShowOrderByStatus = [];
-            newShowOrder.map((e: IShowOrder) => {
-                if (e.status === 11 || e.status === 10) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        } else {
-            newShowOrderByStatus = [];
-            newShowOrder.map((e: IShowOrder) => {
-                if (e.status === Number(currentTab)) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            console.log(newShowOrder);
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
-    }, [dateFilter])
-    useEffect(() => {
-        filterDate(dateFilter.start, dateFilter.end)
-        let newShowOrderByStatus: IShowOrder[] = []
-        console.log(Number(currentTab));
-        if (currentTab === "10,11") {
-            newShowOrderByStatus = [];
-            newShowOrder.map((e: IShowOrder) => {
-                if (e.status === 11 || e.status === 10) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        } else {
-            newShowOrderByStatus = [];
-            newShowOrder.map((e: IShowOrder) => {
-                if (e.status === Number(currentTab)) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            console.log(newShowOrder);
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
     }, [showOrder])
+    useEffect(() => {
+        let newShowOrderByStatus: IShowOrder[] = []
+        console.log(Number(currentTab));
+        if (currentTab === "10,11") {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === 11 || e.status === 10) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            setShowOrderByStatus(newShowOrderByStatus)
+        } else {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === Number(currentTab)) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            console.log(newShowOrder);
+            setShowOrderByStatus(newShowOrderByStatus)
+        }
+    }, [newShowOrder])
     const onChangeRangePicker = (dates: any, dateStrings: any) => {
         setDateFilter({ start: (dateStrings[0] === "") ? null : dateStrings[0], end: (dateStrings[1] === "") ? null : dateStrings[1] })
+        filterDate((dateStrings[0] === "") ? null : dateStrings[0], (dateStrings[1] === "") ? null : dateStrings[1])
+        console.log("start",(dateStrings[0] === "") ? null : dateStrings[0],"end", (dateStrings[1] === "") ? null : dateStrings[1]);
     }
 
     type PositionType = 'right';
     const OperationsSlot: Record<PositionType, React.ReactNode> = {
-        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 }}
+        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 , marginBottom: 10 }}
             className="tabs-extra-demo-button"
             placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
             <RangePicker showTime onChange={onChangeRangePicker} /></>
