@@ -55,7 +55,9 @@ const OrderReturnMananger = () => {
         },
         {
             title: 'Ngày yêu cầu',
-            dataIndex: 'createDate',
+            dataIndex: 'createDateString',
+            // render: (createDate) => <div>{createDate}</div>
+
         },
         {
             title: 'Hành động',
@@ -101,6 +103,7 @@ const OrderReturnMananger = () => {
     ];
    
     const [showOrder, setShowOrder] = useState([] as OrderReturnResponse[])
+    const [newShowOrder, setNewShowOrder] = useState([] as OrderReturnResponse[])
     const [showOrderItems, setShowOrderItems] = useState([] as OrderReturnItemResponse[])
     const [showOrderByStatus, setShowOrderByStatus] = useState([] as OrderReturnResponse[])
     // const [newColumns, setNewColumns] = useState(newColumn as ColumnsType<OrderReturnResponse>)
@@ -112,8 +115,9 @@ const OrderReturnMananger = () => {
     useEffect(() => {
         setReload(true);
         getAllOrderReturn().then((res) => {
-            const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index }))
+            const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index,createDateString: new Date(obj.createDate).toDateString() }))
             setShowOrder(newResult)
+            setNewShowOrder(newResult)
             console.log(newResult)
             setReload(false);
         }, (err) => {
@@ -167,56 +171,56 @@ const OrderReturnMananger = () => {
         onChange: onSelectChange,
     };
 
-    let newShowOrder: OrderReturnResponse[] = []
+    let newShowOrderByStatus: OrderReturnResponse[] = []
 
     const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
         setCurrentTab(key)
         if (key === "12") {
-            newShowOrder = [];
+            newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
                 if (e.statusReturn === 12) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            console.log(newShowOrder)
-            setShowOrderByStatus(newShowOrder)
+            console.log(newShowOrderByStatus)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "13") {
-            newShowOrder = [];
+            newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
                 if (e.statusReturn === 13) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "14") {
-            newShowOrder = [];
+            newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
                 if (e.statusReturn === 14) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "15") {
-            newShowOrder = [];
+            newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
                 if (e.statusReturn === 15) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "16") {
-            newShowOrder = [];
+            newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
                 if (e.statusReturn === 16) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
     };
 
@@ -243,16 +247,6 @@ const OrderReturnMananger = () => {
         searchOrderReturnAll(value).then(res => {
             const newResult = res.data.map((obj: OrderReturnResponse, index: number) => ({ ...obj, key: index }))
             setShowOrder(newResult)
-            let newShowOrder: OrderReturnResponse[] = []
-            console.log(Number(currentTab));
-                newShowOrder = [];
-                newResult.map((e: OrderReturnResponse) => {
-                    if (e.statusReturn === Number(currentTab)) {
-                        newShowOrder.push(e)
-                    }
-                })
-                console.log(newShowOrder);
-                setShowOrderByStatus(newShowOrder)
             setReload(false);
         }, (err) => {
             console.log(err);
@@ -265,6 +259,56 @@ const OrderReturnMananger = () => {
         const { value } = e.target;
         setKeyword(value);
         debounceDropDown(value);
+    }
+
+    const filterDate = (startDate: any, endDate: any) => {
+        let filterPass = true
+        const newShowOrder: OrderReturnResponse[] = showOrder.filter(row => {
+            const date = new Date(row.createDate)
+            if (startDate) {
+                filterPass = filterPass && (new Date(startDate) < date)
+            }
+            if (endDate) {
+                filterPass = filterPass && (new Date(endDate) > date)
+            }
+            //if filterPass comes back `false` the row is filtered out
+            return filterPass
+        })
+            .map((obj: OrderReturnResponse) => ({ ...obj }))
+        console.log(newShowOrder)
+        setNewShowOrder(newShowOrder)
+    }
+    const [dateFilter, setDateFilter] = useState<{ start: any, end: any }>({ start: null, end: null })
+    useEffect(() => {
+        filterDate(dateFilter.start, dateFilter.end)
+        let newShowOrderByStatus: OrderReturnResponse[] = []
+        console.log(Number(currentTab));
+            newShowOrderByStatus = [];
+            showOrder.map((e: OrderReturnResponse) => {
+                if (e.statusReturn === Number(currentTab)) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            console.log(newShowOrderByStatus);
+            setShowOrderByStatus(newShowOrderByStatus)
+
+    }, [dateFilter])
+    useEffect(() => {
+        filterDate(dateFilter.start, dateFilter.end)
+        let newShowOrderByStatus: OrderReturnResponse[] = []
+        console.log(Number(currentTab));
+            newShowOrderByStatus = [];
+            showOrder.map((e: OrderReturnResponse) => {
+                if (e.statusReturn === Number(currentTab)) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            console.log(newShowOrderByStatus);
+            setShowOrderByStatus(newShowOrderByStatus)
+        
+    }, [showOrder])
+    const onChangeRangePicker = (dates: any, dateStrings: any) => {
+        setDateFilter({ start: (dateStrings[0] === "") ? null : dateStrings[0], end: (dateStrings[1] === "") ? null : dateStrings[1] })
     }
     type PositionType = 'right';
 

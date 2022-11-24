@@ -5,11 +5,12 @@ import { getAllOrder, updateStatusOrderByAdmin, getOrderItemsByIdOrder, searchOr
 import { IShowOrder, IShowOrderItems } from '../../type/ShowOrderType';
 import { EyeOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
-import { Input } from 'antd';
+import { Input, DatePicker } from 'antd';
 import { debounce } from '@mui/material';
 
 
 const OrderPurchaseMananger = () => {
+    const { RangePicker } = DatePicker;
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -54,7 +55,9 @@ const OrderPurchaseMananger = () => {
         },
         {
             title: 'Ngày Mua',
-            dataIndex: 'created_time',
+            dataIndex: 'createDateString',
+            // render: (createDateString) => <div>{createDateString}</div>
+
         },
         {
             title: 'Hành động',
@@ -104,6 +107,7 @@ const OrderPurchaseMananger = () => {
         }
     ];
     const [showOrder, setShowOrder] = useState([] as IShowOrder[])
+    const [newShowOrder, setNewShowOrder] = useState([] as IShowOrder[])
     const [showOrderItems, setShowOrderItems] = useState([] as IShowOrderItems[])
     const [showOrderByStatus, setShowOrderByStatus] = useState([] as IShowOrder[])
     const [listId, setListId] = useState([] as number[])
@@ -116,8 +120,9 @@ const OrderPurchaseMananger = () => {
     useEffect(() => {
         setReload(true);
         getAllOrder().then((res) => {
-            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
+            const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index, createDateString: new Date(obj.created_time).toDateString() }))
             setShowOrder(newResult)
+            setNewShowOrder(newResult)
             console.log(newResult)
             setReload(false);
         }, (err) => {
@@ -143,26 +148,6 @@ const OrderPurchaseMananger = () => {
         searchOrderAll(value).then(res => {
             const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
             setShowOrder(newResult)
-            let newShowOrder: IShowOrder[] = []
-            console.log(Number(currentTab));
-            if (currentTab === "10,11") {
-                newShowOrder = [];
-                newResult.map((e: IShowOrder) => {
-                    if (e.status === 11 || e.status === 10) {
-                        newShowOrder.push(e)
-                    }
-                })
-                setShowOrderByStatus(newShowOrder)
-            } else {
-                newShowOrder = [];
-                newResult.map((e: IShowOrder) => {
-                    if (e.status === Number(currentTab)) {
-                        newShowOrder.push(e)
-                    }
-                })
-                console.log(newShowOrder);
-                setShowOrderByStatus(newShowOrder)
-            }
             setReload(false);
         }, (err) => {
             console.log(err);
@@ -243,68 +228,69 @@ const OrderPurchaseMananger = () => {
         onChange: onSelectChange,
     };
 
-    let newShowOrder: IShowOrder[] = []
+    let newShowOrderByStatus: IShowOrder[] = []
 
     const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
         setCurrentTab(key);
         if (key === "5") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 5) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
             console.log(newShowOrder)
-            setShowOrderByStatus(newShowOrder)
+            console.log(newShowOrderByStatus)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "6") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 6) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "7") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 7) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
 
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
 
         }
         if (key === "8") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 8) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "9") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 9) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
         }
         if (key === "10,11") {
-            newShowOrder = [];
-            showOrder.map((e: IShowOrder) => {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
                 if (e.status === 11 || e.status === 10) {
-                    newShowOrder.push(e)
+                    newShowOrderByStatus.push(e)
                 }
             })
-            setShowOrderByStatus(newShowOrder)
-            console.log(key + newShowOrder)
+            setShowOrderByStatus(newShowOrderByStatus)
+            console.log(key + newShowOrderByStatus)
         }
     };
 
@@ -326,18 +312,86 @@ const OrderPurchaseMananger = () => {
             })
         })
     };
-    type PositionType = 'right';
+    const filterDate = (startDate: any, endDate: any) => {
+        let filterPass = true
+        const newShowOrder: IShowOrder[] = showOrder.filter(row => {
+            const date = new Date(row.created_time)
+            if (startDate) {
+                filterPass = filterPass && (new Date(startDate) < date)
+            }
+            if (endDate) {
+                filterPass = filterPass && (new Date(endDate) > date)
+            }
+            //if filterPass comes back `false` the row is filtered out
+            return filterPass
+        })
+            .map((obj: IShowOrder) => ({ ...obj }))
+        console.log(newShowOrder)
+        setNewShowOrder(newShowOrder)
+    }
+    const [dateFilter, setDateFilter] = useState<{ start: any, end: any }>({ start: null, end: null })
+    useEffect(() => {
+        filterDate(dateFilter.start, dateFilter.end)
+        let newShowOrderByStatus: IShowOrder[] = []
+        console.log(Number(currentTab));
+        if (currentTab === "10,11") {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === 11 || e.status === 10) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            setShowOrderByStatus(newShowOrderByStatus)
+        } else {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === Number(currentTab)) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            console.log(newShowOrder);
+            setShowOrderByStatus(newShowOrderByStatus)
+        }
+    }, [dateFilter])
+    useEffect(() => {
+        filterDate(dateFilter.start, dateFilter.end)
+        let newShowOrderByStatus: IShowOrder[] = []
+        console.log(Number(currentTab));
+        if (currentTab === "10,11") {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === 11 || e.status === 10) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            setShowOrderByStatus(newShowOrderByStatus)
+        } else {
+            newShowOrderByStatus = [];
+            newShowOrder.map((e: IShowOrder) => {
+                if (e.status === Number(currentTab)) {
+                    newShowOrderByStatus.push(e)
+                }
+            })
+            console.log(newShowOrder);
+            setShowOrderByStatus(newShowOrderByStatus)
+        }
+    }, [showOrder])
+    const onChangeRangePicker = (dates: any, dateStrings: any) => {
+        setDateFilter({ start: (dateStrings[0] === "") ? null : dateStrings[0], end: (dateStrings[1] === "") ? null : dateStrings[1] })
+    }
 
+    type PositionType = 'right';
     const OperationsSlot: Record<PositionType, React.ReactNode> = {
-        right: <Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 }}
+        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 }}
             className="tabs-extra-demo-button"
             placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+            <RangePicker showTime onChange={onChangeRangePicker} /></>
     };
     return (
         <><div>
             <Tabs defaultActiveKey={currentTab} tabBarExtraContent={OperationsSlot} onChange={onChangeTab}>
                 <Tabs.TabPane tab="Tất cả" key="1">
-                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ xác nhận" key="5">
                     <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
