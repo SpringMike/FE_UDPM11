@@ -9,6 +9,7 @@ import Radio, { radioClasses } from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import { useAuthStore } from "../../hooks/zustand/auth";
+import Swal from "sweetalert2";
 function SingleProduct() {
     const accessToken = useAuthStore((e) => e.accessToken)
     let nf = new Intl.NumberFormat();
@@ -24,7 +25,13 @@ function SingleProduct() {
 
     const [quantityBuy, setQuantityBuy] = useState(1);
 
-
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
 
 
     useEffect(() => {
@@ -62,8 +69,16 @@ function SingleProduct() {
         console.log('Quantity ????', quantityBuy);
         addToCart(Number(quantityBuy), infos.id, accessToken).then((res) => {
             console.log(res.data)
+            Toast.fire({
+                icon: 'success',
+                title: 'Thêm vào giỏ thành công '
+              })
         }, (err) => {
             console.log(err)
+            Toast.fire({
+                icon: 'success',
+                title: 'Thêm vào giỏ thất bại'
+              })
         })
     }
     return (

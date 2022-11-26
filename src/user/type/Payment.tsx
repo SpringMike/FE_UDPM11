@@ -7,6 +7,12 @@ export interface BankInfo {
   iconFull: string
 }
 
+export interface IAmount {
+  id: number
+  account_name: string
+  total: string
+}
+
 export interface GetPaymentMethodResponse {
   paymentTokens: PaymentTokensType[]
   paymentMethods: PaymentMethodsType[]

@@ -5,11 +5,24 @@ export interface IShowOrder {
     account_id: number;
     account_name: string;
     address_id: string;
+    phone_customer: string;
     note: string;
     total_price: number;
     total_quantity: number;
     status: number;
     type: number;
-    created_time: string;
+    created_time: Date;
     code: string;
+}
+export interface IShowOrderItems {
+    id: number;
+    quantity: number;
+    price: number;
+    total_price: number;
+    image: string;
+    name: string;
+    option1: string;
+    option2: string;
+    option3: string;
+    megerOp: string;
 }

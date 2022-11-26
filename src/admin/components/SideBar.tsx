@@ -5,10 +5,14 @@ import type { MenuProps } from "antd/es/menu";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WebIcon from '@mui/icons-material/Web';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
 import { Dashboard, ImportExportOutlined } from "@mui/icons-material";
 import React from "react";
+import OrderPurchaseMananger from "../pages/manangerOrder/OrderPurchaseMananger";
+import OrderReturnMananger from "../pages/manangerOrder/OrderReturnMananger";
 
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -35,15 +39,17 @@ const items: MenuItem[] = [
     getItem("Danh sách sản phẩm", "/products"),
     getItem("Danh mục sản phẩm", "/categories"),
   ]),
-  getItem("Hàng hoá", "", <Dashboard />, [
+  getItem("Hàng hoá", "sub2", <Dashboard />, [
     getItem("Nhập hàng", "purchase_orders", <ImportExportOutlined />),
   ]),
   getItem("Nhà cung cấp", "supplier", <ShopOutlined />),
   getItem("Nhân Viên", "staff", <TeamOutlined />),
   getItem("Kho hàng", "/inventories", <WarehouseIcon />),
   getItem("Website người dùng", "/home-user", <WebIcon />),
-  getItem("Order", "/order-manager", <WebIcon />),
-
+  getItem("Đơn hàng", "sub3", <AssignmentIcon />, [
+    getItem("Đơn hàng", "order-manager",<AssignmentIcon />),
+    getItem("Đơn yêu cầu trả", "order-return-manager",<AssignmentReturnIcon />),
+  ]),
   getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];
 

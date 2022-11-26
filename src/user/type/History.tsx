@@ -10,7 +10,10 @@ export interface IHistory {
     fee_money: number;
     created_time: string;
     totalPrice: number;
-    order_item: IOrderItem[]
+    order_item: IOrderItem[];
+    isReturn: boolean;
+    date_main: Date;
+
 }
 
 
@@ -26,5 +29,29 @@ export interface IOrderItem {
     price: number;
     total_price: number;
     quantity: number;
+    id_product: number
+
+}
+export interface IOrderReturn {
+    key: React.Key;
+    account_id: number ;
+    account_name: string;
+    create_date: string;
+    id: number;
+    id_order_purchase: number;
+    note: string;
+    status_return: number;
+    total_price_return: number;
+    total_quantity_return: number;
+    order_item: IOrderReturnItem[]
+
+}
+export interface IOrderReturnItem {
+    image:string;
+    name: string;
+    optionProduct:string;
+    price:number;
+    quantity:number;
+    totalPrice:number
 }
 
