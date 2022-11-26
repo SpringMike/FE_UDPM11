@@ -3,6 +3,7 @@ import {IHistoryStatus} from "../../type/ImportInvoiceType";
 // import {getHistoryStatusImportInvoice} from "../../services/api";
 import {Button, Modal, Table} from "antd";
 import {columnsHistoryStatus} from "../../datatablesource/ImportInvoice";
+import React from "react";
 
 type Props = {
   data: IHistoryStatus[];

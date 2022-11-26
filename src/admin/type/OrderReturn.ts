@@ -15,6 +15,7 @@ export interface OrderReturnResponse {
     note: string;
     id_order_purchase: number;
     createDate: Date;
+    createDateString: string;
     statusReturn: number;
     totalPriceReturn: number;
     totalQuantityReturn: number;
