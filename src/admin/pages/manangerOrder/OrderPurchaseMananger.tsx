@@ -18,6 +18,10 @@ const OrderPurchaseMananger = () => {
         timer: 3000,
         timerProgressBar: true,
     })
+
+    const printInvoicePdf = (id_account:number, id_order:number) => {
+        window.open('http://localhost:8080/api/orderPurchase/pdf/'+id_account+'/'+id_order+'');
+    }
     const columns: ColumnsType<IShowOrder> = [
         {
             title: 'Id',
@@ -65,6 +69,7 @@ const OrderPurchaseMananger = () => {
             key: 'x',
             render: (data: IShowOrder) => <div>
                 <Button hidden={!(data.status === 5)} type="primary" onClick={() => { updateStatus(6, data.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
+                <Button hidden={(data.status === 5)} type="primary" onClick={() => { printInvoicePdf(data.account_id, data.id) }} ghost style={{ marginRight: 16 }}>Xuất hoá đơn</Button >
                 <Button hidden={!(data.status === 5)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
                 <Button hidden={!(data.status === 6)} danger onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
