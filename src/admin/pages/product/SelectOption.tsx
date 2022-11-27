@@ -35,7 +35,7 @@ const SelectOption = (props:ISelectOption) => {
     return (
         <>
             <Mui.Paper sx={{ px: 5, py: 2, height: 300 }} >
-                <h1>Thêm thuộc tính</h1>
+                <h5>Thêm thuộc tính</h5>
 
                 {
                     options.map
@@ -75,7 +75,7 @@ const SelectOption = (props:ISelectOption) => {
                                     >
 
                                     </Antd.Select>
-                                    {index === options.length - 1 ? <Mui.Button onClick={() => deleteOption(index)} endIcon={<Delete />} color={'error'} ></Mui.Button> : null}
+                                    {index === options.length - 1 ? <Mui.Button onClick={() => deleteOption(index)} style={{minWidth:"0px"}} endIcon={<Delete />} color={'error'} ></Mui.Button> : null}
                                 </>
 
 

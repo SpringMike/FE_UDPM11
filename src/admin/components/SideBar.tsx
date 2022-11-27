@@ -30,7 +30,7 @@ const items: MenuItem[] = [
   // getItem("Đơn vị vận chuyển", "/transport-companies", <LocalShippingIcon />),
 
   getItem("Quản lý sản phẩm", "sub1", <AppstoreOutlined />, [
-    getItem("Thêm sản phẩm", "/add_product"),
+    getItem("Thêm sản phẩm", "/products/add_product"),
     getItem("Danh sách sản phẩm", "/products"),
     getItem("Danh mục sản phẩm", "/categories"),
   ]),

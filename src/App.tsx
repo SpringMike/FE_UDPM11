@@ -27,6 +27,8 @@ import Cart from "./user/components/Cart";
 import Home from "./user/components/Home";
 import Shop from "./user/components/Shop";
 import SignleProduct from "./user/components/SignleProduct";
+import ListProduct from "./admin/pages/product/ListProduct";
+import ProductDetails from "./admin/pages/product/ProductDetails";
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -120,9 +122,18 @@ const App: React.FC = () => {
                     path: "/inventories",
                     element: <InventoryList/>,
                 },
+
                 {
-                    path: "/add_product",
-                    element: <AddProduct/>,
+                    path: "/products",
+                    children: [
+                        {
+                            path: "add_product",
+                            element: <AddProduct />,
+                        },
+                        { index: true, element: <ListProduct /> },
+                        { path: ":id", element: <ProductDetails /> },
+
+                    ],
                 },
             ],
         },

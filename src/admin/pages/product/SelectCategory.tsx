@@ -2,7 +2,7 @@ import * as Mui from '@mui/material'
 import * as Antd from 'antd'
 import { DefaultOptionType } from 'antd/lib/select'
 import { stringify } from 'querystring'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getCategories } from '../../service/CategoryApi'
 import { Category } from '../../type/CategoryType'
 interface ISelectCategory {
@@ -25,7 +25,9 @@ const SelectCategory = (props: ISelectCategory) => {
         <>
 
             <Mui.Paper sx={{ px: 5, py: 2, height: 250, mb: 2 }}>
-                <h1>Chọn Danh mục </h1>
+
+
+                <h5>Chọn Danh mục </h5>
                 <Antd.Select
                     style={{ width: '100%', maxLines: 3, marginTop: '40px', marginBottom: 10, borderRadius: 5 }} size={'large'}
                     showSearch

@@ -50,7 +50,6 @@ const AddProduct = (props: any) => {
     const [open, setOpen] = React.useState(false);
     const [isCreated, setIsCreated] = useState(false)
 
-
     const [imageUrl, setImageUrl] = useState<string>();
     const navigate = useNavigate()
     //function
@@ -98,7 +97,9 @@ const AddProduct = (props: any) => {
                 icon: 'success',
                 title: 'Thêm sản phẩm thành công'
             }).then()
-            localStorage.removeItem('products')
+            if (response.data.product.id) {
+                navigate(`/products/${response.data.product.id}`)
+            }
             //     }
             //     else {
             //         ToastCustom.fire({
@@ -210,7 +211,7 @@ const AddProduct = (props: any) => {
         return (
             <div>
                 <Mui.Paper sx={{px: 5, py: 2, height: 565}}>
-                    <h1>Thông tin chung</h1>
+                    <h5>Thông tin chung</h5>
                     <hr/>
                     <Antd.Form.Item style={{marginTop: 50}} labelCol={{span: 24}} labelAlign='left' label='Tên sản phẩm'
                                     name="name"
@@ -262,7 +263,9 @@ const AddProduct = (props: any) => {
 
         return (
             <Mui.Paper sx={{px: 5, py: 2, height: 250, mb: 2}}>
-                <h1>Thêm hình ảnh </h1>
+                <h5>Thêm hình ảnh</h5>
+
+
                 <div style={{margin: '20px 20px'}}>
 
                     <ImageUpload imageUrl={imageUrl} setUrl={onImageChange}/>
@@ -274,7 +277,8 @@ const AddProduct = (props: any) => {
     const Variants = () => {
         return (
             <div>
-                <h1>Các phiên bản</h1>
+                <h5>Các phiên bản</h5>
+
                 <Mui.TableContainer component={Mui.Paper} sx={{maxHeight: 500, overflow: 'hiden'}}>
                     <Mui.Table aria-label="simple table" stickyHeader
                     >
@@ -328,7 +332,6 @@ const AddProduct = (props: any) => {
                                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             onChange={(e) => {
                                                 variant.importPrice = Number(e)
-
                                             }}/>
 
                                     </Mui.TableCell>
@@ -343,12 +346,12 @@ const AddProduct = (props: any) => {
     return (
         <div className='p-5'>
             <Antd.Spin spinning={open} tip={'Đang lưu...'}>
-
                 <h2 style={{fontSize: '15px', marginBottom: 20}}>
                     <Link to="/products">
                         <LeftOutlined/> Danh sách sản phẩm
                     </Link>
                 </h2>
+
                 <Antd.Form onFinish={onSubmit}
                            initialValues={product}
                            onValuesChange={(change, value) => {

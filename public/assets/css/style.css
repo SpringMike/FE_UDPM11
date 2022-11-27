@@ -4,10 +4,10 @@
 [Table of contents]
 
 1. Body
-	2. Header 
-		2.1. Navigation 
-		2.2. Menu 
-		2.3. Cart 
+	2. Header
+		2.1. Navigation
+		2.2. Menu
+		2.3. Cart
 	3. Banner
 		3.1 Slick Slider
 	4. Products
@@ -15,7 +15,7 @@
 		4.2 Single Product
 	5. Pricing
 	6. Clients
-	7. Instagram Feed 
+	7. Instagram Feed
 	8. User Dashboard
 		8.1 User Profile
 		8.2 Dashboard
@@ -28,12 +28,12 @@
 		10.3 Product Checkout Details
 		10.4 Purchase Confirmation
 	11.404 Page
-	12. Contact 
-		12.1  Contact Form 
+	12. Contact
+		12.1  Contact Form
 		12.2 Contact Details
 		12.3 Social Icons
 	13.Footer
-	
+
 
 -------------------------------------------------------------------*/
 /*=== MEDIA QUERY ===*/
@@ -44,18 +44,18 @@ html, body {
 
 body {
   line-height: 1.7;
-  font-family: "Catamaran", sans-serif;
+  /*font-family: "Catamaran", sans-serif;*/
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
 
 p {
-  font-family: "Source Sans Pro", sans-serif;
+  /*font-family: "Source Sans Pro", sans-serif;*/
   color: #757575;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Catamaran", sans-serif;
+  /*font-family: "Catamaran", sans-serif;*/
   font-weight: 600;
   color: #000;
 }
@@ -119,17 +119,17 @@ a:hover {
   background: #fb5c42;
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="tel"] {
-  border-radius: 0;
-  box-shadow: none;
-  height: 45px;
-  background: #eee;
-  border-color: #eee;
-  outline: none;
-}
+/*input[type="email"],*/
+/*input[type="password"],*/
+/*input[type="text"],*/
+/*input[type="tel"] {*/
+/*  border-radius: 0;*/
+/*  box-shadow: none;*/
+/*  height: 45px;*/
+/*  background: #eee;*/
+/*  border-color: #eee;*/
+/*  outline: none;*/
+/*}*/
 
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -2163,7 +2163,7 @@ table.shop_table_responsive {
 }
 .slick-prev:before, .slick-next:before
 {
- 
+
   font-size: 20px;
     width: 60px;
     height: 60px;
@@ -2173,7 +2173,7 @@ table.shop_table_responsive {
     text-align: center;
     padding-top: 20px;
     border-radius: 100%;
-    
+
 }
 .slick-next {
   right: 85px!important;

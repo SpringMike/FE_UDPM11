@@ -241,13 +241,13 @@ const InventoryManager = () => {
             {inventory?.id ? <InventoryByQuantity inventoryId={inventory?.id} status={status}/> : null}
             <Button
               type="primary"
-              onClick={() => navigate(`../warehouse/categories`)}
+              onClick={() => navigate(`../categories`)}
             >
               Xem danh mục sản phẩm
             </Button>
             <Button
               type="primary"
-              onClick={() => navigate(`../warehouse/products`)}
+              onClick={() => navigate(`../products`)}
             >
               Xem danh sách sản phẩm
             </Button>
@@ -258,7 +258,7 @@ const InventoryManager = () => {
       <Row gutter={24}>
         <Col span={18}>
           <div className="block">
-            <h1 style={{ color: "#1890FF" }}>Tất cả phiên bản sản phẩm</h1>
+            <h5 style={{ color: "#1890FF" }}>Tất cả phiên bản sản phẩm</h5>
             <Search
               placeholder="Tìm kiếm theo tên, mã sản phẩm"
               size="large"
@@ -276,7 +276,7 @@ const InventoryManager = () => {
         </Col>
         <Col span={6}>
           <div className="block">
-            <h1 style={{ color: "#1890FF" }}>Thông tin kho</h1>
+            <h5 style={{ color: "#1890FF" }}>Thông tin kho</h5>
             <form>
               <Row gutter={24}>
 
