@@ -15,20 +15,20 @@ const AddAddress = ({onChange,keyChange} : AddressProps) =>{
     const onChangeProvinces = (value: string) => {
         setProvinceCode(value)
         const item = provinces.find((p) => {
-            return p.code.toString() == value
+            return p.code.toString() === value
         })
         item && setProvinceName(", "+ item.name +", ")
     };
     const onChangeDistrict = (value: string) => {
         setDistrictCode(value)
         const item = districts.find((d) => {
-            return d.code.toString() == value
+            return d.code.toString() === value
         })
         item && setDistrictName(item.name  +", ")
     };
     const onChangeWard = (value: string) => {
         const item = wards.find((w) => {
-            return w.code.toString() == value
+            return w.code.toString() === value
         })
         item && setWardName(item.name)
     };

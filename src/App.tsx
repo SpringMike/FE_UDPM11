@@ -1,5 +1,5 @@
 import './App.css';
-import {useRoutes} from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
 import HomePage from "./admin/pages/home/HomePage";
 import Dashboard from "./admin/components/Dashboard";
@@ -27,8 +27,11 @@ import Cart from "./user/components/Cart";
 import Home from "./user/components/Home";
 import Shop from "./user/components/Shop";
 import SignleProduct from "./user/components/SignleProduct";
-import ListProduct from "./admin/pages/product/ListProduct";
-import ProductDetails from "./admin/pages/product/ProductDetails";
+import { useAuthStore } from './hooks/zustand/auth';
+import OrderHistory from './user/components/OrderHistory';
+import PageCheckout from './user/components/checkout/PageCheckout';
+import OrderPurchaseMananger from './admin/pages/manangerOrder/OrderPurchaseMananger';
+import OrderReturnMananger from './admin/pages/manangerOrder/OrderReturnMananger';
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -37,111 +40,134 @@ const App: React.FC = () => {
     //       token: localStorage.getItem('token') || ''
     //     })
     // );
-
-    return useRoutes([
-        {
-            path: "/",
-            element: <HomePageUser/>,
-
-            children: [
+    const role = useAuthStore((state) => state.role)
+    let routes;
+    console.log(role);
+    switch (role) {
+        case 'user':
+            routes = [
                 {
-                    path: "home-user",
-                    element: <Home/>,
-                },
-                {
-                    path: "shop",
-                    element: <Shop/>,
-                },
-                {
-                    path: "checkout",
-                    element: <Checkout/>,
-                },
-                {
-                    path: "login",
-                    element: <Login/>,
-                },
-                {
-                    path: "signup",
-                    element: <SignUp/>,
-                },
-                {
-                    path: "forgot-password",
-                    element: <ForgotPassword/>,
-                },
-                {
-                    path: "cart",
-                    element: <Cart/>,
-                },
-                {
-                    path: "single-product/:id",
-                    element: <SignleProduct/>,
-                },
-            ],
-        },
-        {
-            path: "/",
-            element: <Dashboard/>,
-
-            children: [
-                {
-                    path: "home",
-                    element: <HomePage/>,
-                },
-                {
-                    path: "supplier",
-                    children: [
-                        // {path: "add", element: <CategoryAdd/>},
-                        {path: "", element: <SupplierList/>},
-                        {path: "details/:id", element: <SupplierDetails/>},
-                    ],
-                },
-
-                {
-                    path: "staff",
-                    children: [
-                        // {path: "add", element: <CategoryAdd/>},
-                        {path: "", element: <StaffList/>},
-                        {path: "details/:id", element: <StaffDetails/>},
-                    ],
-                },
-                {
-                    path: "purchase_orders",
-                    children: [
-                        // {path: "add", element: <CategoryAdd/>},
-                        {path: "", element: <ListImportInvoice/>},
-                        {path: "create", element: <CreateImport/>},
-                        {path: "details/:code", element: <DetailImportInvoice/>},
-                        {path: "return/:code", element: <CreateReturnImportInvoice/>},
-                    ],
-                },
-                {
-                    path: "/inventories/:id",
-                    element: <InventoryManager/>,
-                },
-                {
-                    path: "/inventories",
-                    element: <InventoryList/>,
-                },
-
-                {
-                    path: "/products",
+                    path: "/",
+                    element: <HomePageUser />,
                     children: [
                         {
-                            path: "add_product",
+                            path: "/",
+                            element: <Home />,
+                        },
+                        {
+                            path: "home-user",
+                            element: <Home />,
+                        },
+                        {
+                            path: "shop",
+                            element: <Shop />,
+                        },
+                        {
+                            path: "checkout",
+                            element: <Checkout />,
+                        },
+                        {
+                            path: "signup",
+                            element: <SignUp />,
+                        },
+                        {
+                            path: "forgot-password",
+                            element: <ForgotPassword />,
+                        },
+                        {
+                            path: "cart",
+                            element: <Cart />,
+                        },
+                        {
+                            path: "history",
+                            element: <OrderHistory/>,
+                        },
+                        {
+                            path: "single-product/:id",
+                            element: <SignleProduct />,
+                        },
+                        {
+                            path: "page-checkout",
+                            element: <PageCheckout/>,
+                        },
+                    ],
+                }]
+            break;
+        case 'anonymous':
+            routes = [
+                {
+                    path: "/",
+                    element: <Dashboard />,
+                    children: [
+                        {
+                            path: "dashboard",
+                            element: <HomePage />,
+                        },
+                        {
+                            path: "supplier",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <SupplierList /> },
+                                { path: "details/:id", element: <SupplierDetails /> },
+                            ],
+                        },
+
+                        {
+                            path: "staff",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <StaffList /> },
+                                { path: "details/:id", element: <StaffDetails /> },
+                            ],
+                        },
+                        {
+                            path: "purchase_orders",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <ListImportInvoice /> },
+                                { path: "create", element: <CreateImport /> },
+                                { path: "details/:code", element: <DetailImportInvoice /> },
+                                { path: "return/:code", element: <CreateReturnImportInvoice /> },
+                            ],
+                        },
+                        {
+                            path: "/inventories/:id",
+                            element: <InventoryManager />,
+                        },
+                        {
+                            path: "/inventories",
+                            element: <InventoryList />,
+                        },
+                        {
+                            path: "/add_product",
                             element: <AddProduct />,
                         },
-                        { index: true, element: <ListProduct /> },
-                        { path: ":id", element: <ProductDetails /> },
-
+                        {
+                            path: "/order-manager",
+                            element: <OrderPurchaseMananger />,
+                        },
+                        {
+                            path: "/order-return-manager",
+                            element: <OrderReturnMananger />,
+                        },
                     ],
+                    
                 },
-            ],
-        },
-        {
-            path: 'user',
-            element: <Header/>
-        },
-    ]);
+                {
+                    path: "/login",
+                    element: <Login />,
+                }
+            ]
+            break;
+        case 'admin':
+            routes = [
+                {
+                    path: "/login",
+                    element: <Login />,
+                }]
+            break;
+    }
+    return useRoutes(routes)
 };
 
 export default App;

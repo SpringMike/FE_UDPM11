@@ -9,18 +9,15 @@ const {Content, Footer} = Layout;
 
 
 const HomePageUser: React.FC = () => {
+    const [component, setComponent] = useState(<Outlet/>);
+
     return (
         <Layout>
             <Headers/>
             <Layout>
-                <Content>
-                    <div >
-                        <Outlet/>
-                        {!useLocation().pathname.includes(" ") && (
-                           <Home/>
-                        )}
-                    </div>
-                </Content>
+                    <>
+                        {component}
+                    </>
             </Layout>
             <Footer>
                 <Footers></Footers>

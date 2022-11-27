@@ -1,6 +1,202 @@
-import React from "react"
-
+import { Avatar, Input, Button } from "@mui/material";
+import React, { useEffect, useState } from "react"
+import { useAuthStore } from "../../hooks/zustand/auth";
+import { showCart } from "../service/SignleProduct";
+import { ICartItem } from "../type/CartItem";
+import { DataGrid, GridCellEditCommitParams, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
+import { useNavigate } from "react-router-dom";
+import { deleteCart, updateQuantityCart } from "../service/HistoryOrder";
+import Swal from 'sweetalert2';
+import DeleteIcon from '@mui/icons-material/Delete';
 const Cart = () => {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
+    let nf = new Intl.NumberFormat();
+    const idUser = useAuthStore((e) => e.id);
+    const accessToken = useAuthStore((e) => e.accessToken);
+    let sumPrice = 0;
+    console.log('access', idUser)
+    const [cartItems, setCartItems] = useState([] as ICartItem[]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [loading, setLoading] = useState(false);
+    let navigate = useNavigate()
+
+    useEffect(() => {
+        localStorage.removeItem('test1')
+        setLoading(true)
+        showCart(Number(idUser), accessToken).then((response) => {
+            setLoading(false)
+            console.log(response.data)
+            setCartItems(response.data)
+        },
+            (err) => {
+                setLoading(false)
+                console.log('OUT', err);
+            });
+    }, []);
+    useEffect(() => {
+        cartItems.forEach((e) => {
+            console.log(e.priceTotal)
+
+            sumPrice += Number(e.priceTotal)
+        })
+        setTotalPrice(Number(sumPrice))
+    }, [cartItems]);
+
+    const onClickUpdateQuantityCart = (quantity: number, id_cart_item: number) => {
+        console.log(quantity);
+        console.log(id_cart_item);
+        setLoading(true) 
+        updateQuantityCart(quantity, id_cart_item, accessToken).then((res) => {
+            console.log(res.data);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thành công '
+            })
+        showCart(Number(idUser), accessToken).then((response) => {
+            setLoading(false)
+            console.log(response.data)
+            setCartItems(response.data)
+        },
+            (err) => {
+                setLoading(false)
+                console.log('OUT', err);
+            });
+        }, (err) => {
+            Toast.fire({
+                icon: 'error',
+                title: err.response.data.description
+            })
+            console.log(err.response.data.description);
+            showCart(Number(idUser), accessToken).then((response) => {
+                setLoading(false)
+                console.log(response.data)
+                setCartItems(response.data)
+            },
+                (err) => {
+                    setLoading(false)
+                    console.log('OUT', err);
+                });
+        })
+    }
+
+    const onClickDeleteCartItem = (id_cart_item: number[]) => {
+        setLoading(true)
+        deleteCart(id_cart_item, accessToken).then((res) => {
+            console.log(res.data);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thành công '
+            })
+            showCart(Number(idUser), accessToken).then((response) => {
+                setLoading(false)
+                console.log(response.data)
+                setCartItems(response.data)
+            },
+                (err) => {
+                    setLoading(false)
+                    console.log('OUT', err);
+                });
+        }, (err) => {
+            console.log(err);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật thất bại '
+            })
+        })
+    }
+
+    const columns: GridColDef[] = [
+        {
+            field: 'image', headerName: 'Ảnh', width: 70, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        <Avatar src={params.value} />
+                        {params.value.username}
+                    </>
+                );
+            }
+        },
+        {
+            field: 'name', headerName: 'Tên sản phẩm', width: 150, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        {params.value.split('-')[0]}
+                    </>
+                );
+            }
+        },
+        { field: 'option1', headerName: 'Màu', width: 70, headerAlign: 'center', align: 'center', },
+        { field: 'option2', headerName: 'Kích cỡ', width: 70, headerAlign: 'center', align: 'center', },
+        { field: 'option3', headerName: 'Chất liệu', width: 100, headerAlign: 'center', align: 'center', },
+        { field: 'quantity', headerName: 'Số lượng', editable: true, width: 130, headerAlign: 'center', align: 'center', type: 'number',
+            renderCell: (params) => {
+                return (
+                    <Input inputProps={{ min: 1, style: { textAlign: 'center' } }} type="number" minRows={1} value={params.row.quantity} onChange={() => { console.log(params);
+                     }} disableUnderline={true} />
+                );
+            }
+        },
+        {
+            field: 'wholesale_price', headerName: 'Giá tiền (VNĐ)', width: 130, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        {params.value}
+                    </>
+                );
+            }
+        },
+        {
+            field: 'priceTotal', headerName: 'Tổng tiền (VNĐ)', width: 150, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        {params.value}
+                    </>
+                );
+            }
+        },
+        {
+            field: '', headerName: 'Chỉnh sửa', width: 100, headerAlign: 'center', align: 'center',
+            renderCell: (params) => {
+                return (
+                    <>
+                        <Button color="error"
+                            onClick={() => {
+                                const id: number[] = [];
+                                let id_main = params.row.id_cart_item
+                                id.push(id_main)
+                                onClickDeleteCartItem(id)
+                            }}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    </>
+                )
+            }
+        }
+    ];
+
+    const onRowsSelectionHandler = (ids: any) => {
+        const selectedRowsData = ids.map((id: any) => cartItems.find((row) => row.id_cart_item === id));
+        const idsCItems: string[] = [];
+        selectedRowsData.forEach((e: any) => {
+            let { id_cart_item } = e;
+            idsCItems.push(id_cart_item)
+        });
+        localStorage.setItem('test1', JSON.stringify(idsCItems))
+    };
+
+
+
     return (
         <div className="checkout-container">
             <section className="page-header">
@@ -9,13 +205,11 @@ const Cart = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Cart</h1>
-                                Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which
-
+                                <h1 className="mb-3">GIỎ HÀNG</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Cart</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -23,100 +217,54 @@ const Cart = () => {
                     </div>
                 </div>
             </section>
-
-
-
             <section className="cart shopping page-wrapper">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-12">
                             <div className="product-list">
                                 <form className="cart-form">
+                                    <div style={{ height: 400, width: '100%' }}>
+                                        <Button color="inherit"
+                                        onClick={()=>{
+                                            let id_cart_item_local = JSON.parse(localStorage.getItem('test1') || '{}')
+                                            onClickDeleteCartItem(id_cart_item_local)
+                                        }}
+                                        >
+                                            Xoá
+                                        </Button>
+                                        <DataGrid
+                                            loading={loading}
+                                            rows={cartItems}
+                                            columns={columns}
+                                            pageSize={5}
+                                            rowsPerPageOptions={[5]}
+                                            getRowId={(cartItems) => cartItems.id_cart_item}
+                                            onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+                                            checkboxSelection
+                                            onCellEditCommit={(params: GridCellEditCommitParams) => {
+                                                // Clicking outside the cell vs enter/tab yields different results.
+                                                console.log(params);
+                                                onClickUpdateQuantityCart(params.value, Number(params.id))
+                                            }}
+                                        />
+                                    </div>
+
                                     <table className="table shop_table shop_table_responsive cart" cellSpacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th className="product-thumbnail"> </th>
-                                                <th className="product-name">Product</th>
-                                                <th className="product-price">Price</th>
-                                                <th className="product-quantity">Quantity</th>
-                                                <th className="product-subtotal">Total</th>
-                                                <th className="product-remove"> </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr className="cart_item">
-                                                <td className="product-thumbnail" data-title="Thumbnail">
-                                                    <a href="/product-single"><img src="assets/images/cart-1.jpg" className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
-                                                </td>
-
-                                                <td className="product-name" data-title="Product">
-                                                    <a href="#">Trendy Cloth</a>
-                                                </td>
-
-                                                <td className="product-price" data-title="Price">
-                                                    <span className="amount"><span className="currencySymbol"><pre wp-pre-tag-3=""></pre>
-                                                    </span>90.00</span>
-                                                </td>
-                                                <td className="product-quantity" data-title="Quantity">
-                                                    <div className="quantity">
-                                                        <label className="sr-only" >Quantity</label>
-                                                        <input type="number" id="qty" className="input-text qty text" step="1" min="0" max="9" title="Qty" size={4} />
-                                                    </div>
-                                                </td>
-                                                <td className="product-subtotal" data-title="Total">
-                                                    <span className="amount">
-                                                        <span className="currencySymbol">
-                                                            <pre wp-pre-tag-3=""></pre>
-                                                        </span>90.00</span>
-                                                </td>
-                                                <td className="product-remove" data-title="Remove">
-                                                    <a href="#" className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
-                                                </td>
-                                            </tr>
-                                            <tr className="cart_item">
-                                                <td className="product-thumbnail" data-title="Thumbnail">
-                                                    <a href="/product-single"><img src="assets/images/cart-2.jpg" className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
-                                                </td>
-                                                <td className="product-name" data-title="Product">
-                                                    <a href="#">Sunglasses</a>
-                                                </td>
-                                                <td className="product-price" data-title="Price">
-                                                    <span className="amount"><span className="currencySymbol">
-                                                        <pre wp-pre-tag-3=""></pre>
-                                                    </span>90.00</span>
-                                                </td>
-                                                <td className="product-quantity" data-title="Quantity">
-                                                    <div className="quantity">
-                                                        <label className="sr-only" >Quantity</label>
-                                                        <input type="number" id="quantity_5cc58182489a8" className="input-text qty text" step="1" min="0" max="9" name="#" title="Qty" size={4} />
-                                                    </div>
-                                                </td>
-                                                <td className="product-subtotal" data-title="Total">
-                                                    <span className="amount">
-                                                        <span className="currencySymbol">
-                                                            <pre wp-pre-tag-3=""></pre>
-                                                        </span>90.00</span>
-                                                </td>
-                                                <td className="product-remove" data-title="Remove">
-                                                    <a href="#" className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={6} className="actions">
-                                                    <div className="coupon">
-                                                        <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" />
-                                                        <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                                        <span className="float-right mt-3 mt-lg-0">
-                                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled>Update cart</button>
-                                                        </span>
-                                                    </div>
-                                                    <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
-                                                    <input type="hidden" name="_wp_http_referer" value="/cart/" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        <tr>
+                                            <td colSpan={6} className="actions">
+                                                <div className="coupon">
+                                                    <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" />
+                                                    <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Áp dụng phiếu giảm giá</button>
+                                                    <span className="float-right mt-3 mt-lg-0">
+                                                        <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled>Cập nhật giỏ hàng</button>
+                                                    </span>
+                                                </div>
+                                                <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
+                                                <input type="hidden" name="_wp_http_referer" value="/cart/" />
+                                            </td>
+                                        </tr>
                                     </table>
+
                                 </form>
                             </div>
                         </div>
@@ -124,22 +272,26 @@ const Cart = () => {
                     <div className="row justify-content-end">
                         <div className="col-lg-4">
                             <div className="cart-info card p-4 mt-4">
-                                <h4 className="mb-4">Cart totals</h4>
+                                <h4 className="mb-4">Tổng số giỏ hàng</h4>
                                 <ul className="list-unstyled mb-4">
                                     <li className="d-flex justify-content-between pb-2 mb-3">
-                                        <h5>Subtotal</h5>
-                                        <span>$90.00</span>
+                                        <h5>Tổng phụ:</h5>
+                                        <span>{nf.format(totalPrice)} VNĐ</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2 mb-3">
-                                        <h5>Shipping</h5>
-                                        <span>Free</span>
+                                        <h5>Phí vận chuyển:</h5>
+                                        <span>Miễn phí</span>
                                     </li>
                                     <li className="d-flex justify-content-between pb-2">
-                                        <h5>Total</h5>
-                                        <span>$90.00</span>
+                                        <h5>Tổng:</h5>
+                                        <span>{nf.format(totalPrice)} VNĐ</span>
                                     </li>
                                 </ul>
-                                <a href="#" className="btn btn-main btn-small">Proceed to checkout</a>
+                                <button className="btn btn-main btn-small"
+                                    onClick={() => {
+                                        navigate('/checkout')
+                                    }}
+                                >Tiến hành kiểm tra</button>
                             </div>
                         </div>
                     </div>
@@ -149,3 +301,4 @@ const Cart = () => {
     )
 }
 export default Cart
+

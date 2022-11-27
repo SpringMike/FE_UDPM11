@@ -13,7 +13,7 @@ function Shop() {
         document.title = "All Product"
     }, [])
 
-    // call server 
+    // call server
     useEffect(() => {
         // setTimeout(() => {
         getAllProduct().then((r) => {
@@ -48,13 +48,11 @@ function Shop() {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Shop</h1>
-                                <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
-
+                                <h1 className="mb-3">CỬA HÀNG</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Shop</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Cửa hàng</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -70,18 +68,18 @@ function Shop() {
                             <div className="row align-items-center">
                                 <div className="col-lg-12 mb-4 mb-lg-0">
                                     <div className="section-title">
-                                        <h2 className="d-block text-left-sm">Shop</h2>
+                                        <h2 className="d-block text-left-sm">Cửa hàng</h2>
 
                                         <div className="heading d-flex justify-content-between mb-5">
-                                            <p className="result-count mb-0"> Showing 1–6 of 17 results</p>
+                                            <p className="result-count mb-0">Hiển thị 1–6 trong số 17 kết quả</p>
                                             <form className="ordering " method="get">
                                                 <select name="orderby" className="orderby form-control" aria-label="Shop order" >
-                                                    <option value="" selected>Default sorting</option>
-                                                    <option value="">Sort by popularity</option>
-                                                    <option value="">Sort by average rating</option>
-                                                    <option value="">Sort by latest</option>
-                                                    <option value="">Sort by price: low to high</option>
-                                                    <option value="">Sort by price: high to low</option>
+                                                    <option value="" selected>Mặc định phân loại</option>
+                                                    <option value="">Sắp xếp theo mức độ phổ biến</option>
+                                                    <option value="">Sắp xếp theo xếp hạng trung bình</option>
+                                                    <option value="">Sắp xếp theo mới nhất</option>
+                                                    <option value="">Sắp xếp theo giá: thấp đến cao</option>
+                                                    <option value="">Sắp xếp theo giá: cao đến thấp</option>
                                                 </select>
                                                 <input type="hidden" name="paged" value="1" />
                                             </form>
@@ -109,7 +107,7 @@ function Shop() {
                                             </div>
 
                                             <div className="product-info">
-                                            <Link to={{ pathname: `/single-product/${p.id}` }}> 
+                                            <Link to={{ pathname: `/single-product/${p.id}` }}>
                                                 {/* <h2 className="product-title h5 mb-0"><a href="/product-single">{p.name}</a></h2> */}
                                                 <h2 className="product-title h5 mb-0">{p.name}</h2>
                                             </Link>
@@ -153,7 +151,7 @@ function Shop() {
 
 
                                 <section className="widget widget-colors mb-5">
-                                    <h3 className="widget-title h4 mb-4">Shop by color</h3>
+                                    <h3 className="widget-title h4 mb-4">Mua sắm theo màu</h3>
                                     <ul className="list-inline">
                                         <li className="list-inline-item mr-4">
                                             <div className="custom-control custom-checkbox color-checkbox">
@@ -190,39 +188,39 @@ function Shop() {
 
 
                                 <section className="widget widget-sizes mb-5">
-                                    <h3 className="widget-title h4 mb-4">Shop by Sizes</h3>
+                                    <h3 className="widget-title h4 mb-4">Mua sắm theo kích cỡ</h3>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="size1" checked />
-                                        <label className="custom-control-label" htmlFor="size1">L Large</label>
+                                        <label className="custom-control-label" htmlFor="size1">L Lớn</label>
                                     </div>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="size2" />
-                                        <label className="custom-control-label" htmlFor="size2">XL Extra Large</label>
+                                        <label className="custom-control-label" htmlFor="size2">XL Cực lớn</label>
                                     </div>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="size3" />
-                                        <label className="custom-control-label" htmlFor="size3">M Medium</label>
+                                        <label className="custom-control-label" htmlFor="size3">M Vừa phải</label>
                                     </div>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="size4" />
-                                        <label className="custom-control-label" htmlFor="size4">S Small</label>
+                                        <label className="custom-control-label" htmlFor="size4">S Nhỏ bé</label>
                                     </div>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="size5" />
-                                        <label className="custom-control-label" htmlFor="size5">XS Extra Small</label>
+                                        <label className="custom-control-label" htmlFor="size5">XS Rất nhỏ</label>
                                     </div>
                                 </section>
 
-                                <button type="button" className="btn btn-black btn-small">Filter</button>
+                                <button type="button" className="btn btn-black btn-small">Lọc</button>
                             </form>
 
 
                             <section className="widget widget-popular mb-5">
-                                <h3 className="widget-title mb-4 h4">Popular Products</h3>
+                                <h3 className="widget-title mb-4 h4">Sản phẩm phổ biến</h3>
                                 <a className="popular-products-item media" href="/product-single">
                                     <img src="assets/images/p-1.jpg" alt="" className="img-fluid mr-4" />
                                     <div className="media-body">
-                                        <h6>Contrast <br />Backpack</h6>
+                                        <h6>Tương phản <br />Balo</h6>
                                         <span className="price">$45</span>
                                     </div>
                                 </a>

@@ -1,17 +1,39 @@
 import { info } from "console";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailProduct } from "../service/HomePage";
+import { addToCart, getProductOption } from "../service/SignleProduct";
 import { IInfo } from "../type/HomePage";
-
+import FormLabel from '@mui/joy/FormLabel';
+import Radio, { radioClasses } from '@mui/joy/Radio';
+import RadioGroup from '@mui/joy/RadioGroup';
+import Sheet from '@mui/joy/Sheet';
+import { useAuthStore } from "../../hooks/zustand/auth";
+import Swal from "sweetalert2";
 function SingleProduct() {
-    console.log("IN OUT")
+    const accessToken = useAuthStore((e) => e.accessToken)
+    let nf = new Intl.NumberFormat();
     const { id } = useParams();
-    console.log("THis is ", id);
     const [infos, setInfos] = useState({} as IInfo);
     const [option1, setOption1] = useState([]);
     const [option2, setOption2] = useState([]);
     const [option3, setOption3] = useState([]);
+
+    const [op1, setOp1] = useState('');
+    const [op2, setOp2] = useState('');
+    const [op3, setOp3] = useState('');
+
+    const [quantityBuy, setQuantityBuy] = useState(1);
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
+
+
     useEffect(() => {
         getDetailProduct(parseInt(id as string)).then((response) => {
             setInfos(response.data.InfoProduct)
@@ -19,12 +41,46 @@ function SingleProduct() {
             setOption2(response.data.Option2)
             setOption3(response.data.Option3)
         });
+
+
+
     }, []);
 
-    console.log(option1);
-    console.log(option2);
-    console.log(option3);
 
+    const defaultOption1 = infos.option1
+    const defaultOption2 = infos.option2
+    const defaultOption3 = infos.option3
+
+
+  
+    useEffect(() => { onChangeOptions() }, [op1, op2, op3])
+
+    const onChangeOptions = () =>
+    (
+        console.log(" op1:" + op1),
+        console.log(" op2:" + op2),
+        console.log(" op3:" + op3),
+        getProductOption(parseInt(id as string), op1 as string, op2 as string, op3 as string).then((response) => {
+            console.log(response.data)
+            setInfos(response.data)
+        }))
+    const addToCartCustomer = () => {
+        console.log('In add to cart')
+        console.log('Quantity ????', quantityBuy);
+        addToCart(Number(quantityBuy), infos.id, accessToken).then((res) => {
+            console.log(res.data)
+            Toast.fire({
+                icon: 'success',
+                title: 'Thêm vào giỏ thành công '
+              })
+        }, (err) => {
+            console.log(err)
+            Toast.fire({
+                icon: 'success',
+                title: 'Thêm vào giỏ thất bại'
+              })
+        })
+    }
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -33,13 +89,11 @@ function SingleProduct() {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="content text-center">
-                                <h1 className="mb-3">Product Single</h1>
-                                <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
-
+                                <h1 className="mb-3">CHI TIẾT SẢN PHẨM</h1>
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                        <li className="breadcrumb-item active" aria-current="page">Product Single</li>
+                                        <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -85,60 +139,172 @@ function SingleProduct() {
                             <div className="single-product-details mt-5 mt-lg-0">
                                 <h2>{infos.name}</h2>
                                 <div className="sku_wrapper mb-4">
-                                    SKU: <span className="text-muted">AB1563456789 </span>
+                                    Mã hàng: <span className="text-muted">AB1563456789 </span>
                                 </div>
 
                                 <hr />
 
-                                <h3 className="product-price">{infos.price} vnd<del>$119.90</del></h3>
+                                <h3 className="product-price">{nf.format(infos.price)} vnd<del>$119.90</del></h3>
 
                                 <p className="product-description my-4 ">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur? Eveniet consequatur ipsum dicta recusandae.
+                                    Điều rất quan trọng đối với khách hàng là phải chú ý đến quá trình adipiscing. Người ta cho rằng, bản thân lao động là do có người bỏ mặc cho đau đớn, hưởng lợi. Tất cả các kết quả hạnh phúc của chúng tôi, kết quả của họ? Nó sẽ là hậu quả của việc từ chối chính lời nói.
                                 </p>
 
-                                <form className="cart" action="#" method="post">
-                                    <div className="quantity d-flex align-items-center">
-                                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" name="quantity" value="1" title="Qty" size={4} />
-                                        <a href="#" className="btn btn-main btn-small">Add to cart</a>
-                                    </div>
-                                </form>
+                                {/* <form className="cart" action="#" method="post"> */}
+                                <div className="quantity d-flex align-items-center">
+                                    <input type="number" id="qty" className="input-text qty text form-control w-25 mr-3"
+
+                                        onChange={(e: any) => {
+                                            setQuantityBuy(e.target.value)
+                                        }}
+                                        max={infos.quantity} name="quantity" size={4} value={quantityBuy}/>
+                                    <button className="btn btn-main btn-small"
+                                        onClick={() => {
+                                            addToCartCustomer()
+                                        }}
+                                    >Add to cart</button>
+                                </div>
+                                {/* </form> */}
 
 
                                 <div className="color-swatches mt-4 d-flex align-items-center">
                                     <span className="font-weight-bold text-capitalize product-meta-title ">Màu sắc:</span>
-                                    <ul className="list-inline mb-0">
-                                        {option1.map(o1 =>
-                                            <li className="list-inline-item mr-3 ">
-                                                <a href="/product-single" className="text-dark fw-bold " >
-                                                    {o1}
-                                                </a>
-                                            </li>
-                                        )}
-                                    </ul>
+                                    <RadioGroup
+                                        aria-label="platform"
+                                        defaultValue={defaultOption1}
+                                        overlay
+                                        name="platform"
+                                        onChange={(event) => {
+                                            setOp1(event.target.value)
+
+                                        }}
+                                        sx={{
+                                            flexDirection: 'row',
+                                            gap: 1,
+                                            [`& .${radioClasses.checked}`]: {
+                                                [`& .${radioClasses.action}`]: {
+                                                    inset: -1,
+                                                    border: '2px solid',
+                                                    borderColor: 'primary.500',
+                                                },
+                                            },
+                                            [`& .${radioClasses.radio}`]: {
+                                                display: 'contents',
+                                            },
+                                        }}
+                                    >
+                                        {option1.map((value) => (
+                                            <Sheet
+                                                key={value}
+                                                variant="outlined"
+                                                sx={{
+                                                    borderRadius: '10px',
+                                                    bgcolor: 'background.level1',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    p: 1,
+                                                    minWidth: 60,
+                                                }}
+                                            >
+                                                <Radio id={value} value={value} />
+                                                <FormLabel htmlFor={value}>{value}</FormLabel>
+                                            </Sheet>
+                                        ))}
+                                    </RadioGroup>
                                 </div>
 
                                 <div className="product-size d-flex align-items-center mt-4">
-                                    <span className="font-weight-bold text-capitalize product-meta-title">Size:</span>
-
-                                    <select className="form-control">{
-                                        option2.map(o2 =>
-                                            <option key={o2}>{o2}</option>)
-                                    }</select>
+                                    <span className="font-weight-bold text-capitalize product-meta-title">Kích thước:</span>
+                                    <RadioGroup
+                                        aria-label="platform"
+                                        defaultValue={defaultOption2}
+                                        overlay
+                                        name="platform"
+                                        onChange={(event) => {
+                                            setOp2(event.target.value)
+                                        }}
+                                        sx={{
+                                            flexDirection: 'row',
+                                            gap: 1,
+                                            [`& .${radioClasses.checked}`]: {
+                                                [`& .${radioClasses.action}`]: {
+                                                    inset: -1,
+                                                    border: '2px solid',
+                                                    borderColor: 'primary.500',
+                                                },
+                                            },
+                                            [`& .${radioClasses.radio}`]: {
+                                                display: 'contents',
+                                            },
+                                        }}
+                                    >
+                                        {option2.map((value) => (
+                                            <Sheet
+                                                key={value}
+                                                variant="outlined"
+                                                sx={{
+                                                    borderRadius: '10px',
+                                                    bgcolor: 'background.level1',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    p: 1,
+                                                    minWidth: 60,
+                                                }}
+                                            >
+                                                <Radio id={value} value={value}  />
+                                                <FormLabel htmlFor={value}>{value}</FormLabel>
+                                            </Sheet>
+                                        ))}
+                                    </RadioGroup>
                                 </div>
 
                                 <div className="products-meta mt-4">
                                     <div className="product-category d-flex align-items-center">
-                                    <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
-                                    <ul className="list-inline mb-0">
-                                        {option3.map(o1 =>
-                                            <li className="list-inline-item mr-3 ">
-                                                <a href="/product-single" className="text-dark fw-bold" >
-                                                    {o1}
-                                                </a>
-                                            </li>
-                                        )}
-                                    </ul>
-                              
+                                        <span className="font-weight-bold text-capitalize product-meta-title">Chất liệu:</span>
+                                        <RadioGroup
+                                            aria-label="platform"
+                                            defaultValue={defaultOption3}
+                                            overlay
+                                            name="platform"
+                                            onChange={(event) => {
+                                                setOp3(event.target.value)
+                                            }}
+                                            sx={{
+                                                flexDirection: 'row',
+                                                gap: 1,
+                                                [`& .${radioClasses.checked}`]: {
+                                                    [`& .${radioClasses.action}`]: {
+                                                        inset: -1,
+                                                        border: '2px solid',
+                                                        borderColor: 'primary.500',
+                                                    },
+                                                },
+                                                [`& .${radioClasses.radio}`]: {
+                                                    display: 'contents',
+                                                },
+                                            }}
+                                        >
+                                            {option3.map((value) => (
+                                                <Sheet
+                                                    key={value}
+                                                    variant="outlined"
+                                                    sx={{
+                                                        borderRadius: '10px',
+                                                        bgcolor: 'background.level1',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'center',
+                                                        p: 1,
+                                                        minWidth: 60,
+                                                    }}
+                                                >
+                                                    <Radio id={value} value={value} />
+                                                    <FormLabel htmlFor={value}>{value}</FormLabel>
+                                                </Sheet>
+                                            ))}
+                                        </RadioGroup>
                                     </div>
 
                                     <div className="product-share mt-5">
@@ -175,14 +341,14 @@ function SingleProduct() {
 
                             <div className="tab-content" id="nav-tabContent">
                                 <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                                    <p>Trẻ em đang sống với bệnh tật, tuổi già và trẻ em, và họ đang phải chịu đựng cái đói và cái nghèo. Vestibulum tra tấn quam, feugiat vitae, cần tối tân, thời gian phải có trước đó. Cho đến lúc đó, bóng đá tự do quan trọng hơn bao giờ hết. Aenean là kẻ thù của cuộc đời tôi. Mauris investmentrat eleifend leo.</p>
 
-                                    <h4>Product Features</h4>
+                                    <h4>Tính năng sản phẩm</h4>
 
                                     <ul className="">
-                                        <li>Mapped with 3M™ Thinsulate™ Insulation [40G Body / Sleeves / Hood]</li>
-                                        <li>Embossed Taffeta Lining</li>
-                                        <li>DRYRIDE Durashell™ 2-Layer Oxford Fabric [10,000MM, 5,000G]</li>
+                                        <li>Được ánh xạ với 3M ™ Thinsulate ™ Cách nhiệt [40G Thân áo / Tay áo / Mũ trùm]</li>
+                                        <li>Lót Taffeta dập nổi</li>
+                                        <li>Vải Oxford 2 lớp DRYRIDE Durashell ™ [10.000MM, 5.000G]</li>
                                     </ul>
 
                                 </div>
@@ -190,23 +356,23 @@ function SingleProduct() {
 
                                     <ul className="list-unstyled info-desc">
                                         <li className="d-flex">
-                                            <strong>Weight </strong>
+                                            <strong>Trọng lượng </strong>
                                             <span>400 g</span>
                                         </li>
                                         <li className="d-flex">
-                                            <strong>Dimensions </strong>
+                                            <strong>Kích thước </strong>
                                             <span>10 x 10 x 15 cm</span>
                                         </li>
                                         <li className="d-flex">
-                                            <strong>Materials</strong>
+                                            <strong>Vật liệu</strong>
                                             <span >60% cotton, 40% polyester</span>
                                         </li>
                                         <li className="d-flex">
-                                            <strong>Color </strong>
+                                            <strong>Màu sắc </strong>
                                             <span>Blue, Gray, Green, Red, Yellow</span>
                                         </li>
                                         <li className="d-flex">
-                                            <strong>Size</strong>
+                                            <strong>Kích thước</strong>
                                             <span>L, M, S, XL, XXL</span>
                                         </li>
                                     </ul>
@@ -225,7 +391,7 @@ function SingleProduct() {
                                                         <span><i className="tf-ion-android-star"></i></span>
                                                     </div>
                                                     <h6>Therichpost <span className="text-sm text-muted font-weight-normal ml-3">-June 23, 2019</span></h6>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum suscipit consequuntur in, perspiciatis laudantium ipsa fugit. Iure esse saepe error dolore quod.</p>
+                                                    <p>Điều rất quan trọng đối với khách hàng là phải chú ý đến quá trình adipiscing. Anh ta nhận lấy hậu quả, nhìn thấy những người khen ngợi cô bỏ trốn. Nó thường là một sai lầm để đúng.</p>
                                                 </div>
                                             </div>
 
@@ -240,7 +406,7 @@ function SingleProduct() {
                                                         <span><i className="tf-ion-android-star-outline"></i></span>
                                                     </div>
                                                     <h6>Therichpost <span className="text-sm text-muted font-weight-normal ml-3">-June 23, 2019</span></h6>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum suscipit consequuntur in, perspiciatis laudantium ipsa fugit. Iure esse saepe error dolore quod.</p>
+                                                    <p>Điều rất quan trọng đối với khách hàng là phải chú ý đến quá trình adipiscing. Anh ta nhận lấy hậu quả, nhìn thấy những người khen ngợi cô bỏ trốn. Nó thường là một sai lầm để đúng.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -248,7 +414,7 @@ function SingleProduct() {
 
                                         <div className="col-lg-5">
                                             <div className="review-comment mt-5 mt-lg-0">
-                                                <h4 className="mb-3">Add a Review</h4>
+                                                <h4 className="mb-3">Thêm một bài đánh giá</h4>
 
                                                 <form action="#">
                                                     <div className="starrr"></div>
@@ -262,7 +428,7 @@ function SingleProduct() {
                                                         <textarea name="comment" id="comment" className="form-control" cols={30} rows={4} placeholder="Your Review"></textarea>
                                                     </div>
 
-                                                    <a href="/product-single" className="btn btn-main btn-small">Submit Review</a>
+                                                    <a href="/product-single" className="btn btn-main btn-small">Gửi đánh giá</a>
                                                 </form>
                                             </div>
                                         </div>
@@ -280,8 +446,8 @@ function SingleProduct() {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="title text-center">
-                                <h2>You may like this</h2>
-                                <p>The best Online sales to shop these weekend</p>
+                                <h2>Bạn có thể thích điều này</h2>
+                                <p>Bán hàng trực tuyến tốt nhất để mua sắm vào cuối tuần này</p>
                             </div>
                         </div>
                     </div>
@@ -293,7 +459,7 @@ function SingleProduct() {
                                     <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src="assets/images/444.jpg" alt="product-img" /></a>
                                 </div>
 
-                                <span className="onsale">Sale</span>
+                                <span className="onsale">Doanh thu</span>
                                 <div className="product-hover-overlay">
                                     <a href="#"><i className="tf-ion-android-cart"></i></a>
                                     <a href="#"><i className="tf-ion-ios-heart"></i></a>
@@ -315,7 +481,7 @@ function SingleProduct() {
                                     <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src="assets/images/222.jpg" alt="product-img" /></a>
                                 </div>
 
-                                <span className="onsale">Sale</span>
+                                <span className="onsale">Doanh thu</span>
                                 <div className="product-hover-overlay">
                                     <a href="#"><i className="tf-ion-android-cart"></i></a>
                                     <a href="#"><i className="tf-ion-ios-heart"></i></a>
@@ -338,7 +504,7 @@ function SingleProduct() {
                                     <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src="assets/images/322.jpg" alt="product-img" /></a>
                                 </div>
 
-                                <span className="onsale">Sale</span>
+                                <span className="onsale">Doanh thu</span>
                                 <div className="product-hover-overlay">
                                     <a href="#"><i className="tf-ion-android-cart"></i></a>
                                     <a href="#"><i className="tf-ion-ios-heart"></i></a>
@@ -360,7 +526,7 @@ function SingleProduct() {
                                     <a href="/product-single"><img className="img-fluid w-100 mb-3 img-second" src="assets/images/222.jpg" alt="product-img" /></a>
                                 </div>
 
-                                <span className="onsale">Sale</span>
+                                <span className="onsale">Doanh thu</span>
                                 <div className="product-hover-overlay">
                                     <a href="#"><i className="tf-ion-android-cart"></i></a>
                                     <a href="#"><i className="tf-ion-ios-heart"></i></a>
