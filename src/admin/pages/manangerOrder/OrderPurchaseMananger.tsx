@@ -180,26 +180,12 @@ const OrderPurchaseMananger = () => {
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
             })
-            getAllOrder().then((res) => {
-                const newResult = res.data.map((obj: IShowOrder, index: number) => ({ ...obj, key: index }))
-                setShowOrder(newResult)
-                const newShowOrder: IShowOrder[] = []
-                res.data.map((e: IShowOrder) => {
-                    if (e.status === Number(currentTab)) {
-                        newShowOrder.push(e)
-                    }
-                })
-                setShowOrderByStatus(newShowOrder)
-                console.log(newShowOrder)
-                console.log(newResult)
-                setReload(false);
-            }, (err) => {
-                setReload(false);
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Cập nhật trạng thái thất bại '
-                })
-                console.log('OUT', err);
+            loadData(keyword)
+        }, (err) => {
+            setReload(false);
+            Toast.fire({
+                icon: 'success',
+                title: 'Cập nhật trạng thái thất bại '
             });
         })
 
@@ -317,9 +303,9 @@ const OrderPurchaseMananger = () => {
         const newShowOrder: IShowOrder[] = showOrder.filter(row => {
             filterPass = true
             const date = new Date(row.createDateString)
-             if (startDate && endDate) {
+            if (startDate && endDate) {
                 filterPass = filterPass && (new Date(startDate) < date) && (new Date(endDate) > date)
-             }
+            }
             //if filterPass comes back `false` the row is filtered out
             return filterPass
         }).map((obj: IShowOrder) => ({ ...obj }))
@@ -354,12 +340,12 @@ const OrderPurchaseMananger = () => {
     const onChangeRangePicker = (dates: any, dateStrings: any) => {
         setDateFilter({ start: (dateStrings[0] === "") ? null : dateStrings[0], end: (dateStrings[1] === "") ? null : dateStrings[1] })
         filterDate((dateStrings[0] === "") ? null : dateStrings[0], (dateStrings[1] === "") ? null : dateStrings[1])
-        console.log("start",(dateStrings[0] === "") ? null : dateStrings[0],"end", (dateStrings[1] === "") ? null : dateStrings[1]);
+        console.log("start", (dateStrings[0] === "") ? null : dateStrings[0], "end", (dateStrings[1] === "") ? null : dateStrings[1]);
     }
 
     type PositionType = 'right';
     const OperationsSlot: Record<PositionType, React.ReactNode> = {
-        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10 , marginBottom: 10 }}
+        right: <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
             className="tabs-extra-demo-button"
             placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
             <RangePicker showTime onChange={onChangeRangePicker} /></>

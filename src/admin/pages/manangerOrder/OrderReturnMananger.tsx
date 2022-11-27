@@ -309,7 +309,7 @@ const OrderReturnMananger = () => {
         <><div>
             <Tabs defaultActiveKey="5" onChange={onChangeTab} tabBarExtraContent={OperationsSlot}>
                 <Tabs.TabPane tab="Tất cả" key="1">
-                    <Table key={1} columns={columns} dataSource={showOrder} loading={{ spinning: reload }} />
+                    <Table key={1} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Các yêu cầu trả hàng" key="12">
                     <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
