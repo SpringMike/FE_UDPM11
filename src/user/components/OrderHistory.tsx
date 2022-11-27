@@ -188,7 +188,6 @@ const OrderHistory2 = () => {
         setPage(0);
         setLoading(true)
         if (status_id === 10) {
-
             let resResult: IHistory[] = []
             getHistoryOrder(status_id, accessToken).then((res: any) => {
                 setLoading(false)
@@ -200,23 +199,21 @@ const OrderHistory2 = () => {
                 resResult.concat(newResult)
             })
             setHistory(resResult)
-        }
-        if (currentStatus == 5) {
+        } else if (status_id === 12) {
             getHistoryOrderReturn(accessToken).then((res: any) => {
                 setLoading(false)
                 console.log(res.data);
                 const newResult = res.data.map((obj: IOrderReturn) => ({ ...obj, order_item: [] }))
                 setHistoryReturn(newResult)
             })
+        } else {
+            getHistoryOrder(status_id, accessToken).then((res: any) => {
+                setLoading(false)
+                const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
+                setHistory(newResult)
+            })
         }
-        getHistoryOrder(status_id, accessToken).then((res: any) => {
-            setLoading(false)
-            const newResult = res.data.map((obj: IHistory) => ({ ...obj, order_item: [] }))
-            setHistory(newResult)
-        })
     }
-
-
     const onClickUpdateStatus = (status_id: number, order: IHistory) => {
         const index = history.indexOf(order)
         updateStatus(status_id, order.id, accessToken).then((res) => {
@@ -232,7 +229,7 @@ const OrderHistory2 = () => {
                 );
             }
             setHistory(newList)
-            if (currentStatus == 0) {
+            if (currentStatus === 0) {
                 Toast.fire({
                     icon: 'success',
                     title: 'Huỷ đơn hàng thành công'
@@ -497,13 +494,14 @@ const OrderHistory2 = () => {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                    <TextField fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined" onChange={(e) => { setNote(e.target.value) }} />
+                                    <TextField autoComplete="off" fullWidth required sx={{ marginTop: 5 }} id="note" label="Lý do trả hàng" variant="outlined"
+                                        onChange={handleChangeInput} />
                                 </TypographyJoy>
                                 <Box component="form" sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }} >
                                     <ButtonJoy variant="plain" color="neutral" onClick={() => { setOpenModalReturn(0) }}>
                                         Quay Lại
                                     </ButtonJoy>
-                                    <Button variant="text" disabled={!hasSelected} color="error" type="submit" onClick={() => { setOpenModalReturn(0) }}>
+                                    <Button variant="text" disabled={!hasSelected} color="error" type="submit" onClick={() => { returnOrderbyIdOrder(row.id); setOpenModalReturn(0) }}>
                                         Trả hàng
                                     </Button>
                                 </Box>
@@ -541,7 +539,6 @@ const OrderHistory2 = () => {
                     <TableCell align="center" hidden={!(row.status_return === 15)}>Shop đã nhận được hàng hoàn</TableCell>
                     <TableCell align="center" hidden={!(row.status_return === 16)}>Shop đã hoàn tiền</TableCell>
                     <TableCell align="center">{row.create_date}</TableCell>
-
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ padding: 0, paddingTop: 0 }} colSpan={8}>

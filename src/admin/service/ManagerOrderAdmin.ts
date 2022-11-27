@@ -44,3 +44,6 @@ export const getOrderReturnItemsByIdOrder = async (id_order_return: number) => {
 export const searchOrderAll = async (query: String) => {
     return await axios.get(`${base_url}/manager-oder/searchAllOrder?query=${query}`, { headers })
 }
+export const searchOrderReturnAll = async (query: String) => {
+    return await axios.get(`${base_url}/manager-oder/searchOrdersReturn?query=${query}`, { headers })
+}

@@ -12,6 +12,7 @@ export interface IShowOrder {
     status: number;
     type: number;
     created_time: Date;
+    createDateString: string;
     code: string;
 }
 export interface IShowOrderItems {
