@@ -13,7 +13,6 @@ export const createPDF = async (name: string, price1: number, price2: number, re
     } catch (error) {
         console.log(error);
     }
-
 }
 
 

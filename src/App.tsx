@@ -32,6 +32,10 @@ import OrderHistory from './user/components/OrderHistory';
 import PageCheckout from './user/components/checkout/PageCheckout';
 import OrderPurchaseMananger from './admin/pages/manangerOrder/OrderPurchaseMananger';
 import OrderReturnMananger from './admin/pages/manangerOrder/OrderReturnMananger';
+import ReportPage from "./admin/pages/revenue/ReportPage";
+import RevenueDetailChart from "./admin/pages/revenue/RevenueDetailChart";
+import ListProduct from "./admin/pages/product/ListProduct";
+import ProductDetails from "./admin/pages/product/ProductDetails";
 
 const App: React.FC = () => {
     // const dispatch = useDispatch();
@@ -112,6 +116,7 @@ const App: React.FC = () => {
                             ],
                         },
 
+
                         {
                             path: "staff",
                             children: [
@@ -135,12 +140,28 @@ const App: React.FC = () => {
                             element: <InventoryManager />,
                         },
                         {
+                            path: "/tracking/",
+                            element: <ReportPage />,
+                        },
+                        {
+                            path: "/tracking/detail/revenue",
+                            element: <RevenueDetailChart />,
+                        },
+                        {
                             path: "/inventories",
                             element: <InventoryList />,
                         },
                         {
-                            path: "/add_product",
-                            element: <AddProduct />,
+                            path: "/products",
+                            children: [
+                                {
+                                    path: "add_product",
+                                    element: <AddProduct />,
+                                },
+                                { index: true, element: <ListProduct /> },
+                                { path: ":id", element: <ProductDetails /> },
+
+                            ],
                         },
                         {
                             path: "/order-manager",

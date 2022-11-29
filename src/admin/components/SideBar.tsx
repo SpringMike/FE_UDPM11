@@ -50,6 +50,8 @@ const items: MenuItem[] = [
     getItem("Đơn hàng", "order-manager",<AssignmentIcon />),
     getItem("Đơn yêu cầu trả", "order-return-manager",<AssignmentReturnIcon />),
   ]),
+  getItem("Báo cáo", "/tracking", <TeamOutlined />),
+
   getItem("Đăng xuất", "/login", <LogoutIcon />),
 ];
 
