@@ -1,5 +1,5 @@
 import * as Antd from "antd";
-import  {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ISupplier} from "../type/SupplierType";
 import {getSuppliers} from "../service/SupplierApi";
 

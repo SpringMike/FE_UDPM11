@@ -37,8 +37,6 @@ import { getAllActiveInventory } from "../../service/InventoryApi";
 import ToastCustom from "../../features/toast/Toast";
 import { RangePickerProps } from "antd/es/date-picker";
 import { Link, useNavigate } from "react-router-dom";
-import {useSelector} from "react-redux";
-import {RootState} from "@reduxjs/toolkit/dist/query/core/apiState";
 import SelectSupplier from "../../components/SelectSupplier";
 import React from "react";
 

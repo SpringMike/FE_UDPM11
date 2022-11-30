@@ -1,9 +1,9 @@
-import * as Antd from 'antd'
 
 import * as Mui from '@mui/material'
 import { useTheme } from '@mui/material';
 import { ArrowLeft, ArrowRight, FirstPage, LastPage } from '@mui/icons-material';
 
+import React from 'react'
 
 const ProductPagination = (props: any) => {
   const theme = useTheme();
@@ -13,7 +13,7 @@ const ProductPagination = (props: any) => {
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     onPageChange(event, 1);
-    
+
   };
 
   const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,7 +25,7 @@ const ProductPagination = (props: any) => {
   };
 
   const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, Math.max(1, Math.ceil(count / rowsPerPage) ));
+    onPageChange(event, Math.max(1, Math.ceil(count / rowsPerPage)));
   };
 
   return (
@@ -53,7 +53,7 @@ const ProductPagination = (props: any) => {
       </Mui.IconButton>
       <Mui.IconButton
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) }
+        disabled={page >= Math.ceil(count / rowsPerPage)}
         aria-label="last page"
       >
         {theme.direction === 'rtl' ? <FirstPage /> : <LastPage />}

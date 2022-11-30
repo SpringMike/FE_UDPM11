@@ -1,4 +1,5 @@
 import { Page, Text, Document, StyleSheet,View,Font } from "@react-pdf/renderer";
+import React from "react";
 import  { Fragment } from 'react';
 import {IDetailImportInvoice} from "../../type/ImportInvoiceType";
 

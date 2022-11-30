@@ -18,7 +18,6 @@ import ImportWarehouse from "./ImportWarehouse";
 import ReturnInvoiceImport from "./ReturnInvoiceImport";
 
 import ImportInvoiceHistory from "./ImportInvoiceHistory";
-import {useSelector} from "react-redux";
 
 
 const DetailImportInvoice = () => {

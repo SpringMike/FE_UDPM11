@@ -7,7 +7,6 @@ import {
     TableSortLabel,
     Tooltip
 } from "@material-ui/core";
-import ClearIcon from "@material-ui/icons/Clear";
 import React from "react";
 import {UnfoldMore} from "@material-ui/icons";
 // import {SortBy} from "aws-sdk/clients/sagemaker";

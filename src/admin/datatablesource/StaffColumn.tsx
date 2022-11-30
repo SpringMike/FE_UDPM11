@@ -1,11 +1,5 @@
 import React from "react";
-import Moment from "react-moment";
-import {
-    CheckCircleOutlined,
-    CloseCircleOutlined
-} from '@ant-design/icons';
-import { Divider, Tag, Switch } from 'antd';
-import { updateStaffById } from "../service/StaffApi";
+import { Switch } from 'antd';
 export const StaffColumn = [
     {
         title: 'Mã nhân viên',

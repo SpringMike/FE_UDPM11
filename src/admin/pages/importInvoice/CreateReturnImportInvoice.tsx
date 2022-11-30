@@ -5,7 +5,6 @@ import {
     getDetailImportInvoice,
     getImportReturn,
     returnImportInvoice,
-    updateStatusInvoice,
     updateStatusReturnInvoice
 } from "../../service/ImportInvoiceApi";
 import {IDetailImportInvoice, IImportReturnMyTableData} from "../../type/ImportInvoiceType";
@@ -14,7 +13,6 @@ import "../../styles/inputNumber.css"
 import {ColumnProps} from "antd/es/table";
 import ToastCustom from "../../features/toast/Toast";
 import {LeftOutlined} from "@ant-design/icons";
-import {useSelector} from "react-redux";
 
 
 interface ReturnImport {

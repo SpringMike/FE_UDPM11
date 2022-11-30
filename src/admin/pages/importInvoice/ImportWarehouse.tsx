@@ -6,7 +6,7 @@ import PDFImportFile from "./PDFImportFile";
 
 import {IDetailImportInvoice} from "../../type/ImportInvoiceType";
 import {DownloadOutlined} from "@ant-design/icons";
-
+import React from "react";
 type Props = {
     createDate: string,
     importDate: string,

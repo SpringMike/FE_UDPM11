@@ -15,21 +15,6 @@ import InventoryManager from "./admin/pages/inventory/InventoryManager";
 import InventoryList from "./admin/pages/inventory/InventoryList";
 import AddProduct from "./admin/pages/product/AddProduct";
 import React from 'react';
-import Header from './user/components/Header';
-
-// user
-import HomePageUser from "./user/components/HomePage";
-import Checkout from "./user/components/Checkout";
-import Login from "./user/components/Login";
-import SignUp from "./user/components/Signup";
-import ForgotPassword from "./user/components/ForgotPassword";
-import Cart from "./user/components/Cart";
-import Home from "./user/components/Home";
-import Shop from "./user/components/Shop";
-import SignleProduct from "./user/components/SignleProduct";
-import { useAuthStore } from './hooks/zustand/auth';
-import OrderHistory from './user/components/OrderHistory';
-import PageCheckout from './user/components/checkout/PageCheckout';
 import OrderPurchaseMananger from './admin/pages/manangerOrder/OrderPurchaseMananger';
 import OrderReturnMananger from './admin/pages/manangerOrder/OrderReturnMananger';
 import ReportPage from "./admin/pages/revenue/ReportPage";
@@ -44,59 +29,10 @@ const App: React.FC = () => {
     //       token: localStorage.getItem('token') || ''
     //     })
     // );
-    const role = useAuthStore((state) => state.role)
-    let routes;
-    console.log(role);
+    let role = 'anonymous';
+    let routes: any;
+    // console.log(role);
     switch (role) {
-        case 'user':
-            routes = [
-                {
-                    path: "/",
-                    element: <HomePageUser />,
-                    children: [
-                        {
-                            path: "/",
-                            element: <Home />,
-                        },
-                        {
-                            path: "home-user",
-                            element: <Home />,
-                        },
-                        {
-                            path: "shop",
-                            element: <Shop />,
-                        },
-                        {
-                            path: "checkout",
-                            element: <Checkout />,
-                        },
-                        {
-                            path: "signup",
-                            element: <SignUp />,
-                        },
-                        {
-                            path: "forgot-password",
-                            element: <ForgotPassword />,
-                        },
-                        {
-                            path: "cart",
-                            element: <Cart />,
-                        },
-                        {
-                            path: "history",
-                            element: <OrderHistory/>,
-                        },
-                        {
-                            path: "single-product/:id",
-                            element: <SignleProduct />,
-                        },
-                        {
-                            path: "page-checkout",
-                            element: <PageCheckout/>,
-                        },
-                    ],
-                }]
-            break;
         case 'anonymous':
             routes = [
                 {
@@ -172,21 +108,18 @@ const App: React.FC = () => {
                             element: <OrderReturnMananger />,
                         },
                     ],
-                    
+
                 },
-                {
-                    path: "/login",
-                    element: <Login />,
-                }
+
             ]
             break;
-        case 'admin':
-            routes = [
-                {
-                    path: "/login",
-                    element: <Login />,
-                }]
-            break;
+        // case 'admin':
+        //     routes = [
+        //         {
+        //             path: "/login",
+        //             element: <Login />,
+        //         }]
+        //     break;
     }
     return useRoutes(routes)
 };
