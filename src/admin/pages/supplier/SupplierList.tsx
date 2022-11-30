@@ -37,6 +37,7 @@ const SupplierList = () => {
   useEffect(() => {
     // setTimeout(() => {
     getSuppliers().then((r) => {
+      console.log(r)
       setData(r.data.reverse());
       setIsLoading(false);
     });
@@ -79,7 +80,8 @@ const SupplierList = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Delete!",
+      cancelButtonText:"Huỷ",
+      confirmButtonText: "Xoá!",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteSupplier(listId).then(() => {

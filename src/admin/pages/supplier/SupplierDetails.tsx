@@ -186,7 +186,7 @@ const SupplierDetails = () => {
                                 </Row>
                             </div>
                         </div>
-                        {isLoadModal && <SupplierUpdate supplier={supplier} isVisible={isLoadModal}
+                        {isLoadModal && <SupplierUpdate supplier={supplier}  isVisible={isLoadModal}
                                                         setIsVisible={() => setIsLoadModal(false)}/>}
                     </div>
                 )

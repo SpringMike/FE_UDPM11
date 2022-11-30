@@ -1,10 +1,7 @@
 import SideBar from "../components/SideBar";
-
 import {Outlet, useLocation} from "react-router-dom";
-
 import {Layout} from "antd";
 import React from "react";
-
 const {Sider, Content, Header} = Layout;
 
 

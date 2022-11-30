@@ -1,55 +1,127 @@
-import React from 'react';
 import './App.css';
-import {useRoutes} from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
 import HomePage from "./admin/pages/home/HomePage";
 import Dashboard from "./admin/components/Dashboard";
 import SupplierList from "./admin/pages/supplier/SupplierList";
 import SupplierDetails from "./admin/pages/supplier/SupplierDetails";
+import StaffList from './admin/pages/staff/StaffList';
+import StaffDetails from './admin/pages/staff/StaffDetails';
+import ListImportInvoice from "./admin/pages/importInvoice/ListImportInvoice";
+import CreateImport from "./admin/pages/importInvoice/CreateImport";
+import DetailImportInvoice from "./admin/pages/importInvoice/DetailImportInvoice";
+import CreateReturnImportInvoice from "./admin/pages/importInvoice/CreateReturnImportInvoice";
+import InventoryManager from "./admin/pages/inventory/InventoryManager";
+import InventoryList from "./admin/pages/inventory/InventoryList";
+import AddProduct from "./admin/pages/product/AddProduct";
+import React from 'react';
+import OrderPurchaseMananger from './admin/pages/manangerOrder/OrderPurchaseMananger';
+import OrderReturnMananger from './admin/pages/manangerOrder/OrderReturnMananger';
+import ReportPage from "./admin/pages/revenue/ReportPage";
+import RevenueDetailChart from "./admin/pages/revenue/RevenueDetailChart";
+import ListProduct from "./admin/pages/product/ListProduct";
+import ProductDetails from "./admin/pages/product/ProductDetails";
 
 const App: React.FC = () => {
-  // const dispatch = useDispatch();
-  // dispatch(
-  //     setUserStore({
-  //       token: localStorage.getItem('token') || ''
-  //     })
-  // );
-  const router = useRoutes([
-    // {
-    //   path: "/login",
-    //   element: <Login />,
-    // },
-    {
-      path: "/",
-      element: <Dashboard />,
+    // const dispatch = useDispatch();
+    // dispatch(
+    //     setUserStore({
+    //       token: localStorage.getItem('token') || ''
+    //     })
+    // );
+    let role = 'anonymous';
+    let routes: any;
+    // console.log(role);
+    switch (role) {
+        case 'anonymous':
+            routes = [
+                {
+                    path: "/",
+                    element: <Dashboard />,
+                    children: [
+                        {
+                            path: "dashboard",
+                            element: <HomePage />,
+                        },
+                        {
+                            path: "supplier",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <SupplierList /> },
+                                { path: "details/:id", element: <SupplierDetails /> },
+                            ],
+                        },
 
-      children: [
-        {
-          path: "home",
-          element: <HomePage />,
-        },
-        {
-          path: "supplier",
-          children: [
-            // {path: "add", element: <CategoryAdd/>},
-            { path: "", element: <SupplierList /> },
-            { path: "details/:id", element: <SupplierDetails /> },
-          ],
-        },
-        // {
-        //   path: "coordinator/storage",
-        //   children: [
-        //     { path: "", element: <Storage /> },
-        //     { path: "stock_transfers/:id", element: <Status /> },
-        //     { path: "stock_transfers/create", element: <Create /> },
-        //     { path: "stock_transfers/edit/:id", element: <Edit /> },
-        //   ],
-        // },
-      ],
-    },
-  ]);
 
-  return router;
+                        {
+                            path: "staff",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <StaffList /> },
+                                { path: "details/:id", element: <StaffDetails /> },
+                            ],
+                        },
+                        {
+                            path: "purchase_orders",
+                            children: [
+                                // {path: "add", element: <CategoryAdd/>},
+                                { path: "", element: <ListImportInvoice /> },
+                                { path: "create", element: <CreateImport /> },
+                                { path: "details/:code", element: <DetailImportInvoice /> },
+                                { path: "return/:code", element: <CreateReturnImportInvoice /> },
+                            ],
+                        },
+                        {
+                            path: "/inventories/:id",
+                            element: <InventoryManager />,
+                        },
+                        {
+                            path: "/tracking/",
+                            element: <ReportPage />,
+                        },
+                        {
+                            path: "/tracking/detail/revenue",
+                            element: <RevenueDetailChart />,
+                        },
+                        {
+                            path: "/inventories",
+                            element: <InventoryList />,
+                        },
+                        {
+                            path: "/products",
+                            children: [
+                                {
+                                    path: "add_product",
+                                    element: <AddProduct />,
+                                },
+                                { index: true, element: <ListProduct /> },
+                                { path: ":id", element: <ProductDetails /> },
+
+                            ],
+                        },
+                        {
+                            path: "/order-manager",
+                            element: <OrderPurchaseMananger />,
+                        },
+                        {
+                            path: "/order-return-manager",
+                            element: <OrderReturnMananger />,
+                        },
+                    ],
+
+                },
+
+            ]
+            break;
+        // case 'admin':
+        //     routes = [
+        //         {
+        //             path: "/login",
+        //             element: <Login />,
+        //         }]
+        //     break;
+    }
+    return useRoutes(routes)
 };
 
 export default App;
