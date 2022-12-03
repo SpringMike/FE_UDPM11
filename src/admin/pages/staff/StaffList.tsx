@@ -21,6 +21,7 @@ import StaffCreate from "./StaffCreate";
 const StaffList = () => {
 
     const { Title } = Typography;
+
     const [data, setData] = useState([{} as IStaff]);
 
     const [reload, setReload] = useState(false);

@@ -67,28 +67,22 @@ const ProductDetails = () => {
             confirmButtonText: 'Delete!'
         }).then((result) => {
             if (result.isConfirmed && id) {
-                deleteProductById(id)
-                    .then(res => {
-
+                deleteProductById(id).then(res => {
                         ToastCustom.fire({
                             icon: 'success',
                             title: 'Xóa thành công'
                         })
                         navigate('/products')
-
                     })
                     .catch(error => {
                         ToastCustom.fire(
                             {
                                 icon: 'error',
                                 title: 'Xóa Thất bại'
-
                             }
                         )
-
                     })
             }
-
         })
 
     }

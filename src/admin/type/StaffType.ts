@@ -34,3 +34,19 @@ export type TypeStaff = {
     statusAccount: boolean;
 
 }
+
+
+export interface ILoginData {
+    username: string;
+    password: string;
+}
+export interface IRoleLable {
+    employee?: string;
+    admin?: string;
+}
+export interface IRole {
+    key?: React.Key;
+    id: number;
+    name: string;
+    description: string;
+}

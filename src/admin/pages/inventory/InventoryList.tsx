@@ -8,7 +8,7 @@ import {
     getPagination, updateInvetory,
     updateStatusInventory,
 } from "../../service/InventoryApi";
-import React, {useState} from "react";
+import  {useState} from "react";
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import {PlusOutlined} from "@ant-design/icons";
@@ -17,7 +17,6 @@ import ToastCustom from "../../features/toast/Toast";
 
 
 const InventoryList = () => {
-
 
     const navigate = useNavigate();
 
