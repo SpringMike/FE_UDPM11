@@ -7,8 +7,6 @@ import * as Mui from '@mui/material'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, {useLayoutEffect, useState} from "react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-
 import {useNavigate, useParams} from "react-router-dom";
 import "../../styles/Table.css";
 
