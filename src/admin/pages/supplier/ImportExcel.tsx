@@ -42,7 +42,7 @@ const ImportExcel = ({reload} :Props) =>{
         formData.append('file', file);
         formData.append('name', file.name);
         axios({
-            url :'http://localhost:8080/api/suppliers/upload',
+            url :'http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/upload',
             method :'POST',
             data : formData
         }).then((res)=>{

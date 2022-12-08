@@ -25,7 +25,7 @@ const OrderPurchaseMananger = () => {
 
     const printInvoicePdf = (id_account: number, id_order: number) => {
         console.log(id_account);
-        window.open('http://localhost:8080/api/orderPurchase/pdf/' + id_account + '/' + id_order + '');
+        window.open('http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/orderPurchase/pdf/' + id_account + '/' + id_order + '');
     }
     const columns: ColumnsType<IShowOrder> = [
         {

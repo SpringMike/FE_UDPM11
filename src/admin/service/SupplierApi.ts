@@ -7,22 +7,22 @@ const headers = {
 };
 
 export const getSuppliers = async () => {
-    return await axios.get(`http://localhost:8080/api/suppliers/findAll`, {headers})
+    return await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/findAll`, {headers})
 }
 export const createSupplier = async (supplier: object) => {
-    return axios.post(`http://localhost:8080/api/suppliers`, supplier, {headers})
+    return axios.post(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers`, supplier, {headers})
 }
 export const deleteSupplier = async (listId: React.Key[]) => {
-    return axios.put(`http://localhost:8080/api/suppliers/delete`, listId,{headers})
+    return axios.put(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/delete`, listId,{headers})
 }
 export const updateStatusSupplier = async (listId: React.Key[], status: string) => {
-    return axios.put(`http://localhost:8080/api/suppliers/updateStatus/${status}`, listId,{headers})
+    return axios.put(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/updateStatus/${status}`, listId,{headers})
 }
 export const updateSupplier = async (supplier: object) => {
-    return axios.put(`http://localhost:8080/api/suppliers`, supplier,{headers})
+    return axios.put(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers`, supplier,{headers})
 }
 export const getSupplierById = async (id: number) => {
-    return await axios.get(`http://localhost:8080/api/suppliers/${id}`,{headers})
+    return await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/${id}`,{headers})
 }
 
 export const getProvince = async () => {
