@@ -13,6 +13,8 @@ import "../../styles/inputNumber.css"
 import {ColumnProps} from "antd/es/table";
 import ToastCustom from "../../features/toast/Toast";
 import {LeftOutlined} from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 
 interface ReturnImport {
@@ -116,6 +118,8 @@ const CreateReturnImportInvoice = () => {
         },
     ];
 
+  const user = useSelector((state: RootState) => state?.user);
+
 
     const onSubmit = () => {
 
@@ -131,7 +135,7 @@ const CreateReturnImportInvoice = () => {
             importId: importId,
             detailsReturnImports: list,
             createDate:Date.now(),
-            accountId:1
+            accountId:user.id
         }
 
         returnImportInvoice(returnImport,detailInvoices?.anImport.inventoryId as number).then(() => {
