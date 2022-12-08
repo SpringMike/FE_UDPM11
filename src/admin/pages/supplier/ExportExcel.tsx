@@ -11,7 +11,7 @@ const ExportExcel = () => {
         link.target = "_blank";
         link.download = "supplier"
         axios
-            .get("http://localhost:8080/api/suppliers/download", {
+            .get("http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/download", {
                 responseType: "blob",
             })
             .then((res) => {

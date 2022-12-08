@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Button, Col, Form, Input, Modal, Row, Select, Space} from 'antd';
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 import "antd/dist/antd.css";
 
 import ToastCustom from "../../features/toast/Toast";
 import AddAddress from "../../components/AddAddress";
-import {PlusOutlined} from '@ant-design/icons';
-import {TypeSupplier} from "../../type/SupplierType";
-import {createSupplier} from "../../service/SupplierApi";
+import { PlusOutlined } from '@ant-design/icons';
+import { TypeSupplier } from "../../type/SupplierType";
+import { createSupplier } from "../../service/SupplierApi";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 
 type SupplierProps = {
@@ -14,14 +16,16 @@ type SupplierProps = {
 }
 type Account = {
     id: number
-    employee:[
+    employee: [
         {
-            fullName:string
+            fullName: string
         }
     ]
 }
-const SupplierCreate = ({reload}: SupplierProps) => {
-    const {Option} = Select;
+
+const SupplierCreate = ({ reload }: SupplierProps) => {
+    const { Option } = Select;
+    const user = useSelector((state: RootState) => state?.user);
 
     const [accountId, setAccountId] = useState<number>();
     const [accounts, setAccounts] = useState<Account[]>([]);
@@ -29,7 +33,7 @@ const SupplierCreate = ({reload}: SupplierProps) => {
 
     const [form] = Form.useForm();
     const onFormSubmit = (supplier: TypeSupplier) => {
-        supplier.accountId = accountId as number
+        supplier.accountId = user.id
         createSupplier(supplier).then(() => {
             ToastCustom.fire({
                 icon: 'success',
@@ -78,7 +82,7 @@ const SupplierCreate = ({reload}: SupplierProps) => {
     }, [fullAddress])
 
 
-    function onChange(value:number) {
+    function onChange(value: number) {
         setAccountId(value)
     }
 
@@ -87,9 +91,9 @@ const SupplierCreate = ({reload}: SupplierProps) => {
 
         <div>
 
-            <Button onClick={showModal} style={{width: "180px", fontSize: '14px'}} type="primary">
+            <Button onClick={showModal} style={{ width: "180px", fontSize: '14px' }} type="primary">
                 <Space>
-                    <PlusOutlined/>
+                    <PlusOutlined />
                     Thêm mới
                 </Space>
             </Button>
@@ -102,42 +106,42 @@ const SupplierCreate = ({reload}: SupplierProps) => {
                 footer={[]}
 
             >
-                <div style={{background: "white", padding: 24}}>
+                <div style={{ background: "white", padding: 24 }}>
                     <Form
                         form={form}
                         onFinish={onFormSubmit}
                         layout="vertical"
                     >
-                        <Form.Item label="Tên nhà cung cấp" name="name" rules={[{required: true, message:"Tên không được để trống"}]}>
-                            <Input/>
+                        <Form.Item label="Tên nhà cung cấp" name="name" rules={[{ required: true, message: "Tên không được để trống" }]}>
+                            <Input />
                         </Form.Item>
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item label="Mã nhà cung cấp " name="code">
-                                    <Input placeholder="Nhập tên nhà cung cấp"/>
+                                    <Input placeholder="Nhập tên nhà cung cấp" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="Phone" name="phone"
-                                           rules={[
-                                               {
-                                                   required: true,
-                                                message:"SĐT không được để trống"
-                                               },
-                                               {
-                                                   pattern: (/((09|03|07|08|05)+([0-9]{8})\b)/g),
-                                                   message: "SĐT không hợp lệ!"
-                                               }
-                                           ]}>
-                                    <Input placeholder="Nhập SĐT"/>
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "SĐT không được để trống"
+                                        },
+                                        {
+                                            pattern: (/((09|03|07|08|05)+([0-9]{8})\b)/g),
+                                            message: "SĐT không hợp lệ!"
+                                        }
+                                    ]}>
+                                    <Input placeholder="Nhập SĐT" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label="Email" name="email" rules={[{required: true, type: "email", message:"Email không được để trống"}]}>
-                                    <Input placeholder="Nhập email"/>
+                                <Form.Item label="Email" name="email" rules={[{ required: true, type: "email", message: "Email không được để trống" }]}>
+                                    <Input placeholder="Nhập email" />
                                 </Form.Item>
                             </Col>
-                            <Col span={12} style={{height: '100%'}}>
+                            <Col span={12} style={{ height: '100%' }}>
                                 <Form.Item label="Nhân viên phụ trách" name="account">
                                     <Select
                                         showSearch
@@ -146,15 +150,15 @@ const SupplierCreate = ({reload}: SupplierProps) => {
                                         onChange={onChange}
                                         // onSearch={onSearch}
                                         listItemHeight={10} listHeight={250}
-                                        dropdownStyle={{height: 100, width: 100}}
+                                        dropdownStyle={{ height: 100, width: 100 }}
                                     >
                                         {
                                             accounts && accounts.map((account, key) =>
-                                                (
-                                                    <Option
-                                                        key={account.id}
-                                                        value={account.id}>{account?.employee[0].fullName}</Option>
-                                                )
+                                            (
+                                                <Option
+                                                    key={account.id}
+                                                    value={account.id}>{account?.employee[0].fullName}</Option>
+                                            )
                                             )
                                         }
                                     </Select>
@@ -164,12 +168,12 @@ const SupplierCreate = ({reload}: SupplierProps) => {
 
                         {/*add address*/}
 
-                        <AddAddress onChange={setFullAddress} keyChange={keyChange}/>
+                        <AddAddress onChange={setFullAddress} keyChange={keyChange} />
 
                         {/*-------------------*/}
 
                         <Form.Item label="Địa chỉ" name="address">
-                            <Input disabled placeholder="địa chỉ nhà cung cấp"/>
+                            <Input disabled placeholder="địa chỉ nhà cung cấp" />
                         </Form.Item>
                         <Row>
                             <Col span={4}>

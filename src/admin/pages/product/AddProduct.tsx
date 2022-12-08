@@ -1,18 +1,20 @@
-import {Link, useNavigate} from 'react-router-dom';
-import {LeftOutlined} from "@ant-design/icons";
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { LeftOutlined } from "@ant-design/icons";
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import * as Mui from '@mui/material'
 import * as Antd from 'antd'
-import {AddProductInput, IVariant, OptionAdd} from '../../type/ProductType';
-import {addProduct} from '../../service/ProductApi';
-import {getSuppliers} from '../../service/SupplierApi';
-import {ISupplier} from '../../type/SupplierType';
+import { AddProductInput, IVariant, OptionAdd } from '../../type/ProductType';
+import { addProduct } from '../../service/ProductApi';
+import { getSuppliers } from '../../service/SupplierApi';
+import { ISupplier } from '../../type/SupplierType';
 import ToastCustom from '../../features/toast/Toast';
-import {getCategories} from '../../service/CategoryApi';
+import { getCategories } from '../../service/CategoryApi';
 import SelectCategory from './SelectCategory';
 import SelectOption from './SelectOption';
-import {Category} from "../../type/CategoryType";
+import { Category } from "../../type/CategoryType";
 import ImageUpload from "./ImageUpload";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 
 const AddProduct = (props: any) => {
@@ -34,9 +36,9 @@ const AddProduct = (props: any) => {
         wholesalePrice: 0,
         salePrice: 0,
         importPrice: 0,
-        option1:"",
-        option2:"",
-        option3:""
+        option1: "",
+        option2: "",
+        option3: ""
 
     }
     //state
@@ -62,9 +64,11 @@ const AddProduct = (props: any) => {
     const onImageChange = (url: string) => {
         setImageUrl(url)
     }
+    const user = useSelector((state: RootState) => state?.user);
+
     const onSubmit = (data: AddProductInput) => {
-        let {salePrice, wholesalePrice, importPrice, ...other} = {...data}
-        let newProduct = {...other, accountId: 1, statusId: 1}
+        let { salePrice, wholesalePrice, importPrice, ...other } = { ...data }
+        let newProduct = { ...other, accountId: user.id, statusId: 1 }
 
         let body = {
             product: newProduct,
@@ -75,7 +79,7 @@ const AddProduct = (props: any) => {
         if (options.length == 0) {
             body = {
                 ...body,
-                variants: [{name: newProduct.name, salePrice, image: imageUrl, importPrice, wholesalePrice,option1:"",option2:"",option3:""}]
+                variants: [{ name: newProduct.name, salePrice, image: imageUrl, importPrice, wholesalePrice, option1: "", option2: "", option3: "" }]
             }
         } else {
             var variantsSt1 = variants.map((variant, index) => {
@@ -146,9 +150,9 @@ const AddProduct = (props: any) => {
                         wholesalePrice: product.wholesalePrice,
                         salePrice: product.salePrice,
                         importPrice: product.importPrice,
-                        option1:valuesForName[0] ? valuesForName[0] : "" ,
-                        option2:valuesForName[1] ? valuesForName[1] : "",
-                        option3:valuesForName[2] ? valuesForName[2] : ""
+                        option1: valuesForName[0] ? valuesForName[0] : "",
+                        option2: valuesForName[1] ? valuesForName[1] : "",
+                        option3: valuesForName[2] ? valuesForName[2] : ""
                     })
                 }
 
@@ -210,49 +214,49 @@ const AddProduct = (props: any) => {
     const ProductInfo = () => {
         return (
             <div>
-                <Mui.Paper sx={{px: 5, py: 2, height: 565}}>
+                <Mui.Paper sx={{ px: 5, py: 2, height: 565 }}>
                     <h5>Thông tin chung</h5>
-                    <hr/>
-                    <Antd.Form.Item style={{marginTop: 50}} labelCol={{span: 24}} labelAlign='left' label='Tên sản phẩm'
-                                    name="name"
-                                    rules={[
-                                        {required: true, message: 'Tên sản phẩm không được để trống'}
-                                    ]}
+                    <hr />
+                    <Antd.Form.Item style={{ marginTop: 50 }} labelCol={{ span: 24 }} labelAlign='left' label='Tên sản phẩm'
+                        name="name"
+                        rules={[
+                            { required: true, message: 'Tên sản phẩm không được để trống' }
+                        ]}
                     >
                         <Antd.Input size={'large'}></Antd.Input>
                     </Antd.Form.Item>
                     <Antd.Space size={[50, 3]}>
-                        <Antd.Form.Item labelCol={{span: 24}} label='Giá bán lẻ' name="salePrice"
-                                        style={{width: '100%'}}
-                                        rules={[
-                                            {required: true, message: 'Giá bán lẻ Không được để trống'},
-                                        ]}
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá bán lẻ' name="salePrice"
+                            style={{ width: '100%' }}
+                            rules={[
+                                { required: true, message: 'Giá bán lẻ Không được để trống' },
+                            ]}
                         >
-                            <Antd.InputNumber size={'large'} min={0} style={{width: '100%'}}
-                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            <Antd.InputNumber size={'large'} min={0} style={{ width: '100%' }}
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             >
                             </Antd.InputNumber>
                         </Antd.Form.Item>
-                        <Antd.Form.Item labelCol={{span: 24}} label='Giá bán buôn' name="wholesalePrice">
-                            <Antd.InputNumber size={'large'} min={0} style={{width: '100%'}}
-                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá bán buôn' name="wholesalePrice">
+                            <Antd.InputNumber size={'large'} min={0} style={{ width: '100%' }}
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             >
                             </Antd.InputNumber>
                         </Antd.Form.Item>
-                        <Antd.Form.Item labelCol={{span: 24}} label='Giá nhập' name="importPrice"
-                                        rules={[
-                                            {required: true, message: 'Giá nhập không được để trống'},
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá nhập' name="importPrice"
+                            rules={[
+                                { required: true, message: 'Giá nhập không được để trống' },
 
-                                        ]}
+                            ]}
                         >
-                            <Antd.InputNumber size={'large'} min={0} style={{width: '100%'}}
-                                              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            <Antd.InputNumber size={'large'} min={0} style={{ width: '100%' }}
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             >
                             </Antd.InputNumber>
                         </Antd.Form.Item>
                     </Antd.Space>
                     <Antd.Form.Item name='description'>
-                        <Antd.Input.TextArea rows={8} placeholder="Mô tả sản phẩm"/>
+                        <Antd.Input.TextArea rows={8} placeholder="Mô tả sản phẩm" />
                     </Antd.Form.Item>
                 </Mui.Paper>
             </div>
@@ -262,13 +266,13 @@ const AddProduct = (props: any) => {
     const ImageSelect = () => {
 
         return (
-            <Mui.Paper sx={{px: 5, py: 2, height: 250, mb: 2}}>
+            <Mui.Paper sx={{ px: 5, py: 2, height: 250, mb: 2 }}>
                 <h5>Thêm hình ảnh</h5>
 
 
-                <div style={{margin: '20px 20px'}}>
+                <div style={{ margin: '20px 20px' }}>
 
-                    <ImageUpload imageUrl={imageUrl} setUrl={onImageChange}/>
+                    <ImageUpload imageUrl={imageUrl} setUrl={onImageChange} />
                 </div>
             </Mui.Paper>
         )
@@ -279,7 +283,7 @@ const AddProduct = (props: any) => {
             <div>
                 <h5>Các phiên bản</h5>
 
-                <Mui.TableContainer component={Mui.Paper} sx={{maxHeight: 500, overflow: 'hiden'}}>
+                <Mui.TableContainer component={Mui.Paper} sx={{ maxHeight: 500, overflow: 'hiden' }}>
                     <Mui.Table aria-label="simple table" stickyHeader
                     >
                         <Mui.TableHead>
@@ -294,7 +298,7 @@ const AddProduct = (props: any) => {
                             {variants.map((variant, index) => (
                                 <Mui.TableRow
                                     key={index}
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <Mui.TableCell component="th" scope="row" align="center">
                                         {variant.name}
@@ -303,36 +307,36 @@ const AddProduct = (props: any) => {
                                         <Antd.InputNumber
                                             defaultValue={variant.salePrice}
                                             size='middle'
-                                            style={{width: '70%'}}
+                                            style={{ width: '70%' }}
                                             min={0}
                                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             onChange={(e) => {
                                                 variant.salePrice = Number(e)
 
-                                            }}/>
+                                            }} />
                                     </Mui.TableCell>
                                     <Mui.TableCell align="center">
                                         <Antd.InputNumber
                                             defaultValue={variant.wholesalePrice}
                                             size='middle'
-                                            style={{width: '70%'}}
+                                            style={{ width: '70%' }}
                                             min={0}
                                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             onChange={(e) => {
                                                 variant.wholesalePrice = Number(e)
 
-                                            }}/>
+                                            }} />
                                     </Mui.TableCell>
                                     <Mui.TableCell align="center">
                                         <Antd.InputNumber
                                             defaultValue={variant.importPrice}
                                             size='middle'
-                                            style={{width: '70%'}}
+                                            style={{ width: '70%' }}
                                             min={0}
                                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             onChange={(e) => {
                                                 variant.importPrice = Number(e)
-                                            }}/>
+                                            }} />
 
                                     </Mui.TableCell>
                                 </Mui.TableRow>
@@ -346,19 +350,19 @@ const AddProduct = (props: any) => {
     return (
         <div className='p-5'>
             <Antd.Spin spinning={open} tip={'Đang lưu...'}>
-                <h2 style={{fontSize: '15px', marginBottom: 20}}>
+                <h2 style={{ fontSize: '15px', marginBottom: 20 }}>
                     <Link to="/products">
-                        <LeftOutlined/> Danh sách sản phẩm
+                        <LeftOutlined /> Danh sách sản phẩm
                     </Link>
                 </h2>
 
                 <Antd.Form onFinish={onSubmit}
-                           initialValues={product}
-                           onValuesChange={(change, value) => {
-                               localStorage.setItem('product', JSON.stringify(value))
-                           }}
+                    initialValues={product}
+                    onValuesChange={(change, value) => {
+                        localStorage.setItem('product', JSON.stringify(value))
+                    }}
                 >
-                    <Mui.Box sx={{flexGrow: 1, mb: 5}}>
+                    <Mui.Box sx={{ flexGrow: 1, mb: 5 }}>
                         <Mui.Grid container spacing={2}>
                             <Mui.Grid item xs={7} textAlign={'left'}>
                                 <ProductInfo></ProductInfo>
@@ -366,23 +370,23 @@ const AddProduct = (props: any) => {
                             <Mui.Grid item xs={5}>
                                 <Mui.Grid container spacing={2}>
                                     <Mui.Grid item xs={6}>
-                                        <ImageSelect/>
+                                        <ImageSelect />
                                     </Mui.Grid>
                                     <Mui.Grid item xs={6}>
                                         <SelectCategory selectCategories={selectCategories}
-                                                        onChange={onCategoriesSelect}/>
+                                            onChange={onCategoriesSelect} />
                                     </Mui.Grid>
                                 </Mui.Grid>
                                 {/* <OptionInfo></OptionInfo> */}
                                 <SelectOption options={options} onOptionChange={onOptionChange}
-                                              setOptions={setNewOptions} size={4}/>
+                                    setOptions={setNewOptions} size={4} />
                             </Mui.Grid>
                         </Mui.Grid>
                     </Mui.Box>
-                    {options[0]?.values.length > 0 ? <Variants/> : null}
-                    <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                    {options[0]?.values.length > 0 ? <Variants /> : null}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Antd.Button type='primary' htmlType='submit'
-                                     style={{margin: '20px 0px', width: 150}}>Lưu</Antd.Button>
+                            style={{ margin: '20px 0px', width: 150 }}>Lưu</Antd.Button>
                     </div>
                 </Antd.Form>
             </Antd.Spin>

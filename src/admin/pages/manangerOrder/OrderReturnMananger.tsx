@@ -68,7 +68,7 @@ const OrderReturnMananger = () => {
                 <Button hidden={!(data.statusReturn === 12)} type="ghost" color='info' onClick={() => { updateStatus(13, data.id) }} style={{ marginRight: 16 }}>Đồng ý</Button >
                 <Button hidden={!(data.statusReturn === 12)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 14 }}>Từ chối</Button >
                 <Button hidden={!(data.statusReturn === 13)} type="primary" onClick={() => { updateStatus(15, data.id) }} ghost style={{ marginRight: 16 }}>Đã nhân được hàng</Button>
-                <Button hidden={!(data.statusReturn === 16)} type="primary" onClick={() => { updateStatus(16, data.id) }} ghost style={{ marginRight: 16 }}>Đã hoàn tiền</Button>
+                <Button hidden={!(data.statusReturn === 15)} type="primary" onClick={() => { updateStatus(16, data.id) }} ghost style={{ marginRight: 16 }}>Đã hoàn tiền</Button>
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },

@@ -20,7 +20,7 @@ const Login: React.FC = () => {
 
     const loginSubmit = useMutation(
         async (loginData: ILoginData) => {
-            return (await axios.post("http://localhost:8080/api/login", loginData))
+            return (await axios.post("http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/login", loginData))
                 .data;
         },
         {

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -39,6 +39,8 @@ import { RangePickerProps } from "antd/es/date-picker";
 import { Link, useNavigate } from "react-router-dom";
 import SelectSupplier from "../../components/SelectSupplier";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 
 // ImportInvoice * as CurrencyFormat from 'react-currency-format';
@@ -87,7 +89,7 @@ const CreateImport = () => {
       const listData = listAllProductVariant.concat(productVariant.data);
       setListAllProductVariant(listData);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber]);
 
   useEffect(() => {
@@ -107,7 +109,7 @@ const CreateImport = () => {
       setListAllProductVariant(listData);
     });
     // searchValue === "" && setPageNumber(1)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue]);
 
   useEffect(() => {
@@ -146,10 +148,10 @@ const CreateImport = () => {
       const newProjects = tableData.map((p) => {
         return p.code === productVariant.code
           ? {
-              ...p,
-              quantity: p.quantity + 1,
-              totalPrice: (p.quantity + 1) * p.importPrice,
-            }
+            ...p,
+            quantity: p.quantity + 1,
+            totalPrice: (p.quantity + 1) * p.importPrice,
+          }
           : p;
       });
       setTableData(newProjects);
@@ -330,10 +332,10 @@ const CreateImport = () => {
         listData = listData.map((p) => {
           return p.code === findData?.code
             ? {
-                ...p,
-                quantity: p.quantity + 1,
-                totalPrice: (p.quantity + 1) * p.importPrice,
-              }
+              ...p,
+              quantity: p.quantity + 1,
+              totalPrice: (p.quantity + 1) * p.importPrice,
+            }
             : p;
         });
         setTableData(listData);
@@ -366,6 +368,7 @@ const CreateImport = () => {
       );
     }
   };
+  const user = useSelector((state: RootState) => state?.user);
 
   const onCreateOrder = () => {
     const list = [];
@@ -384,7 +387,7 @@ const CreateImport = () => {
         });
       }
       const anImport = {
-        accountId: 1,
+        accountId: user.id,
         supplierId: supplierId,
         totalPrice: totalPrice,
         note: "",
@@ -416,7 +419,7 @@ const CreateImport = () => {
 
   return (
     <div className="p-5">
-      <h2 style={{ fontSize: "15px" ,marginBottom:30}}>
+      <h2 style={{ fontSize: "15px", marginBottom: 30 }}>
         <Link to="/purchase_orders">
           <LeftOutlined /> Danh sách đơn hàng
         </Link>
@@ -624,7 +627,7 @@ const CreateImport = () => {
               <Form.Item
                 label="Chi nhánh"
                 name="inventory"
-                rules={[{ required: true ,message:"Chi nhánh không được để trống"}]}
+                rules={[{ required: true, message: "Chi nhánh không được để trống" }]}
               >
                 <Select
                   showSearch
@@ -643,15 +646,15 @@ const CreateImport = () => {
                           {" "}
                           {
                             inventor.size ? (
-                                <div>
-                                  {inventor.name }
-                                  <Tag style={{marginLeft:10}} color="red">Đã đầy </Tag>
-                                </div>
+                              <div>
+                                {inventor.name}
+                                <Tag style={{ marginLeft: 10 }} color="red">Đã đầy </Tag>
+                              </div>
                             ) : (
-                                <div>
-                                  {inventor.name }
-                                  <Tag style={{marginLeft:10}} color="green">Còn trống</Tag>
-                                </div>
+                              <div>
+                                {inventor.name}
+                                <Tag style={{ marginLeft: 10 }} color="green">Còn trống</Tag>
+                              </div>
                             )
                           }
                         </Option>

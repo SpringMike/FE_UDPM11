@@ -174,7 +174,7 @@ function RevenueChart(props: DateTimeReportProps) {
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    <Link  to={'/tracking/detail/revenue'}>Xem chi tiết
+                    <Link  to={'/admin/tracking/detail/revenue'}>Xem chi tiết
                     </Link>
                 </Grid>
             </Grid>

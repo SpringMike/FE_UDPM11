@@ -1,17 +1,17 @@
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "../../styles/Tab.css"
 
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     getDetailImportInvoice,
     getDetailsImportReturn,
     getHistoryStatusImportInvoice,
     updateStatusInvoice
 } from "../../service/ImportInvoiceApi";
-import {IDetailImportInvoice, IHistoryStatus, IImportReturn} from "../../type/ImportInvoiceType";
-import {Button, Col, Row, Steps, Table, Tag} from "antd";
-import {LeftOutlined, ShopFilled,} from '@ant-design/icons';
-import {columnsDetailImportInvoice} from "../../datatablesource/ImportInvoice";
+import { IDetailImportInvoice, IHistoryStatus, IImportReturn } from "../../type/ImportInvoiceType";
+import { Button, Col, Row, Steps, Table, Tag } from "antd";
+import { LeftOutlined, ShopFilled, } from '@ant-design/icons';
+import { columnsDetailImportInvoice } from "../../datatablesource/ImportInvoice";
 import ToastCustom from "../../features/toast/Toast";
 import PaymentImport from "./PaymentImport";
 import ImportWarehouse from "./ImportWarehouse";
@@ -23,7 +23,7 @@ import ImportInvoiceHistory from "./ImportInvoiceHistory";
 const DetailImportInvoice = () => {
 
 
-    const {code} = useParams();
+    const { code } = useParams();
 
     const [detailInvoices, setDetailInvoices] = useState<IDetailImportInvoice>();
     const [reload, setReload] = useState(false)
@@ -57,7 +57,7 @@ const DetailImportInvoice = () => {
 
     useEffect(() => {
         const invoiceStatusHistoryList = invoiceStatusHistory.filter((obj: IHistoryStatus) => obj.statusName !== "Tạo phiếu trả hàng")
-        if (invoiceStatusHistoryList.length === 2){
+        if (invoiceStatusHistoryList.length === 2) {
             setCreatDate(invoiceStatusHistoryList[1].createdAt)
             setImportDate(invoiceStatusHistoryList[0].createdAt)
             setFullName(invoiceStatusHistoryList[0].fullName)
@@ -71,22 +71,25 @@ const DetailImportInvoice = () => {
         }
     }, [invoiceStatusHistory])
 
-    const {Step} = Steps;
+    const { Step } = Steps;
 
     const updateStatusPaidPayment = () => {
         const importId = detailInvoices?.anImport.id as number
-        updateStatusInvoice(importId, "paidPayment",1).then(() => {
+        updateStatusInvoice(importId, "paidPayment", 1).then(() => {
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Xác nhận thanh toán thành công'
             }).then()
             setReload(!reload)
         })
+        {
+            console.log('12312312312', invoiceStatusHistory)
+        }
 
     }
     const updateStatusImportWarehouse = () => {
         const importId = detailInvoices?.anImport.id as number
-        updateStatusInvoice(importId, "importWarehouse",1).then(() => {
+        updateStatusInvoice(importId, "importWarehouse", 1).then(() => {
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Xác nhận nhập kho thành công'
@@ -97,72 +100,75 @@ const DetailImportInvoice = () => {
 
     return (
         <div className='p-5'>
-            <h2 style={{ fontSize:'15px' }} >
+            <h2 style={{ fontSize: '15px' }} >
                 <Link to="/purchase_orders">
                     <LeftOutlined /> Danh sách đơn hàng
                 </Link>
             </h2>
-        {
+            {
                 detailInvoices && (<div>
-                    <div style={{display: 'flex', justifyContent: 'space-between',alignItems:"center"}}>
-                        <div style={{display: 'flex',alignItems:"center"}}>
-                            <h1 style={{fontSize:'30px',margin:0,marginRight:10}}>{detailInvoices?.anImport.code}</h1>
-                            <span style={{marginTop:10}} >{createDate}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
+                        <div style={{ display: 'flex', alignItems: "center" }}>
+                            <h1 style={{ fontSize: '30px', margin: 0, marginRight: 10 }}>{detailInvoices?.anImport.code}</h1>
+                            <span style={{ marginTop: 10 }} >{createDate}</span>
                         </div>
-                        <div style={{width: '45%'}}>
+                        <div style={{ width: '45%' }}>
                             {(() => {
                                 const invoiceStatusHistoryList = invoiceStatusHistory.filter((obj: IHistoryStatus) => obj.statusName !== "Tạo phiếu trả hàng")
+                                console.log("invoiceStatusHistoryList: ", invoiceStatusHistoryList);
+
                                 if (invoiceStatusHistoryList.length === 3) {
                                     return (
                                         <Steps current={currentStatus}>
-                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[2].createdAt}/>
-                                            <Step title="Nhập kho" description={invoiceStatusHistoryList[1].createdAt}/>
-                                            <Step title="Hoàn thành" description={invoiceStatusHistoryList[0].createdAt}/>
+                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[2].createdAt} />
+
+                                            <Step title="Nhập kho" description={invoiceStatusHistoryList[1].createdAt} />
+                                            <Step title="Hoàn thành" description={invoiceStatusHistoryList[0].createdAt} />
                                         </Steps>
                                     )
                                 } else if (invoiceStatusHistoryList.length === 2 && invoiceStatusHistoryList[0].statusName === 'Tạo phiếu nhập kho') {
 
                                     return (
                                         <Steps current={currentStatus + 1}>
-                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[1].createdAt}/>
-                                            <Step title="Nhập kho" description={invoiceStatusHistoryList[0].createdAt}/>
-                                            <Step title="Hoàn thành"/>
+                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[1].createdAt} />
+                                            <Step title="Nhập kho" description={invoiceStatusHistoryList[0].createdAt} />
+                                            <Step title="Hoàn thành" />
                                         </Steps>
                                     )
                                 } else if (invoiceStatusHistoryList.length === 2 && invoiceStatusHistoryList[0].statusName === 'Thanh toán hóa đơn nhập hàng') {
                                     return (
                                         <Steps current={currentStatus}>
-                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[1].createdAt}/>
-                                            <Step title="Nhập kho"/>
-                                            <Step title="Hoàn thành"/>
+                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[1].createdAt} />
+                                            <Step title="Nhập kho" />
+                                            <Step title="Hoàn thành" />
                                         </Steps>
                                     )
                                 } else if (invoiceStatusHistoryList.length === 1) {
 
                                     return (
                                         <Steps current={currentStatus}>
-                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[0].createdAt}/>
-                                            <Step title="Nhập kho"/>
-                                            <Step title="Hoàn thành"/>
+                                            <Step title="Đặt hàng" description={invoiceStatusHistoryList[0].createdAt} />
+                                            <Step title="Nhập kho" />
+                                            <Step title="Hoàn thành" />
                                         </Steps>
                                     )
                                 }
                             })()}
                         </div>
                     </div>
-                    <div style={{marginTop: '45px'}}>
+                    <div style={{ marginTop: '45px' }}>
                         <Row gutter={24}>
                             <Col span={16}>
-                                <div className="block" style={{padding: 0}}>
-                                    <div style={{padding: 20, paddingBottom: 5, marginBottom: 5}}>
-                                        <p style={{margin: 0, fontSize: "16px"}}><b>Thông tin nhà cung cấp</b></p>
+                                <div className="block" style={{ padding: 0 }}>
+                                    <div style={{ padding: 20, paddingBottom: 5, marginBottom: 5 }}>
+                                        <p style={{ margin: 0, fontSize: "16px" }}><b>Thông tin nhà cung cấp</b></p>
                                     </div>
-                                    <hr style={{margin: 0}}/>
-                                    <div style={{padding: 20}}>
+                                    <hr style={{ margin: 0 }} />
+                                    <div style={{ padding: 20 }}>
                                         <Row>
-                                            <Link to='#' style={{marginBottom: 20}}>
-                                                <b style={{textTransform: "uppercase"}}>
-                                                    <span><ShopFilled/></span> {detailInvoices.supplier.name}
+                                            <Link to='#' style={{ marginBottom: 20 }}>
+                                                <b style={{ textTransform: "uppercase" }}>
+                                                    <span><ShopFilled /></span> {detailInvoices.supplier.name}
                                                 </b>
                                             </Link>
                                         </Row>
@@ -173,7 +179,7 @@ const DetailImportInvoice = () => {
                                                         <p>Mã: </p>
                                                     </Col>
                                                     <Col span={21}>
-                                                        <p style={{color:'#605c5c',fontWeight:500}}>{detailInvoices.supplier.code}</p>
+                                                        <p style={{ color: '#605c5c', fontWeight: 500 }}>{detailInvoices.supplier.code}</p>
                                                     </Col>
                                                 </Row>
                                                 <Row>
@@ -181,7 +187,7 @@ const DetailImportInvoice = () => {
                                                         <p>Email: </p>
                                                     </Col>
                                                     <Col span={21}>
-                                                        <p style={{color:'#605c5c',fontWeight:500}}>{detailInvoices.supplier.email}</p>
+                                                        <p style={{ color: '#605c5c', fontWeight: 500 }}>{detailInvoices.supplier.email}</p>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -203,7 +209,7 @@ const DetailImportInvoice = () => {
                                                         <p>Địa chỉ: </p>
                                                     </Col>
                                                     <Col span={19}>
-                                                        <p style={{color:'#605c5c',fontWeight:500}}>{detailInvoices.supplier.address}</p>
+                                                        <p style={{ color: '#605c5c', fontWeight: 500 }}>{detailInvoices.supplier.address}</p>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -211,12 +217,12 @@ const DetailImportInvoice = () => {
                                     </div>
                                 </div>
 
-                                <div className="block" style={{padding: 0}}>
-                                    <div style={{padding: 20, paddingBottom: 5, marginBottom: '5px'}}>
-                                        <p style={{marginBottom: 0, fontSize: "16px"}}><b>Thông tin sản phẩm</b></p>
+                                <div className="block" style={{ padding: 0 }}>
+                                    <div style={{ padding: 20, paddingBottom: 5, marginBottom: '5px' }}>
+                                        <p style={{ marginBottom: 0, fontSize: "16px" }}><b>Thông tin sản phẩm</b></p>
                                     </div>
-                                    <hr/>
-                                    <div style={{padding: 20}}>
+                                    <hr />
+                                    <div style={{ padding: 20 }}>
                                         {
                                             detailInvoices.anImport.detailsImports.length &&
                                             <Table
@@ -230,17 +236,17 @@ const DetailImportInvoice = () => {
                                 </div>
 
                                 <PaymentImport updateStatusPaidPayment={updateStatusPaidPayment} total={detailInvoices?.anImport.totalPrice}
-                                               isPaid={detailInvoices?.anImport.isPaid}/>
+                                    isPaid={detailInvoices?.anImport.isPaid} />
 
                                 <ImportWarehouse updateStatusImportWarehouse={updateStatusImportWarehouse}
-                                                 invoice={detailInvoices} createDate={createDate} importDate={importDate}
-                                                 fullName ={fullName} phoneNumber ={phoneNumber}
+                                    invoice={detailInvoices} createDate={createDate} importDate={importDate}
+                                    fullName={fullName} phoneNumber={phoneNumber}
                                 />
 
-                                <ReturnInvoiceImport returnInvoice={returnInvoice} invoice={detailInvoices}/>
+                                <ReturnInvoiceImport returnInvoice={returnInvoice} invoice={detailInvoices} />
                             </Col>
                             <Col span={8}>
-                                <div className="block" style={{padding: 0}}>
+                                <div className="block" style={{ padding: 0 }}>
                                     <div style={{
                                         padding: 20,
                                         paddingBottom: 5,
@@ -248,7 +254,7 @@ const DetailImportInvoice = () => {
                                         display: "flex",
                                         justifyContent: 'space-between'
                                     }}>
-                                        <p style={{marginBottom: 0, fontSize: "16px"}}>
+                                        <p style={{ marginBottom: 0, fontSize: "16px" }}>
                                             <b>Thông tin đơn nhập</b>
                                         </p>
                                         {
@@ -257,8 +263,8 @@ const DetailImportInvoice = () => {
                                                 <Tag color="warning">Đang giao dịch</Tag>
                                         }
                                     </div>
-                                    <hr/>
-                                    <div style={{padding: 20}}>
+                                    <hr />
+                                    <div style={{ padding: 20 }}>
                                         <Row>
                                             <Col span={8}>
                                                 Kho :
@@ -267,7 +273,7 @@ const DetailImportInvoice = () => {
                                                 {detailInvoices.inventoryName}
                                             </Col>
                                         </Row>
-                                        <Row style={{marginTop: 10}}>
+                                        <Row style={{ marginTop: 10 }}>
                                             <Col span={8}>
                                                 Ngày hẹn giao :
                                             </Col>
@@ -277,9 +283,9 @@ const DetailImportInvoice = () => {
                                         </Row>
                                     </div>
                                 </div>
-                                <div className="block" style={{padding: 0}}>
-                                    <div style={{padding: 20}}>
-                                        <ImportInvoiceHistory reload={reload} data={invoiceStatusHistory}/>
+                                <div className="block" style={{ padding: 0 }}>
+                                    <div style={{ padding: 20 }}>
+                                        <ImportInvoiceHistory reload={reload} data={invoiceStatusHistory} />
                                     </div>
                                 </div>
                             </Col>
