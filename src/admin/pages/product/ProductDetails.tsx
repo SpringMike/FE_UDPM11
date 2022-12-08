@@ -98,7 +98,7 @@ const ProductDetails = () => {
 
     const handleMenuClick: MenuProps['onClick'] = (e: any) => {
         switch (e.key) {
-            case '1':
+            case 1:
                 if (productInfo?.product?.id) {
                     handleDeleteProduct(productInfo?.product?.id)
 
@@ -112,7 +112,7 @@ const ProductDetails = () => {
                     )
                 }
                 break
-            case '2':
+            case 2:
                 if (productInfo?.product?.id) {
                     setIsUpdate(true)
                 } else {
@@ -133,7 +133,7 @@ const ProductDetails = () => {
             onClick={handleMenuClick}
             items={[
                 {
-                    key: '1',
+                    key: 1,
                     label: <Antd.Button style={{width: '100%'}} type="text" danger>Xóa Sản
                         phẩm<DeleteOutlined/></Antd.Button>,
 
@@ -141,7 +141,7 @@ const ProductDetails = () => {
                 {
                     label: <Antd.Button style={{width: '100%'}} type="text">Sửa sản
                         phẩm<InfoCircleOutlined/></Antd.Button>,
-                    key: '2',
+                    key: 2,
 
 
                 },
