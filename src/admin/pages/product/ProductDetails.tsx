@@ -1,17 +1,17 @@
-import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
-import React, {memo, useEffect, useState} from "react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import React, { memo, useEffect, useState } from "react";
 import * as Antd from "antd";
-import {Col, Dropdown, Menu, MenuProps, Row, Space} from "antd";
+import { Col, Dropdown, Menu, MenuProps, Row, Space } from "antd";
 import Moment from "react-moment";
-import {DeleteOutlined, DownOutlined, InfoCircleOutlined, LeftOutlined} from "@ant-design/icons";
+import { DeleteOutlined, DownOutlined, InfoCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import * as Mui from '@mui/material'
-import {deleteProductById, deleteVariantsById, getProductById} from "../../service/ProductApi";
-import {IVariant, Product} from "../../type/ProductType";
+import { deleteProductById, deleteVariantsById, getProductById } from "../../service/ProductApi";
+import { IVariant, Product } from "../../type/ProductType";
 import Swal from "sweetalert2";
 import ToastCustom from "../../features/toast/Toast";
 import UpdateProduct from './UpdateProduct'
 
-import {Category} from "../../type/CategoryType";
+import { Category } from "../../type/CategoryType";
 
 export interface ProductInfo {
     product: Product,
@@ -22,7 +22,7 @@ export interface ProductInfo {
 
 const ProductDetails = () => {
 
-    const {id, backcode} = useParams();
+    const { id, backcode } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const [focusVariant, setFocusVariant] = useState<IVariant>()
     searchParams.get('backcode')
@@ -68,12 +68,12 @@ const ProductDetails = () => {
         }).then((result) => {
             if (result.isConfirmed && id) {
                 deleteProductById(id).then(res => {
-                        ToastCustom.fire({
-                            icon: 'success',
-                            title: 'Xóa thành công'
-                        })
-                        navigate('/products')
+                    ToastCustom.fire({
+                        icon: 'success',
+                        title: 'Xóa thành công'
                     })
+                    navigate('/products')
+                })
                     .catch(error => {
                         ToastCustom.fire(
                             {
@@ -134,14 +134,14 @@ const ProductDetails = () => {
             items={[
                 {
                     key: 1,
-                    label: <Antd.Button style={{width: '100%'}} type="text" danger>Xóa Sản
-                        phẩm<DeleteOutlined/></Antd.Button>,
+                    label: <Antd.Button style={{ width: '100%' }} type="text" danger>Xóa Sản
+                        phẩm<DeleteOutlined /></Antd.Button>,
 
                 },
                 {
-                    label: <Antd.Button style={{width: '100%'}} type="text">Sửa sản
-                        phẩm<InfoCircleOutlined/></Antd.Button>,
                     key: 2,
+                    label: <Antd.Button style={{ width: '100%' }} type="text">Sửa sản
+                        phẩm<InfoCircleOutlined /></Antd.Button>,
 
 
                 },
@@ -152,25 +152,25 @@ const ProductDetails = () => {
     const Product = () => {
         var product = productInfo?.product
         return (
-            <Mui.Paper style={{height: 350}}>
-                <div style={{background: "white"}}>
-                    <div style={{padding: 20, display: 'flex', justifyContent: 'space-between', paddingBottom: 0}}>
+            <Mui.Paper style={{ height: 350 }}>
+                <div style={{ background: "white" }}>
+                    <div style={{ padding: 20, display: 'flex', justifyContent: 'space-between', paddingBottom: 0 }}>
                         <div>
                             Thông tin sản phẩm
                         </div>
                         <div>
                             <Dropdown overlay={menu}>
-                                <div style={{width: "190px", fontSize: '14px', textAlign: 'center'}}>
+                                <div style={{ width: "190px", fontSize: '14px', textAlign: 'center' }}>
                                     <Space>
                                         Thao tác khác
-                                        <DownOutlined/>
+                                        <DownOutlined />
                                     </Space>
                                 </div>
                             </Dropdown>
                         </div>
                     </div>
-                    <hr/>
-                    <div style={{padding: '20px'}}>
+                    <hr />
+                    <div style={{ padding: '20px' }}>
                         <Row>
                             <Col span={12}>
                                 <Row>
@@ -220,7 +220,7 @@ const ProductDetails = () => {
 
                         </Row>
 
-                        <p style={{marginTop: 20}}>Mô tả:</p>
+                        <p style={{ marginTop: 20 }}>Mô tả:</p>
                         <p style={{
                             height: 113,
                             overflow: "hidden",
@@ -298,14 +298,14 @@ const ProductDetails = () => {
                 if (result.isConfirmed) {
                     console.log(selectedRowKeys)
                     deleteVariantsById(selectedRowKeys).then((response: any) => {
-                            if (response.ok) {
-                                ToastCustom.fire({
-                                    icon: 'success',
-                                    title: 'Xóa phiên bản thành công'
-                                }).then()
-                                loadData()
-                            }
+                        if (response.ok) {
+                            ToastCustom.fire({
+                                icon: 'success',
+                                title: 'Xóa phiên bản thành công'
+                            }).then()
+                            loadData()
                         }
+                    }
                     )
                         .catch((error: any) => {
                             ToastCustom.fire({
@@ -322,49 +322,49 @@ const ProductDetails = () => {
 
         return (
             <div>
-                <div style={{background: "white", padding: 20}}>
+                <div style={{ background: "white", padding: 20 }}>
                     <div>
                         <Antd.Row style={{}}>
-                            <Antd.Col span={8} style={{padding: 0, margin: 0}}>
-                                <div style={{height: '100%', paddingTop: 5}}>Các phiên bản:</div>
+                            <Antd.Col span={8} style={{ padding: 0, margin: 0 }}>
+                                <div style={{ height: '100%', paddingTop: 5 }}>Các phiên bản:</div>
                             </Antd.Col>
                             <Antd.Col span={8}>
                                 {hasSelected ? <span>Đang chọn {selectedRowKeys.length} phiên bản</span> : null}
 
                             </Antd.Col>
-                            <Antd.Col span={8} style={{display: 'flex', justifyContent: 'right'}}>
-                                <Antd.Button disabled={!hasSelected} icon={<DeleteOutlined/>} danger
-                                             onClick={handleOnDeleteVariants}>Xóa</Antd.Button>
+                            <Antd.Col span={8} style={{ display: 'flex', justifyContent: 'right' }}>
+                                <Antd.Button disabled={!hasSelected} icon={<DeleteOutlined />} danger
+                                    onClick={handleOnDeleteVariants}>Xóa</Antd.Button>
 
                             </Antd.Col>
                         </Antd.Row>
                     </div>
 
 
-                    <hr/>
+                    <hr />
 
 
                     <Antd.Table dataSource={props.variants}
-                                sticky
-                                columns={variantCol}
-                                rowKey="id"
-                                bordered
-                                pagination={{
-                                    pageSize: 6, current: page, onChange(page, pageSize) {
-                                        setPage(page)
-                                    },
-                                }}
-                                style={{height: 450}}
+                        sticky
+                        columns={variantCol}
+                        rowKey="id"
+                        bordered
+                        pagination={{
+                            pageSize: 6, current: page, onChange(page, pageSize) {
+                                setPage(page)
+                            },
+                        }}
+                        style={{ height: 450 }}
 
-                                onRow={(record, index) => {
+                        onRow={(record, index) => {
 
-                                    return {
-                                        onClick: event => {
-                                            props.setVariant(record)
-                                        }
-                                    }
-                                }}
-                                rowSelection={rowSelection}
+                            return {
+                                onClick: event => {
+                                    props.setVariant(record)
+                                }
+                            }
+                        }}
+                        rowSelection={rowSelection}
                     >
 
                     </Antd.Table>
@@ -379,15 +379,15 @@ const ProductDetails = () => {
         return (
             <>
 
-                <Mui.Paper sx={{p: 3, height: 535}}>
+                <Mui.Paper sx={{ p: 3, height: 535 }}>
 
                     <div>Thông tin chi tiết</div>
-                    <hr/>
-                    <div style={{marginLeft: '20%', marginRight: '20%', marginTop: 10}}>
+                    <hr />
+                    <div style={{ marginLeft: '20%', marginRight: '20%', marginTop: 10 }}>
                         <Antd.Image height={'80%'} width={"100%%"}
-                                    src={focusVariant?.image ? focusVariant.image : 'https://phapluat.me/images/noimage.jpg'}></Antd.Image>
+                            src={focusVariant?.image ? focusVariant.image : 'https://phapluat.me/images/noimage.jpg'}></Antd.Image>
                     </div>
-                    <Antd.Row style={{marginTop: 30}}>
+                    <Antd.Row style={{ marginTop: 30 }}>
 
                         <Antd.Col span={12}><p>Tên sản phẩm:</p></Antd.Col>
                         <Antd.Col span={12}><b>{props.variant?.name}</b></Antd.Col>
@@ -430,28 +430,28 @@ const ProductDetails = () => {
 
             <div>
                 <div>
-                    <h2 style={{fontSize: '15px'}}>
+                    <h2 style={{ fontSize: '15px' }}>
                         <Link to="/products">
-                            <LeftOutlined/> Danh sách sản phẩm
+                            <LeftOutlined /> Danh sách sản phẩm
                         </Link>
                         {
                             (searchParams.get('backcode')?.toString() == 'statistic') ? <Link to="/statistics">
-                                <LeftOutlined/> Thống kê
+                                <LeftOutlined /> Thống kê
                             </Link> : null
                         }
                     </h2>
                 </div>
 
 
-                <Mui.Grid container spacing={2} sx={{mb: 10}}>
-                    <Mui.Grid item xs={8} sx={{mb: 2}}>
-                        <Product/>
+                <Mui.Grid container spacing={2} sx={{ mb: 10 }}>
+                    <Mui.Grid item xs={8} sx={{ mb: 2 }}>
+                        <Product />
 
                     </Mui.Grid>
                     <Mui.Grid item xs={4}>
 
                         <Mui.Grid item sx={{}}>
-                            <Mui.Paper style={{width: '100%', height: 150, padding: 20}}>
+                            <Mui.Paper style={{ width: '100%', height: 150, padding: 20 }}>
                                 <div>Danh mục sản phẩm</div>
                                 <hr></hr>
                                 {productInfo?.categories ?
@@ -466,7 +466,7 @@ const ProductDetails = () => {
 
 
                             </Mui.Paper>
-                            <Mui.Paper style={{width: '100%', height: 190, padding: 20, marginTop: 20}}>
+                            <Mui.Paper style={{ width: '100%', height: 190, padding: 20, marginTop: 20 }}>
                                 <div>Thông tin khác</div>
                                 <hr></hr>
 
@@ -478,11 +478,11 @@ const ProductDetails = () => {
 
                     <Mui.Grid item xs={8}>
 
-                        <Variants setVariant={setFocusVariant} variants={productInfo?.variants}/>
+                        <Variants setVariant={setFocusVariant} variants={productInfo?.variants} />
                     </Mui.Grid>
                     <Mui.Grid item xs={4}>
 
-                        {focusVariant ? <VariantDetails variant={focusVariant}/> : null}
+                        {focusVariant ? <VariantDetails variant={focusVariant} /> : null}
                     </Mui.Grid>
 
 
@@ -497,13 +497,13 @@ const ProductDetails = () => {
             <Antd.Modal width={1000} title="Mô tả sản phẩm" visible={openDes} footer={null} onCancel={() => {
                 setOpenDes(false)
             }}>
-                <textarea style={{width: '100%', height: '500px', padding: 10}}
-                          disabled={true}>{productInfo?.product.description}</textarea>
+                <textarea style={{ width: '100%', height: '500px', padding: 10 }}
+                    disabled={true}>{productInfo?.product.description}</textarea>
             </Antd.Modal>
 
             {(isUpdate && productInfo?.product) ? <UpdateProduct
-                    product={productInfo?.product} variants={productInfo?.variants} categories={productInfo?.categories}
-                    setIsUpdate={setActionUpdate}></UpdateProduct>
+                product={productInfo?.product} variants={productInfo?.variants} categories={productInfo?.categories}
+                setIsUpdate={setActionUpdate}></UpdateProduct>
                 : <View></View>}
         </div>
     )
