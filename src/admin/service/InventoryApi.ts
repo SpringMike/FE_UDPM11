@@ -1,10 +1,11 @@
 import axios from "axios";
 import {IMinQuantityRequest, IResultId} from "../type/InventoryType";
+import base_url from "./BaseApi";
 const headers = {
     Authorization: "Bearer " + localStorage.getItem("token"),
 };
 export const getAllActiveInventory = async () => {
-    return await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/active`, {
+    return await axios.get(`${base_url}/inventories/active`, {
         headers,
     });
 };
@@ -16,7 +17,7 @@ export const getPagination = async (
     value: any
 ) => {
     return (
-        await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/pagination`, {
+        await axios.get(`${base_url}/inventories/pagination`, {
             params: {
                 pageNumber: page,
                 pageSize,
@@ -31,13 +32,13 @@ export const getPagination = async (
 };
 export const findInventoryById = async (id?: number) => {
     return (
-        await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/${id}`, { headers })
+        await axios.get(`${base_url}/inventories/${id}`, { headers })
     ).data;
 };
 
 export const createInventory = async (inventory: object) => {
     return (
-        await axios.post(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories`, inventory, {
+        await axios.post(`${base_url}/inventories`, inventory, {
             headers,
         })
     ).data;
@@ -47,7 +48,7 @@ export const createInventory = async (inventory: object) => {
 
 export const updateStatusInventory = async (id: number) => {
     return await axios.put(
-        `http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/status/${id}`,
+        `${base_url}/inventories/status/${id}`,
         { title: "Sửa tình trạng" },
         {
             headers,
@@ -57,7 +58,7 @@ export const updateStatusInventory = async (id: number) => {
 
 export const getProductVariants = async (id?: number, name = "") => {
     return (
-        await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/productvariant/${id}`, {
+        await axios.get(`${base_url}/inventories/productvariant/${id}`, {
             params: {
                 name: name,
             },
@@ -67,14 +68,14 @@ export const getProductVariants = async (id?: number, name = "") => {
 };
 export const updateInvetory = async (inventory: object, id: number) => {
     return (
-        await axios.put(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/${id}`, inventory, {
+        await axios.put(`${base_url}/inventories/${id}`, inventory, {
             headers,
         })
     ).data;
 };
 export const deleteInvetory = async (id: number) => {
     return await axios.put(
-        `http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/delete/${id}`,
+        `${base_url}/inventories/delete/${id}`,
         { title: "Sửa trạng thái" },
         {
             headers,
@@ -84,7 +85,7 @@ export const deleteInvetory = async (id: number) => {
 
 export const findInventoryByQuantity = async (id?: number) => {
     return (
-        await axios.get(`http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/quantity`, {
+        await axios.get(`${base_url}/inventories/quantity`, {
             params:{
                 id:id
             },
@@ -96,7 +97,7 @@ export const updateMinQuantityStorage = async (
     request: IMinQuantityRequest
 ) => {
     return await axios.put(
-        `http://180.93.175.189:8085/BE_UDPM_11_V1_war/inventories/change/minquantity?inventoryId=${request.inventoryId * 1
+        `${base_url}/inventories/change/minquantity?inventoryId=${request.inventoryId * 1
         }&productVariantId=${request.productVariantId * 1}&minQuantity=${request.minQuantity * 1
         }`,{ title: "Sửa minquantity" },
         { headers }

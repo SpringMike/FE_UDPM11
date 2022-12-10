@@ -10,6 +10,7 @@ import { debounce } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { padding } from '@mui/system';
+import base_url from '../../service/BaseApi';
 
 
 const OrderPurchaseMananger = () => {
@@ -25,7 +26,7 @@ const OrderPurchaseMananger = () => {
 
     const printInvoicePdf = (id_account: number, id_order: number) => {
         console.log(id_account);
-        window.open('http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/orderPurchase/pdf/' + id_account + '/' + id_order + '');
+        window.open(`${base_url}/api/orderPurchase/pdf/` + id_account + '/' + id_order + '');
     }
     const columns: ColumnsType<IShowOrder> = [
         {
