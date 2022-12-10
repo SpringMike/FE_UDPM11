@@ -2,6 +2,7 @@ import {Button, Space} from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import React from "react";
 import axios from "axios";
+import base_url from "../../service/BaseApi";
 
 
 const ExportExcel = () => {
@@ -11,7 +12,7 @@ const ExportExcel = () => {
         link.target = "_blank";
         link.download = "supplier"
         axios
-            .get("http://180.93.175.189:8085/BE_UDPM_11_V1_war/api/suppliers/download", {
+            .get(`${base_url}/api/suppliers/download`, {
                 responseType: "blob",
             })
             .then((res) => {

@@ -186,14 +186,14 @@ const ListProduct = () => {
             onClick={handleMenuClick}
             items={[
                 {
-                    key: '1',
+                    key: 1,
                     label: <Antd.Button style={{width: '100%'}} type="text" danger>Xóa Sản
                         phẩm<DeleteOutlined/></Antd.Button>,
 
                 },
                 // {
                 //     label: <Antd.Button style={{ width: '100%' }} type="text" >Sửa sản phẩm<InfoCircleOutlined /></Antd.Button>,
-                //     key: '2',
+                //     key: 2,
 
 
                 // },
