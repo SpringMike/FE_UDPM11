@@ -195,7 +195,7 @@ const StaffList = () => {
                     onRow={(record) => {
                         return {
                             onClick: (event) =>
-                                navigate({ pathname: `/staff/details/${record.id}` }),
+                                navigate({ pathname: `/admin/staff/details/${record.id}` }),
                         };
                     }}
                     rowSelection={rowSelection}

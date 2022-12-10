@@ -10,29 +10,29 @@ const headers = {
 
 
 export const getStaffs = async () => {
-    return await axios.get(`${base_url}/staffs/findAll`, { headers })
+    return await axios.get(`${base_url}/api/staffs/findAll`, { headers })
 }
 
 
 export const createStaff = async (staff: object) => {
-    return await axios.post(`${base_url}/staffs`, staff, { headers })
+    return await axios.post(`${base_url}/api/staffs`, staff, { headers })
 }
 
 
 export const deleteStaff = async (listId: React.Key[]) => {
-    return await axios.put(`${base_url}/staffs/delete`, listId, { headers })
+    return await axios.put(`${base_url}/api/staffs/delete`, listId, { headers })
 }
 
 export const updateStatusStaff = async (listId: React.Key[], status: string) => {
-    return await axios.post(`${base_url}/staffs/updateStatus/${status}`, listId, { headers })
+    return await axios.post(`${base_url}/api/staffs/updateStatus/${status}`, listId, { headers })
 }
 
 export const getStaffById = async (id: number) => {
-    return await axios.get(`${base_url}/staffs/${id}`, { headers })
+    return await axios.get(`${base_url}/api/staffs/${id}`, { headers })
 }
 
 export const updateStaffById = async (status: Boolean, roleId: Number, id: number) => {
-    return await axios.put(`${base_url}/staffs/${status}/${roleId}/${id}`, { headers })
+    return await axios.put(`${base_url}/api/staffs/${status}/${roleId}/${id}`, { headers })
 }
 
 
