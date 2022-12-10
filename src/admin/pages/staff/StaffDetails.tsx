@@ -17,6 +17,7 @@ type Account = {
 const StaffDetails = () => {
 
     const { id } = useParams();
+    console.log('123123123', id);
     const [staff, setStaff] = useState({} as IStaff);
 
     const [account, setAccount] = useState({} as Account)
