@@ -1,18 +1,16 @@
-import { AppstoreOutlined, ShopOutlined, TeamOutlined, } from "@ant-design/icons";
+import {AppstoreOutlined, ShopOutlined, TeamOutlined,} from "@ant-design/icons";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
-import { Menu } from "antd";
-import type { MenuProps } from "antd/es/menu";
-import { useNavigate } from "react-router-dom";
+import {Menu} from "antd";
+import type {MenuProps} from "antd/es/menu";
+import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WebIcon from '@mui/icons-material/Web';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 // import AddProduct from "../pages/product/AddProduct";
 import "../styles/SideBar.css";
-import { Dashboard, ImportExportOutlined } from "@mui/icons-material";
+import {Dashboard, ImportExportOutlined} from "@mui/icons-material";
 import React from "react";
-import OrderPurchaseMananger from "../pages/manangerOrder/OrderPurchaseMananger";
-import OrderReturnMananger from "../pages/manangerOrder/OrderReturnMananger";
 import {useSelector} from "react-redux";
 import {RootState} from "../app/store";
 
