@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-bootstrap-table-next": "^4.0.18",
     "@types/node": "^18.11.9",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19"

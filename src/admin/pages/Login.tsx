@@ -10,6 +10,7 @@ import useTitle from "../app/useTitle";
 import { RootState } from "../app/store";
 import { Navigate, useNavigate } from "react-router-dom";
 import {ILoginData} from "../type/StaffType";
+import base_url from "../service/BaseApi";
 
 const Login: React.FC = () => {
     useTitle("", "Đăng nhập");
@@ -20,7 +21,7 @@ const Login: React.FC = () => {
 
     const loginSubmit = useMutation(
         async (loginData: ILoginData) => {
-            return (await axios.post("http://localhost:8080/api/login", loginData))
+            return (await axios.post(`${base_url}/api/login`, loginData))
                 .data;
         },
         {

@@ -17,6 +17,7 @@ type Account = {
 const StaffDetails = () => {
 
     const { id } = useParams();
+    console.log('123123123', id);
     const [staff, setStaff] = useState({} as IStaff);
 
     const [account, setAccount] = useState({} as Account)
@@ -49,12 +50,12 @@ const StaffDetails = () => {
             items={[
                 {
                     label: <Link to="#">Xóa nhân viên</Link>,
-                    key: '1',
+                    key: 1,
                     icon: <DeleteOutlined />,
                 },
                 {
                     label: <Link to="#" onClick={() => setIsLoadModal(true)}>Sửa nhân viên</Link>,
-                    key: '2',
+                    key: 2,
                     icon: <InfoCircleOutlined />,
 
                 },

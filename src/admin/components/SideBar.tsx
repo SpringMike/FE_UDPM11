@@ -77,7 +77,9 @@ const MENUUSER: MenuItem[] = [
 
 const SideBar: React.FC = () => {
   const userRoles = useSelector((state: RootState) => state?.user?.authorities);
-
+  const user = useSelector((state: RootState) => state?.user);
+  console.log(user);
+  
   const navigate = useNavigate();
 
   return (

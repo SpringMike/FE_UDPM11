@@ -4,6 +4,7 @@ import {Modal, Space, Upload, UploadProps, message, Button} from "antd";
 
 import axios from "axios";
 import ToastCustom from "../../features/toast/Toast";
+import base_url from "../../service/BaseApi";
 
 
 type Props = {
@@ -42,7 +43,7 @@ const ImportExcel = ({reload} :Props) =>{
         formData.append('file', file);
         formData.append('name', file.name);
         axios({
-            url :'http://localhost:8080/api/suppliers/upload',
+            url :`${base_url}/api/suppliers/upload`,
             method :'POST',
             data : formData
         }).then((res)=>{
