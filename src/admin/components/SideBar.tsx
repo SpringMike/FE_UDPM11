@@ -39,7 +39,7 @@ const MENUS: MenuItem[] = [
   getItem("Quản lý sản phẩm", "product", <AppstoreOutlined />, [
     getItem("Thêm sản phẩm", "products/add_product"),
     getItem("Danh sách sản phẩm", "/products"),
-    getItem("Danh mục sản phẩm", "/#"),
+    getItem("Danh mục sản phẩm", "/admin/categories"),
   ]),
   getItem("Hàng hoá", "", <Dashboard />, [
     getItem("Nhập hàng", "purchase_orders", <ImportExportOutlined />),
@@ -62,7 +62,7 @@ const MENUUSER: MenuItem[] = [
   getItem("Quản lý sản phẩm", "product", <AppstoreOutlined />, [
     getItem("Thêm sản phẩm", "products/add_product"),
     getItem("Danh sách sản phẩm", "/products"),
-    getItem("Danh mục sản phẩm", "/#"),
+    getItem("Danh mục sản phẩm", "/admin/categories"),
   ]),
   getItem("Hàng hoá", "", <Dashboard />, [
     getItem("Nhập hàng", "purchase_orders", <ImportExportOutlined />),

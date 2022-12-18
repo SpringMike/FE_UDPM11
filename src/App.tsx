@@ -24,6 +24,7 @@ import React from "react";
 import {useDispatch} from "react-redux";
 import {setUserStore} from "./admin/features/user/userSlice";
 import Login from "./admin/pages/Login";
+import ListCategories from './admin/pages/categories/ListCategories';
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -86,9 +87,14 @@ const App: React.FC = () => {
                     element: <RevenueDetailChart/>,
                 },
                 {
+                    path: "/admin/categories",
+                    element: <ListCategories/>,
+                },
+                {
                     path: "/inventories",
                     element: <InventoryList/>,
                 },
+
                 {
                     path: "/products",
                     children: [
