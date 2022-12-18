@@ -56,7 +56,9 @@ const CreateReturnImportInvoice = () => {
         if (invoiceStatusHistoryList.length === 3) {
             var a = moment(Date.now())
             var b = moment(invoiceStatusHistoryList[2].createdAt)
-            if (a.diff(b)+1 > 3){
+            console.log(a.diff(b,'days')+1)
+            console.log(b)
+            if ((a.diff(b,'days')+1) > 3){
                 setIsDisable(true)
             }
         }

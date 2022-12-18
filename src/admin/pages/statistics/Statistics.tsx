@@ -148,8 +148,6 @@ const Statistics: FC = () => {
             filter.startDate = date1.getTime()
             filter.endDate = date2.getTime()
             console.log(filter);
-
-
         };
         const onSortByChange = (value: string) => {
             filter.sortBy = value
@@ -402,7 +400,6 @@ const Statistics: FC = () => {
                     <Grid item xs={12}>
                         <Antd.Form.Item label='Thời gian' name={'time'} labelCol={{span: 24}}>
                             <Antd.DatePicker.RangePicker
-
                                 defaultValue={[moment(filter.startDate), moment(filter.endDate)]}
                                 size="large"
                                 style={{width: "100%"}}
@@ -411,8 +408,6 @@ const Statistics: FC = () => {
                                     'Tuần này': [moment().startOf('week'), moment().endOf('week')],
                                     'Tháng này': [moment().startOf('month'), moment().endOf('month')],
                                     'Năm nay': [moment().startOf('year'), moment().endOf('year')],
-
-
                                 }}
                                 showTime
                                 format="YYYY/MM/DD HH:mm:ss"

@@ -48,12 +48,6 @@ const CardDetails = (props: Props) => {
             case 1:
                 title = title.concat('nhập kho ')
                 break;
-            case 2:
-                title = title.concat('tồn kho ')
-                break;
-            case 3:
-                title = title.concat('xuất kho ')
-                break;
             default:
                 break;
         }
