@@ -380,10 +380,7 @@ const CreateImport = () => {
     } else {
       for (let i = 0; i < tableData.length; i++) {
         list.push({
-          product_variant_id: tableData[i].id,
-          quantity: tableData[i].quantity,
-          totalPrice: tableData[i].totalPrice,
-          importPrice: tableData[i].importPrice,
+          product_variant_id: tableData[i].id, quantity: tableData[i].quantity, totalPrice: tableData[i].totalPrice,importPrice: tableData[i].importPrice,
         });
       }
       const anImport = {

@@ -18,6 +18,8 @@ import ImportWarehouse from "./ImportWarehouse";
 import ReturnInvoiceImport from "./ReturnInvoiceImport";
 
 import ImportInvoiceHistory from "./ImportInvoiceHistory";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 
 const DetailImportInvoice = () => {
@@ -42,6 +44,7 @@ const DetailImportInvoice = () => {
             setDetailInvoices(result.data)
             result.data.anImport.isDone && setCurrentStatus(2)
             getHistoryStatusImportInvoice(result.data?.anImport.id as number).then((result) => {
+                console.log(result.data);
                 setInvoiceStatusHistory(result.data)
             })
         })
@@ -71,10 +74,11 @@ const DetailImportInvoice = () => {
     }, [invoiceStatusHistory])
 
     const { Step } = Steps;
+    const user = useSelector((state: RootState) => state?.user);
 
     const updateStatusPaidPayment = () => {
         const importId = detailInvoices?.anImport.id as number
-        updateStatusInvoice(importId, "paidPayment", 1).then(() => {
+        updateStatusInvoice(importId, "paidPayment", user.id).then(() => {
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Xác nhận thanh toán thành công'
@@ -88,7 +92,8 @@ const DetailImportInvoice = () => {
     }
     const updateStatusImportWarehouse = () => {
         const importId = detailInvoices?.anImport.id as number
-        updateStatusInvoice(importId, "importWarehouse", 1).then(() => {
+        console.log("importId ----", importId);
+        updateStatusInvoice(importId, "importWarehouse", user.id).then(() => {
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Xác nhận nhập kho thành công'
