@@ -11,7 +11,7 @@ const useTitle = (ele?:  string, title?: string) => {
         title: ele || '',
       })
     );
-    document.title = title || "Sapo Web";
+    document.title = title || "Nhật Minh Shop";
   }, [dispatch, ele, title]);
 };
 

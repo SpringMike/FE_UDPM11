@@ -54,7 +54,6 @@ const DetailImportInvoice = () => {
     }, [])
 
 
-
     useEffect(() => {
         const invoiceStatusHistoryList = invoiceStatusHistory.filter((obj: IHistoryStatus) => obj.statusName !== "Tạo phiếu trả hàng")
         if (invoiceStatusHistoryList.length === 2) {
