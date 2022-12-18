@@ -1,20 +1,29 @@
-import { Paper } from '@mui/material'
-import { Col, Row, Tag } from 'antd'
+import {Paper} from '@mui/material'
+import {Col, Row, Tag} from 'antd'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import {  getSupplierById } from '../../service/SupplierApi'
-import { ISupplier } from '../../type/SupplierType'
-import { getInventoryById } from '../../service/StatisticsService'
-import { ImportSortOptions, ImportStatistic, Inventory, InventorySortOptions, InventoryStatistic, StatisticsFilter }  from "../../type/Statistic"
+import {useEffect, useState} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import {getSupplierById} from '../../service/SupplierApi'
+import {ISupplier} from '../../type/SupplierType'
+import {getInventoryById} from '../../service/StatisticsService'
+import {
+    ImportSortOptions,
+    ImportStatistic,
+    Inventory,
+    InventorySortOptions,
+    InventoryStatistic,
+    StatisticsFilter
+} from "../../type/Statistic"
+
 interface Props {
     loadding: boolean,
     filter: StatisticsFilter,
     imports?: ImportStatistic[],
     stokes?: InventoryStatistic[]
 }
+
 const CardDetails = (props: Props) => {
-    const { filter, stokes, imports } = { ...props }
+    const {filter, stokes, imports} = {...props}
     const [supplier, setSupplier] = useState<ISupplier>()
     const [inventory, setInventory] = useState<Inventory>()
     const navigate = useNavigate()
@@ -59,10 +68,7 @@ const CardDetails = (props: Props) => {
                     title = title.concat(' mã: ')
 
 
-
-                }
-
-                else {
+                } else {
                     title = title.concat('tên chứa từ khóa:  ')
 
 
@@ -76,74 +82,33 @@ const CardDetails = (props: Props) => {
         return title
     }
     return (
-        <Paper style={{ height: '100%', width: '100%', padding: 20 }}>
-
-            <h1>Thông tin hiển thị             <Tag style={{ margin: '10px 0px', fontSize: 14 }} color={"green"} >{getInform()}</Tag>
-</h1>
-
+        <div style={{height: '100%', width: '100%', padding: 20}}>
+            <h3>Thông tin hiển thị <Tag style={{margin: '10px 0px', fontSize: 14}} color={"green"}>{getInform()}</Tag>
+            </h3>
             {
                 filter.keySearch?.toLowerCase().match(/spv\d+/g) ?
-                    <Tag style={{ margin: '10px 0px', fontSize: 14 }} color={"orange"} ><Link to={`/products/${filter.type == 1 ? imports?.at(0)?.productId : filter.type == 2 ? stokes?.at(0)?.productId : null}?backcode=statistic`}>{filter.keySearch.toUpperCase()}</Link></Tag>
+                    <Tag style={{margin: '10px 0px', fontSize: 14}} color={"orange"}><Link
+                        to={`/products/${filter.type == 1 ? imports?.at(0)?.productId : filter.type == 2 ? stokes?.at(0)?.productId : null}?backcode=statistic`}>{filter.keySearch.toUpperCase()}</Link></Tag>
                     : <div>
                         {
-                            filter.keySearch != '' ? <Tag style={{ marginBottom:10, fontSize: 14 }} color={"yellow"} >{filter.keySearch}</Tag>
+                            filter.keySearch != '' ?
+                                <Tag style={{marginBottom: 10, fontSize: 14}} color={"yellow"}>{filter.keySearch}</Tag>
                                 : null
                         }
-
-                        {/* {filter.type == 1 &&filter.viewType==1?
-                            <div>
-                                {
-                                    imports ? imports.map((value, index) => {
-                                        return (
-                                            <Tag key={index} style={{ margin: '10px 10px', fontSize: 14 }} color={"orange"} ><Link to={`/products/${value.productId}?backcode=statistic`}>{value.code}</Link></Tag>
-
-                                        )
-                                    }) : null
-                                }
-                            </div>
-
-                            :
-                            <div>
-                                {
-                                    filter.type == 2 ?
-                                        <div>
-                                            {
-                                                stokes ? stokes.map((value, index) => {
-                                                    return (
-                                                        <Tag key={index} style={{ margin: '10px 10px', fontSize: 14 }} color={"orange"} ><Link to={`/products/${value.productVariantId}?backcode=statistic`}>{value.productVariantCode}</Link></Tag>
-
-                                                    )
-                                                }) : null
-                                            }
-                                        </div>
-                                        :
-                                        null
-                                }
-                            </div>
-
-
-                        } */}
-
-
-
                     </div>
-
-
             }
-
-
-
-
             <Row>
                 <Col span={6}>
                     <p>Chi Nhánh:</p>
                 </Col>
                 <Col span={18}>
-                    {filter.inventoryId > 0 ? <p> <b> {inventory?.name}
-                    </b>
-                        <Tag color='green' onClick={() => { navigate(`/stocker/inventories/${inventory?.id}`) }}>
-                            <Link to={`/stocker/inventories/${inventory?.id}`}>{inventory?.code}</Link>
-                        </Tag> </p>
+                    {filter.inventoryId > 0 ? <p><b> {inventory?.name}
+                        </b>
+                            <Tag color='green' onClick={() => {
+                                navigate(`/stocker/inventories/${inventory?.id}`)
+                            }}>
+                                <Link to={`/stocker/inventories/${inventory?.id}`}>{inventory?.code}</Link>
+                            </Tag></p>
                         :
                         <b>Tất cả chi nhánh</b>
                     }
@@ -151,19 +116,21 @@ const CardDetails = (props: Props) => {
 
             </Row>
             {
-                filter.type ==1 ?
+                filter.type == 1 ?
                     <Row>
                         <Col span={6}>
                             <p>Nhà cung cấp:</p>
                         </Col>
                         <Col span={18}>
                             {filter.supplierId > 0 ? <p>
-                                <b> {supplier?.name}
-                                </b>
-                                <Tag color='green' onClick={() => { navigate(`/stocker/supplier/details/${supplier?.id}`) }}>
-                                    <Link to={`/stocker/supplier/details/${supplier?.id}`}>{supplier?.code}</Link>
-                                </Tag>
-                            </p>
+                                    <b> {supplier?.name}
+                                    </b>
+                                    <Tag color='green' onClick={() => {
+                                        navigate(`/stocker/supplier/details/${supplier?.id}`)
+                                    }}>
+                                        <Link to={`/stocker/supplier/details/${supplier?.id}`}>{supplier?.code}</Link>
+                                    </Tag>
+                                </p>
                                 :
                                 <b>Tất cả
 
@@ -205,32 +172,25 @@ const CardDetails = (props: Props) => {
 
                         </Row>
                     </>
-
                     :
                     <Row>
                         <Col span={6}>
                             <p>Tính đến :</p>
-
                         </Col>
                         <Col span={18}>
                             <b>{moment(filter.endDate).format(`HH:mm:ss `)} </b>
-
                             ngày
                             <b>{moment(filter.endDate).format(` DD/MM/YYYY`)}</b>
                         </Col>
-
                     </Row>
             }
-
-
-            < Row >
+            <Row>
                 <Col span={6}>
-                    <p>Sắp xếp:  </p>
+                    <p>Sắp xếp: </p>
                 </Col>
                 <Col span={18}>
-
                     {filter.sortDir ? ' tăng dần theo ' : ' giảm dần theo '}
-                    <Tag color='green' style={{ fontSize: 14 }}>
+                    <Tag color='green' style={{fontSize: 14}}>
                         {filter.type == 1 ?
                             ImportSortOptions.filter((value, index) => {
                                 if (value.key == filter.sortBy)
@@ -242,10 +202,8 @@ const CardDetails = (props: Props) => {
                             }).at(0)?.value
                         }</Tag>
                 </Col>
-
-
             </Row>
-        </Paper>
+        </div>
     )
 }
 export default CardDetails

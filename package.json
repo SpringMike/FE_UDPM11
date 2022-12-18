@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
+    "react-export-table-to-excel": "^1.0.6",
     "react-jwt": "^1.1.6",
     "react-moment": "^1.1.2",
     "react-number-format": "^4.9.3",
@@ -58,8 +59,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-bootstrap-table-next": "^4.0.18",
     "@types/node": "^18.11.9",
+    "@types/react-bootstrap-table-next": "^4.0.18",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19"
   }

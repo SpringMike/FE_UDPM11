@@ -24,6 +24,7 @@ import React from "react";
 import {useDispatch} from "react-redux";
 import {setUserStore} from "./admin/features/user/userSlice";
 import Login from "./admin/pages/Login";
+import Statistics from "./admin/pages/statistics/Statistics";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -80,6 +81,10 @@ const App: React.FC = () => {
                 {
                     path: "/admin/tracking/",
                     element: <ReportPage/>,
+                },
+                {
+                    path: "/admin/statistics",
+                    element: <Statistics/>,
                 },
                 {
                     path: "/admin/tracking/detail/revenue",

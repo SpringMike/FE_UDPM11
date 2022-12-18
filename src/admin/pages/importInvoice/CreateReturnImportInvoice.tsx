@@ -2,12 +2,12 @@ import {Button, Col, InputNumber, Row, Table} from "antd";
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {
-    getDetailImportInvoice,
+    getDetailImportInvoice, getHistoryStatusImportInvoice,
     getImportReturn,
     returnImportInvoice,
     updateStatusReturnInvoice
 } from "../../service/ImportInvoiceApi";
-import {IDetailImportInvoice, IImportReturnMyTableData} from "../../type/ImportInvoiceType";
+import {IDetailImportInvoice, IHistoryStatus, IImportReturnMyTableData} from "../../type/ImportInvoiceType";
 import {default as NumberFormat} from "react-number-format";
 import "../../styles/inputNumber.css"
 import {ColumnProps} from "antd/es/table";
@@ -15,6 +15,7 @@ import ToastCustom from "../../features/toast/Toast";
 import {LeftOutlined} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import moment from "moment/moment";
 
 
 interface ReturnImport {
@@ -32,6 +33,8 @@ const CreateReturnImportInvoice = () => {
     const [totalQuantity, setTotalQuantity] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
 
+    const [invoiceStatusHistory, setInvoiceStatusHistory] = useState<IHistoryStatus[]>([])
+    const [isDisable, setIsDisable] = useState(false)
 
     const navigate = useNavigate();
 
@@ -42,9 +45,22 @@ const CreateReturnImportInvoice = () => {
         })
         getDetailImportInvoice(code as string).then(result => {
             setDetailInvoices(result.data)
+            getHistoryStatusImportInvoice(result.data?.anImport.id as number).then((result) => {
+                setInvoiceStatusHistory(result.data)
+            })
         })
     }, [])
 
+    useEffect(() =>{
+        const invoiceStatusHistoryList = invoiceStatusHistory.filter((obj: IHistoryStatus) => obj.statusName !== "Tạo phiếu trả hàng")
+        if (invoiceStatusHistoryList.length === 3) {
+            var a = moment(Date.now())
+            var b = moment(invoiceStatusHistoryList[2].createdAt)
+            if (a.diff(b)+1 > 3){
+                setIsDisable(true)
+            }
+        }
+    },[invoiceStatusHistory])
 
     const onInputChange = (key: string, index: number, value: number) => {
         const newData = [...importReturn];
@@ -216,7 +232,7 @@ const CreateReturnImportInvoice = () => {
                                         <p>Số lượng hoàn trả: {totalQuantity}  </p>
                                         <p>Tổng giá trị hàng trả: <NumberFormat displayType='text' value={totalPrice}
                                                                                 thousandSeparator={true}/></p>
-                                        <Button disabled={!(importReturn.length > 0 ) || totalQuantity === 0} onClick={onSubmit} style={{margin: 0}} type='primary'>Trả hàng</Button>
+                                        <Button disabled={!(importReturn.length > 0 ) || totalQuantity === 0 || isDisable} onClick={onSubmit} style={{margin: 0}} type='primary'>Trả hàng</Button>
                                     </>
                                 }
                             </div>
