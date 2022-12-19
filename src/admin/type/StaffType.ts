@@ -2,22 +2,33 @@ export interface IStaff {
     key: React.Key;
     id:number,
     code: string;
-    name: string;
+    full_name: string;
     email: string;
     address: string;
     phone: string;
     username: string;
-    password: string;
     gender: Boolean;
-    dob: string;
-    isDelete: boolean;
-    updateAt: string;
-    createdAt: string;
-    created_by: string;
-    modify_by: string;
+    _delete: boolean;
+    update_at: string;
+    create_at: string;
     statusAccount: boolean;
+    role_id: Number;
     roleId: Number;
+    id_account: number;
     accountId:Number;
+
+}
+
+
+export interface IStaff2 {
+    key: React.Key;
+    id:number,
+    code: string;
+    fullName: string;
+    email: string;
+    address: string;
+    phone: string;
+    gender: Boolean;
 }
 export type TypeStaff = {
     id: number,

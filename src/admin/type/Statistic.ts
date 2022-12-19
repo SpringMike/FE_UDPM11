@@ -121,8 +121,6 @@ export const InventoryTypeOption: typeOption[] = [
 ]
 export const TypeOptions: typeOption[] = [
     {key: 1, value: 'Nhập kho'},
-    {key: 2, value: 'Tồn kho'},
-    {key: 3, value: 'Xuất kho'}
 
 
 ]

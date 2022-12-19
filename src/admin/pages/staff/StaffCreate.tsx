@@ -117,10 +117,10 @@ const StaffCreate = ({ reload }: StaffProps) => {
                         onFinish={onFormSubmit}
                         layout="vertical"
                     >
-                        <Form.Item label="Tên nhân viên" name="name" rules={[{ required: true, message: "Tên không được để trống" }]}>
+                        <Form.Item label="Tên nhân viên" name="fullName" rules={[{ required: true, message: "Tên không được để trống" }]}>
                             <Input placeholder="Nhập tên nhân viên" />
                         </Form.Item>
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item label="Username" name="username" rules={[{ required: true, message: "Username không được để trống" }]}>
                                     <Input placeholder="Nhập Username nhân viên" />
@@ -133,14 +133,14 @@ const StaffCreate = ({ reload }: StaffProps) => {
                                     </Form.Item>
                                 </Space>
                             </Col>
-                        </Row>
+                        </Row> */}
 
                         <Row gutter={24}>
-                            <Col span={12}>
+                            {/* <Col span={12}>
                                 <Form.Item label="Mã nhân viên " name="code">
                                     <Input placeholder="Nhập mã nhân viên" />
                                 </Form.Item>
-                            </Col>
+                            </Col> */}
                             <Col span={12}>
                                 <Form.Item label="Phone" name="phone"
                                     rules={[
@@ -181,8 +181,8 @@ const StaffCreate = ({ reload }: StaffProps) => {
                             <Col span={12}>
                             <Form.Item label="Chức vụ" name="roleId">
                                     <Radio.Group>
-                                        <Radio value="2"> STAFF </Radio>
-                                        <Radio value="1"> ADMIN </Radio>
+                                        <Radio value="1"> STAFF </Radio>
+                                        <Radio value="2"> ADMIN </Radio>
                                     </Radio.Group>
                                 </Form.Item>
                             </Col>

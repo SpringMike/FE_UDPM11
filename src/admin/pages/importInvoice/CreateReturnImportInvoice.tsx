@@ -7,8 +7,8 @@ import {
     returnImportInvoice,
     updateStatusReturnInvoice
 } from "../../service/ImportInvoiceApi";
-import { IDetailImportInvoice, IHistoryStatus, IImportReturnMyTableData } from "../../type/ImportInvoiceType";
-import { default as NumberFormat } from "react-number-format";
+import {IDetailImportInvoice, IHistoryStatus, IImportReturnMyTableData} from "../../type/ImportInvoiceType";
+import {default as NumberFormat} from "react-number-format";
 import "../../styles/inputNumber.css"
 import { ColumnProps } from "antd/es/table";
 import ToastCustom from "../../features/toast/Toast";
@@ -51,16 +51,18 @@ const CreateReturnImportInvoice = () => {
         })
     }, [])
 
-    useEffect(() => {
+    useEffect(() =>{
         const invoiceStatusHistoryList = invoiceStatusHistory.filter((obj: IHistoryStatus) => obj.statusName !== "Tạo phiếu trả hàng")
         if (invoiceStatusHistoryList.length === 3) {
             var a = moment(Date.now())
             var b = moment(invoiceStatusHistoryList[2].createdAt)
-            if (a.diff(b, "days") + 1 > 3) {
+            console.log(a.diff(b,'days')+1)
+            console.log(b)
+            if ((a.diff(b,'days')+1) > 3){
                 setIsDisable(true)
             }
         }
-    }, [invoiceStatusHistory])
+    },[invoiceStatusHistory])
 
     const onInputChange = (key: string, index: number, value: number) => {
         const newData = [...importReturn];
@@ -233,8 +235,8 @@ const CreateReturnImportInvoice = () => {
                                     <>
                                         <p>Số lượng hoàn trả: {totalQuantity}  </p>
                                         <p>Tổng giá trị hàng trả: <NumberFormat displayType='text' value={totalPrice}
-                                            thousandSeparator={true} /></p>
-                                        <Button disabled={!(importReturn.length > 0) || totalQuantity === 0 || isDisable} onClick={onSubmit} style={{ margin: 0 }} type='primary'>Trả hàng</Button>
+                                                                                thousandSeparator={true}/></p>
+                                        <Button disabled={!(importReturn.length > 0 ) || totalQuantity === 0 || isDisable} onClick={onSubmit} style={{margin: 0}} type='primary'>Trả hàng</Button>
                                     </>
                                 }
                             </div>

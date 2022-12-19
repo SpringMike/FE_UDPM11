@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
                 <SideBar />
             </Sider>
             <Layout className="site-layout">
-                <Header className="top-header z-10" style={{ padding: 0 }}>
+                <Header className="top-header z-10" style={{ display: 'flex',alignItems: 'center',justifyContent: 'flex-end'}}>
                     <HeaderMenu />
                 </Header>
                 <Content className="pt-5 pl-10 pr-10">

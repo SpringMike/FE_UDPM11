@@ -2,11 +2,9 @@ import axios from "axios";
 import React from "react";
 import base_url from "./BaseApi";
 
-let configValue: string | undefined = process.env.REACT_APP_API
 const headers = {
     Authorization: "Bearer " + localStorage.getItem("token"),
 };
-
 
 
 export const getStaffs = async () => {
@@ -31,8 +29,9 @@ export const getStaffById = async (id: number) => {
     return await axios.get(`${base_url}/api/staffs/${id}`, { headers })
 }
 
-export const updateStaffById = async (status: Boolean, roleId: Number, id: number) => {
-    return await axios.put(`${base_url}/api/staffs/${status}/${roleId}/${id}`, { headers })
+export const updateStaffById = async (roleId: Number, status: Boolean,  id: number) => {
+    console.log(localStorage.getItem('token'));
+    return await axios.put(`${base_url}/api/staffs/status/${roleId}/${status}/${id}`, { headers })
 }
 
 
@@ -42,6 +41,7 @@ export const getProvince = async () => {
 }
 
 export const getDistrict = async (code: string) => {
+    
     return await axios.get(`https://provinces.open-api.vn/api/p/${code}?depth=2`)
 }
 export const getWard = async (code: string) => {
