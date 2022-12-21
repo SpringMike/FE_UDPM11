@@ -98,7 +98,7 @@ const ProductDetails = () => {
 
     const handleMenuClick: MenuProps['onClick'] = (e: any) => {
         switch (e.key) {
-            case 1:
+            case '1':
                 if (productInfo?.product?.id) {
                     handleDeleteProduct(productInfo?.product?.id)
 
@@ -112,8 +112,9 @@ const ProductDetails = () => {
                     )
                 }
                 break
-            case 2:
+            case '2':
                 if (productInfo?.product?.id) {
+                    
                     setIsUpdate(true)
                 } else {
                     ToastCustom.fire(

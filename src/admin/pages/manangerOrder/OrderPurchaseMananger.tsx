@@ -78,6 +78,7 @@ const OrderPurchaseMananger = () => {
                 <Button hidden={(data.status === 5)} type="primary" onClick={() => { printInvoicePdf(data.account_id, data.id) }} ghost style={{ marginRight: 16 }}>Xuất hoá đơn</Button >
                 <Button hidden={!(data.status === 5)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
                 <Button hidden={!(data.status === 6)} danger onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
+                <Button hidden={!(data.status === 7)} danger onClick={() => { updateStatus(8, data.id) }} style={{ marginRight: 16 }}>Shipper đã giao hàng</Button >
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },

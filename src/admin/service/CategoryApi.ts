@@ -8,11 +8,7 @@ const headers = {
 
 
 export const getCategories = async (valueInput = "") => {
-    return await axios.get(`${base_url}/api/categories/findall`, {
-        params: {
-            valueInput: valueInput,
-        }, headers
-    })
+    return await axios.get(`${base_url}/api/categories/findall`, {params: {valueInput: valueInput}})
 }
 
 
