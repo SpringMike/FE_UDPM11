@@ -307,7 +307,12 @@ const OrderReturnMananger = () => {
     };
     return (
         <><div>
-            <Tabs defaultActiveKey="5" onChange={onChangeTab} tabBarExtraContent={OperationsSlot}>
+             <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+            className="tabs-extra-demo-button"
+            placeholder="Tìm kiếm theo mã đơn hàng mua, Tên người mua" />
+
+            <RangePicker showTime onChange={onChangeRangePicker} /></>
+            <Tabs defaultActiveKey="5" onChange={onChangeTab} >
                 <Tabs.TabPane tab="Tất cả" key="1">
                     <Table key={1} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>

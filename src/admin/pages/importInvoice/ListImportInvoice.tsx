@@ -11,6 +11,7 @@ import '../../styles/Tab.css'
 import {debounce} from "@mui/material";
 import {PlusOutlined} from "@ant-design/icons";
 import {ImportInvoiceColumn} from "../../datatablesource/ImportInvoice";
+import React from "react";
 
 
 const ListImportInvoice = () => {
@@ -59,6 +60,9 @@ const ListImportInvoice = () => {
 
     return (
         <Spin spinning={spin}>
+             <Input onChange={(e) => handleInputOnchange(e)} style={{padding: '8px', marginTop: 10}}
+                      className="tabs-extra-demo-button"
+                      placeholder="Tìm kiếm theo mã đơn hàng, mã nhà cung cấp, tên kho"/>
             <div className='p-5'>
                 <div style={{
                     display: 'flex',

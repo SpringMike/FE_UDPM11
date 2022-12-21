@@ -19,8 +19,8 @@ const OrderPurchaseMananger = () => {
         timerProgressBar: true,
     })
 
-    const printInvoicePdf = (id_account:number, id_order:number) => {
-        window.open('http://localhost:8080/api/orderPurchase/pdf/'+id_account+'/'+id_order+'');
+    const printInvoicePdf = (id_account: number, id_order: number) => {
+        window.open('http://localhost:8080/api/orderPurchase/pdf/' + id_account + '/' + id_order + '');
     }
     const columns: ColumnsType<IShowOrder> = [
         {
@@ -71,7 +71,8 @@ const OrderPurchaseMananger = () => {
                 <Button hidden={!(data.status === 5)} type="primary" onClick={() => { updateStatus(6, data.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
                 <Button hidden={(data.status === 5)} type="primary" onClick={() => { printInvoicePdf(data.account_id, data.id) }} ghost style={{ marginRight: 16 }}>Xuất hoá đơn</Button >
                 <Button hidden={!(data.status === 5)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
-                <Button hidden={!(data.status === 6)} danger onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
+                <Button hidden={!(data.status === 6)} type="primary" onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
+                <Button hidden={!(data.status === 7)} type="primary" onClick={() => { updateStatus(8, data.id) }} style={{ marginRight: 16 }}>Shipper đã giao hàng</Button >
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },
@@ -357,11 +358,20 @@ const OrderPurchaseMananger = () => {
     };
     return (
         <><div>
-            <Tabs defaultActiveKey={currentTab} tabBarExtraContent={OperationsSlot} onChange={onChangeTab}>
-                <Tabs.TabPane tab="Tất cả" key="1">
+            <Tabs defaultActiveKey={currentTab} onChange={onChangeTab} >
+
+                <Tabs.TabPane tab="Tất cả" key="1" >
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ xác nhận" key="5">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Xác nhận
                     </Button>
@@ -369,6 +379,10 @@ const OrderPurchaseMananger = () => {
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Chờ lấy hàng" key="6">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
                         Shipper đã lấy hàng
                     </Button>
@@ -376,15 +390,31 @@ const OrderPurchaseMananger = () => {
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đang giao hàng" key="7">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Giao hàng thành công" key="8">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Giao hàng thất bại" key="9">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã huỷ" key="10,11">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
