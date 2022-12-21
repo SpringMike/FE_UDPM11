@@ -76,7 +76,7 @@ const ListImportInvoice = () => {
                     </Link>
                 </div>
 
-                <Tabs style={{display: 'block'}} tabBarExtraContent={OperationsSlot} defaultActiveKey="1">
+                <Tabs style={{display: 'block'}}  defaultActiveKey="1">
                     <Tabs.TabPane tab="Tất cả cả đơn hàng" key="1">
                         {
                             importInvoices.length > 0 && <Table dataSource={importInvoices}
