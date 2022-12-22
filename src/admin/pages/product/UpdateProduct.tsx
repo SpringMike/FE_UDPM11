@@ -223,7 +223,7 @@ const UpdateProduct = (props: ProductUpdateProps) => {
     const VariantDetails = (props: any) => {
         return (
             <>
-                <Mui.Paper sx={{ p: 3, height: 535 }}>
+                <Mui.Paper sx={{ p: 3, height: 650 }}>
 
                     <div>Thông tin chi tiết <Antd.Tag color={'orange'}>{variant?.code}</Antd.Tag></div>
 
@@ -257,23 +257,23 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                     <label>Giá bán lẻ</label>
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        defaultValue={variant?.salePrice}
+                        defaultValue={variant?.wholesalePrice}
                         onChange={(value) => {
                             if (variant !== undefined) {
-                                variant!.salePrice =  Number(value)
+                                variant!.wholesalePrice =  Number(value)
                                 onDetailChange()
                             }
                         }}
                     >
                     </Antd.InputNumber>
 
-                    <label>Cân nặng</label>
+                    <label>Cân nặng(g)</label>
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        defaultValue={variant?.wholesalePrice}
+                        defaultValue={variant?.salePrice}
                         onChange={(value) => {
                             if (variant) {
-                                variant!.wholesalePrice =  Number(value)
+                                variant!.salePrice =  Number(value)
                                 onDetailChange()
                             }
                         }}

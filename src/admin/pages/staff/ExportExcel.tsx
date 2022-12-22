@@ -10,7 +10,7 @@ const ExportExcel = () => {
         link.target = "_blank";
         link.download = "staff"
         axios
-            .get(`${base_url}/staffs/download`, {
+            .get(`${base_url}/api/staffs/download`, {
                 responseType: "blob",
             })
             .then((res) => {

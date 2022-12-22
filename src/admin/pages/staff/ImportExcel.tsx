@@ -66,12 +66,12 @@ const ImportExcel = ({reload} :Props) =>{
 
     return(
         <div>
-            <Button onClick={showModal} style={{width: "120px", fontSize: '14px'}} type="primary">
+            {/* <Button onClick={showModal} style={{width: "120px", fontSize: '14px'}} type="primary">
                 <Space>
                     <UploadOutlined />
                     Nhập excel
                 </Space>
-            </Button>
+            </Button> */}
 
             <Modal
                 title="Nhập dữ liệu nhân viên"

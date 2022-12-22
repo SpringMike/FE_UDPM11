@@ -72,7 +72,7 @@ const StaffDetails = () => {
                 staff && (
                     <div>
                         <h2 style={{ fontSize: '15px', marginBottom: 20 }} >
-                            <Link to="/staff/">
+                            <Link to="/admin/staff/">
                                 <LeftOutlined /> Danh sách nhân viên
                             </Link>
                         </h2>

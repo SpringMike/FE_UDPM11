@@ -195,15 +195,15 @@ const AddProduct = (props: any) => {
         })
         const initOptionsName = [
             {
-                name: "color",
+                name: "Màu",
                 values: []
             },
             {
-                name: "size",
+                name: "Size",
                 values: []
             },
             {
-                name: "material",
+                name: "Chất liệu",
                 values: []
             },
         ]
