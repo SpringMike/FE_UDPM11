@@ -19,5 +19,7 @@ export interface OrderReturnResponse {
     statusReturn: number;
     totalPriceReturn: number;
     totalQuantityReturn: number;
+    code:string;
+    code_order_purchase:string;
     order_item:OrderReturnItemResponse[]
 }

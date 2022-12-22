@@ -19,14 +19,14 @@ const OrderReturnMananger = () => {
     })
     const columns: ColumnsType<OrderReturnResponse> = [
         {
-            title: 'Id',
-            dataIndex: 'id',
-            width: 50,
+            title: 'Mã đơn trả',
+            dataIndex: 'code',
+            // width: 50,
         },
         {
-            title: 'Mã hoá đơn mua',
-            dataIndex: 'id_order_purchase',
-            width: 50,
+            title: 'Mã đơn mua',
+            dataIndex: 'code_order_purchase',
+            // width: 50,
         },
         {
             title: 'Người Mua',
@@ -52,6 +52,7 @@ const OrderReturnMananger = () => {
                 <Tag color="red" hidden={!(statusReturn === 14)}>Từ chối yêu cầu</Tag>
                 <Tag color="cyan" hidden={!(statusReturn === 15)}>Shop đã nhận được hàng hoàn</Tag>
                 <Tag color="green" hidden={!(statusReturn === 16)}>Shop đã hoàn tiền</Tag>
+                {/* <Tag color="green" hidden={!(statusReturn === 17)}>Shop từ chối hoàn tiền</Tag> */}
             </div>
         },
         {
@@ -66,13 +67,14 @@ const OrderReturnMananger = () => {
             key: 'x',
             render: (data: OrderReturnResponse) => <div>
                 <Button hidden={!(data.statusReturn === 12)} type="ghost" color='info' onClick={() => { updateStatus(13, data.id) }} style={{ marginRight: 16 }}>Đồng ý</Button >
-                <Button hidden={!(data.statusReturn === 12)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 14 }}>Từ chối</Button >
+                <Button hidden={!(data.statusReturn === 12)} danger onClick={() => { updateStatus(14, data.id) }} style={{ marginRight: 16 }}>Từ chối</Button >
                 <Button hidden={!(data.statusReturn === 13)} type="primary" onClick={() => { updateStatus(15, data.id) }} ghost style={{ marginRight: 16 }}>Đã nhân được hàng</Button>
                 <Button hidden={!(data.statusReturn === 15)} type="primary" onClick={() => { updateStatus(16, data.id) }} ghost style={{ marginRight: 16 }}>Đã hoàn tiền</Button>
+                {/* <Button hidden={!(data.statusReturn === 15)} danger onClick={() => { updateStatus(17, data.id) }} ghost style={{ marginRight: 16 }}>Từ chối hoàn tiền</Button> */}
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },
-    ];
+    ];  
     const columnsForOrderItem: ColumnsType<OrderReturnItemResponse> = [
         {
             title: 'Sản phẩm',
@@ -177,52 +179,69 @@ const OrderReturnMananger = () => {
     const hasSelected = selectedRows.length > 0;
     const onChangeTab = (key: string) => {
         setCurrentTab(key)
-        if (key === "12") {
-            newShowOrderByStatus = [];
+        newShowOrderByStatus = [];
             showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === 12) {
+                if (e.statusReturn === Number(key)) {
                     newShowOrderByStatus.push(e)
                 }
             })
             console.log(newShowOrderByStatus)
             setShowOrderByStatus(newShowOrderByStatus)
-        }
-        if (key === "13") {
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === 13) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
-        if (key === "14") {
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === 14) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
-        if (key === "15") {
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === 15) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
-        if (key === "16") {
-            newShowOrderByStatus = [];
-            showOrder.map((e: OrderReturnResponse) => {
-                if (e.statusReturn === 16) {
-                    newShowOrderByStatus.push(e)
-                }
-            })
-            setShowOrderByStatus(newShowOrderByStatus)
-        }
+        // if (key === "12") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 12) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     console.log(newShowOrderByStatus)
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
+        // if (key === "13") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 13) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
+        // if (key === "14") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 14) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
+        // if (key === "15") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 15) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
+        // if (key === "16") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 16) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
+        // if (key === "17") {
+        //     newShowOrderByStatus = [];
+        //     showOrder.map((e: OrderReturnResponse) => {
+        //         if (e.statusReturn === 17) {
+        //             newShowOrderByStatus.push(e)
+        //         }
+        //     })
+        //     setShowOrderByStatus(newShowOrderByStatus)
+        // }
     };
 
     const updateStatus = (status_id: number, idOrder: number) => {
@@ -306,7 +325,7 @@ const OrderReturnMananger = () => {
 
     };
     return (
-        <><div>
+        <><div style={{padding: '8px'}}>
              <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
             className="tabs-extra-demo-button"
             placeholder="Tìm kiếm theo mã đơn hàng mua, Tên người mua" />
@@ -329,6 +348,9 @@ const OrderReturnMananger = () => {
                     <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đã từ chối" key="14">
+                    <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Từ chối hoàn tiền" key="17">
                     <Table key={1} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
             </Tabs>
