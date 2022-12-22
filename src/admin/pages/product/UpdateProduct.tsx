@@ -267,7 +267,7 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                     >
                     </Antd.InputNumber>
 
-                    <label>Giá bán buôn</label>
+                    <label>Cân nặng</label>
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         defaultValue={variant?.wholesalePrice}

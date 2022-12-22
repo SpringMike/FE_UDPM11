@@ -9,8 +9,10 @@ import { setUserStore } from "../features/user/userSlice";
 import useTitle from "../app/useTitle";
 import { RootState } from "../app/store";
 import { Navigate, useNavigate } from "react-router-dom";
-import {ILoginData} from "../type/StaffType";
+import { ILoginData } from "../type/StaffType";
 import base_url from "../service/BaseApi";
+import React from 'react'
+import { margin } from "@mui/system";
 
 const Login: React.FC = () => {
     useTitle("", "Đăng nhập");
@@ -54,7 +56,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <>
+        <div style={{ margin: "auto", padding: 100 }} >
             <video
                 className="videoTag fixed top-0 left-0 w-screen h-screen object-fill"
                 autoPlay
@@ -84,7 +86,7 @@ const Login: React.FC = () => {
                         {/*    src="/bgi1.png"*/}
                         {/*/>*/}
                     </div>
-                    <div className="self-center">
+                    <div className="self-center t" style={{width:'50%',margin:'auto'}}>
                         <Form.Item className="text-center">
                             {/*<Image*/}
                             {/*    className="w-60 h-14 object-contain"*/}
@@ -107,7 +109,7 @@ const Login: React.FC = () => {
                                 }
                                 placeholder="Tài khoản"
                                 title="Nhập user name"
-                                style={{ borderRadius: "20px" }}
+                                style={{ borderRadius: "20px"}}
                                 size="large"
                             />
                         </Form.Item>
@@ -127,7 +129,7 @@ const Login: React.FC = () => {
                                 }
                                 placeholder="Mật khẩu"
                                 title="Nhập password"
-                                style={{ borderRadius: "20px" }}
+                                style={{ borderRadius: "20px"}}
                                 visibilityToggle={false}
                             />
                         </Form.Item>
@@ -138,7 +140,7 @@ const Login: React.FC = () => {
                                 type="primary"
                                 htmlType="submit"
                                 className="w-full m-0"
-                                style={{ borderRadius: "20px", margin: 0 }}
+                                style={{ borderRadius: "20px"}}
                             >
                                 Đăng nhập
                             </Button>
@@ -146,7 +148,7 @@ const Login: React.FC = () => {
                     </div>
                 </Form>
             </div>
-        </>
+        </div>
     );
 };
 

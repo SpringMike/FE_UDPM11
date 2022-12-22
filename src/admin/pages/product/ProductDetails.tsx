@@ -278,12 +278,16 @@ const ProductDetails = () => {
             // }
         ]
         const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-        const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-            setSelectedRowKeys(newSelectedRowKeys);
-        };
+        const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+        const onSelectChange = (selectedRowKeys: React.Key[], selectedRows: IVariant[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setSelectedRowKeys(selectedRowKeys)
+            const selected:number[] = selectedRows.map((ojb)=>{ return Number(ojb.id)})
+            setSelectedRowIds(selected)
+          }
         const rowSelection = {
             selectedRowKeys,
-            onChange: onSelectChange,
+            onChange:onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         const handleOnDeleteVariants = () => {
@@ -298,12 +302,12 @@ const ProductDetails = () => {
             }).then((result) => {
                 console.log(selectedRowKeys)
                 if (result.isConfirmed) {
-                    deleteVariantsById(selectedRowKeys).then((response: any) => {
+                    deleteVariantsById(selectedRowIds).then((response: any) => {
                         ToastCustom.fire({
                             icon: 'success',
                             title: 'Xóa phiên bản thành công'
                         })
-                          loadData()
+                        loadData()
                     }
                     )
                         .catch((error: any) => {
@@ -410,7 +414,7 @@ const ProductDetails = () => {
 
                     </Antd.Row>
                     <Antd.Row>
-                        <Antd.Col span={12}><p>Giá bán buôn:</p></Antd.Col>
+                        <Antd.Col span={12}><p>Cân nặng:</p></Antd.Col>
                         <Antd.Col
                             span={12}><b>{(props.variant?.wholesalePrice + '').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</b></Antd.Col>
 

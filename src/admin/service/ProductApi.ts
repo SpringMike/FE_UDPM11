@@ -11,7 +11,7 @@ export const addProduct = (data: any) => {
 
 
 export const deleteVariantsById = (listId: number[]) => {
-    return axios.delete(`${base_url}/api/products/variants/${listId}`, { headers })
+    return axios.post(`${base_url}/api/products/variants/`, listId , { headers })
 
 }
 export const updateProduct = (productInfo: any) => {

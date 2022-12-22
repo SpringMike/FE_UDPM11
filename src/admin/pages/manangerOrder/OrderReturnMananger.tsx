@@ -325,7 +325,7 @@ const OrderReturnMananger = () => {
 
     };
     return (
-        <><div style={{padding: '8px'}}>
+        <><div className='p-4'>
              <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
             className="tabs-extra-demo-button"
             placeholder="Tìm kiếm theo mã đơn hàng mua, Tên người mua" />

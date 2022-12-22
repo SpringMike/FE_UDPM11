@@ -363,7 +363,7 @@ const OrderPurchaseMananger = () => {
             <RangePicker showTime onChange={onChangeRangePicker} /></>
     };
     return (
-        <><div style={{ padding: '8px' }} >
+        <><div className='p-4' >
             <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
                 className="tabs-extra-demo-button"
                 placeholder="Tìm kiếm theo mã đơn hàng,mã đơn trả, tên người mua, số điện thoại" />
@@ -387,6 +387,9 @@ const OrderPurchaseMananger = () => {
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Đang giao hàng" key="7">
+                <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(8)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
+                        Shipper đã giao hàng
+                    </Button>
                     <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Giao hàng thành công" key="8">

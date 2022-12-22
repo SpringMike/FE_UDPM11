@@ -252,7 +252,7 @@ const ListProduct = () => {
 
     return (
         <div className='p-5'>
-            <h1 style={{fontSize: '30px', marginRight: 10}}>Danh sách sản phẩm </h1>
+            <h1 style={{fontSize: '30px', marginRight: 10}}>Danh mục sản phẩm </h1>
             <Mui.Grid container spacing={2} sx={{mb: 2}}>
                 <Mui.Grid item xs={1.5}>
                     <Antd.Dropdown overlay={menu} disabled={selectProduct.length < 1}>

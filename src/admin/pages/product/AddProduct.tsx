@@ -237,7 +237,7 @@ const AddProduct = (props: any) => {
                             >
                             </Antd.InputNumber>
                         </Antd.Form.Item>
-                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá bán buôn' name="wholesalePrice">
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Cân nặng' name="wholesalePrice">
                             <Antd.InputNumber size={'large'} min={0} style={{ width: '100%' }}
                                 formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             >
@@ -290,7 +290,7 @@ const AddProduct = (props: any) => {
                             <Mui.TableRow>
                                 <Mui.TableCell align="center">Tên sản phẩm</Mui.TableCell>
                                 <Mui.TableCell align="center">Giá bán lẻ</Mui.TableCell>
-                                <Mui.TableCell align="center">Giá bán buôn</Mui.TableCell>
+                                <Mui.TableCell align="center">Cân nặng</Mui.TableCell>
                                 <Mui.TableCell align="center">Giá nhập</Mui.TableCell>
                             </Mui.TableRow>
                         </Mui.TableHead>
