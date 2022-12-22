@@ -58,6 +58,7 @@ const ListImportInvoice = () => {
 
     return (
         <Spin spinning={spin}>
+            
             <div className='p-5'>
                 <div style={{
                     display: 'flex',
@@ -70,8 +71,10 @@ const ListImportInvoice = () => {
                         <Button type="primary"><PlusOutlined/> Tạo mới đơn hàng</Button>
                     </Link>
                 </div>
-
-                <Tabs style={{display: 'block'}} tabBarExtraContent={OperationsSlot} defaultActiveKey="1">
+                <Input onChange={(e) => handleInputOnchange(e)} style={{padding: '8px', marginTop: 10}}
+                      className="tabs-extra-demo-button"
+                      placeholder="Tìm kiếm theo mã đơn hàng, mã nhà cung cấp, tên kho"/>
+                <Tabs style={{display: 'block'}} defaultActiveKey="1">
                     <Tabs.TabPane tab="Tất cả cả đơn hàng" key="1">
                         {
                             importInvoices.length > 0 && <Table dataSource={importInvoices}

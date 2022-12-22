@@ -25,7 +25,6 @@ const OrderPurchaseMananger = () => {
     const user = useSelector((state: RootState) => state?.user);
 
     const printInvoicePdf = (id_account: number, id_order: number) => {
-        console.log(id_account);
         window.open(`${base_url}/api/orderPurchase/pdf/` + id_account + '/' + id_order + '');
     }
     const columns: ColumnsType<IShowOrder> = [
@@ -77,8 +76,8 @@ const OrderPurchaseMananger = () => {
                 <Button hidden={!(data.status === 5)} type="primary" onClick={() => { updateStatus(6, data.id) }} ghost style={{ marginRight: 16 }}>Xác nhận</Button >
                 <Button hidden={(data.status === 5)} type="primary" onClick={() => { printInvoicePdf(data.account_id, data.id) }} ghost style={{ marginRight: 16 }}>Xuất hoá đơn</Button >
                 <Button hidden={!(data.status === 5)} danger onClick={() => { updateStatus(11, data.id) }} style={{ marginRight: 16 }}>Huỷ đơn</Button >
-                <Button hidden={!(data.status === 6)} danger onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
-                <Button hidden={!(data.status === 7)} danger onClick={() => { updateStatus(8, data.id) }} style={{ marginRight: 16 }}>Shipper đã giao hàng</Button >
+                <Button hidden={!(data.status === 6)} type="primary" onClick={() => { updateStatus(7, data.id) }} style={{ marginRight: 16 }}>Shipper đã lấy hàng</Button >
+                <Button hidden={!(data.status === 7)} type="primary" onClick={() => { updateStatus(8, data.id) }} style={{ marginRight: 16 }}>Shipper đã giao hàng</Button >
                 <Button shape="circle" onClick={() => { showModal(data.id) }} icon={<EyeOutlined />} />
             </div>,
         },
@@ -364,113 +363,68 @@ const OrderPurchaseMananger = () => {
             <RangePicker showTime onChange={onChangeRangePicker} /></>
     };
     return (
-        <>
-            <div style={{ padding: 20 }}>
-                {/* <Tabs
-                    defaultActiveKey="1"
-                    tabBarExtraContent={OperationsSlot}
-                    onChange={onChangeTab}
-                    items={[
-                        {
-                            label: `Tất cả`,
-                            key: '1',
-                            children: (
-                                <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
-                            ),
-                        },
-                        {
-                            label: `Chờ xác nhận`,
-                            key: '5',
-                            children: (
-                                <>
-                                    <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
-                                        Xác nhận
-                                    </Button>
-                                    <div></div>
-                                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                                </>
+        <><div>
+            <Tabs defaultActiveKey={currentTab} onChange={onChangeTab} >
 
-                            ),
-                        },
-                        {
-                            label: `Chờ lấy hàng`,
-                            key: '6',
-                            children: (
-                                <>
-                                    <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
-                                        Shipper đã lấy hàng
-                                    </Button>
-                                    <div></div>
-                                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} /></>
-                            )
-                        },
-                        {
-                            label: `Đang giao hàng`,
-                            key: '7',
-                            children: (
-                                <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-
-                            )
-                        },
-                        {
-                            label: `Giao hàng thành công`,
-                            key: '8',
-                            children: (
-                                <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                            ),
-                        },
-                        {
-                            label: `Giao hàng thất bại`,
-                            key: '9',
-                            children: (
-                                <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                            ),
-                        },
-                        {
-                            label: `Đã huỷ`,
-                            key: '10,11',
-                            children: (
-                                <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                            ),
-                        },
-                    ]}
-                /> */}
-                <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
-                    className="tabs-extra-demo-button"
-                    placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
-                    <RangePicker showTime onChange={onChangeRangePicker} /></>
-                <Tabs defaultActiveKey={currentTab} onChange={onChangeTab}>
-                    <Tabs.TabPane tab="Tất cả" key="1">
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Chờ xác nhận" key="5">
-                        <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
-                            Xác nhận
-                        </Button>
-                        <div></div>
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Chờ lấy hàng" key="6">
-                        <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
-                            Shipper đã lấy hàng
-                        </Button>
-                        <div></div>
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Đang giao hàng" key="7">
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Giao hàng thành công" key="8">
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Giao hàng thất bại" key="9">
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Đã huỷ" key="10,11">
-                        <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
-                    </Tabs.TabPane>
-                </Tabs>
-            </div>
+                <Tabs.TabPane tab="Tất cả" key="1" >
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={newShowOrder} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Chờ xác nhận" key="5">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(6)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
+                        Xác nhận
+                    </Button>
+                    <div></div>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Chờ lấy hàng" key="6">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Button type="primary" ghost loading={loading} onClick={() => updateMultiple(7)} disabled={!hasSelected} style={{ marginBottom: 16, float: 'right' }}>
+                        Shipper đã lấy hàng
+                    </Button>
+                    <div></div>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Đang giao hàng" key="7">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Giao hàng thành công" key="8">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Giao hàng thất bại" key="9">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Đã huỷ" key="10,11">
+                    <><Input onChange={(e) => handleInputOnchange(e)} style={{ padding: '8px', marginTop: 10, marginBottom: 10 }}
+                        className="tabs-extra-demo-button"
+                        placeholder="Tìm kiếm theo mã đơn hàng, Tên người mua, số điện thoại" />
+                        <RangePicker showTime onChange={onChangeRangePicker} /></>
+                    <Table key={1} rowSelection={rowSelection} columns={columns} dataSource={showOrderByStatus} loading={{ spinning: reload }} />
+                </Tabs.TabPane>
+            </Tabs>
+        </div>
             <Modal title="Chi Tiết Đơn Hàng" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={1000} >
                 <Table columns={columnsForOrderItem} dataSource={showOrderItems} loading={{ spinning: reloadTableItem }} />;
             </Modal>

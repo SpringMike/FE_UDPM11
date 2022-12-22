@@ -46,7 +46,7 @@ const MENUS: MenuItem[] = [
     getItem("Nhà cung cấp", "supplier", <ShopOutlined/>),
     getItem("Nhân Viên", "admin/staff", <TeamOutlined/>),
     getItem("Kho hàng", "inventories", <WarehouseIcon/>),
-    getItem("Website người dùng", "home-user", <WebIcon/>),
+    // getItem("Website người dùng", "home-user", <WebIcon/>),
     getItem("Đơn hàng", "order", <AssignmentIcon/>, [
         getItem("Đơn hàng", "order-manager", <AssignmentIcon/>),
         getItem("Đơn yêu cầu trả", "order-return-manager", <AssignmentReturnIcon/>),
@@ -71,7 +71,7 @@ const MENUUSER: MenuItem[] = [
     ]),
     getItem("Nhà cung cấp", "supplier", <ShopOutlined/>),
     getItem("Kho hàng", "inventories", <WarehouseIcon/>),
-    getItem("Website người dùng", "home-user", <WebIcon/>),
+    // getItem("Website người dùng", "home-user", <WebIcon/>),
     getItem("Đơn hàng", "order", <AssignmentIcon/>, [
         getItem("Đơn hàng", "order-manager", <AssignmentIcon/>),
         getItem("Đơn yêu cầu trả", "order-return-manager", <AssignmentReturnIcon/>),
