@@ -40,7 +40,6 @@ function RevenueChart(props: DateTimeReportProps) {
         filterRequest.startTime = startTime !== undefined ? formatDateYear(startTime) : undefined;
         filterRequest.endTime = endTime !== undefined ? formatDateYear(endTime) : undefined;
 
-
         if (diffDuration.asDays() <= 90 && diffDuration.asDays() !== 0) {
             filterRequest.timeType = "day";
         } else {

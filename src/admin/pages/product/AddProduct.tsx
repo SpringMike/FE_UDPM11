@@ -187,7 +187,6 @@ const AddProduct = (props: any) => {
             setSuppliers(r.data.reverse())
         })
         setVariants(props.variants)
-
         getCategories().then(res => {
             setCategories(res.data.reverse())
         }).catch(error => {
