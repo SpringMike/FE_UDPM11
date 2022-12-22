@@ -16,20 +16,17 @@ const SelectOption = (props:ISelectOption) => {
     const { options,onOptionChange,setOptions ,size}={...props}
    
     const deleteOption = (key: number) => {
-
         options.splice(key, 1)
         onOptionChange()
     }
     const addNewOptionUI = () => {
         if (options.length < size) {
-
            setOptions(options.concat([{
-                name: '',
+                name: 'material',
                 values: []
             }]))
 
         }
-
     }
 
     return (
