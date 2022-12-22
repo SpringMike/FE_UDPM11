@@ -23,9 +23,9 @@ export interface IVariant {
     wholesalePrice: number,
     salePrice: number,
     importPrice: number
-    option1:string,
-    option2:string,
-    option3:string
+    option1?:string,
+    option2?:string,
+    option3?:string
 }
 
 export interface IProductCount {

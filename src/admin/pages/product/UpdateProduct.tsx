@@ -73,14 +73,15 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                 title: 'Sửa thành công'
             }).then()
             setIsUpdate(false)
-            setLoad(false)
+        setLoad(false)
+    })
+        .catch((erorr) => {
+            ToastCustom.fire({
+                icon: 'error',
+                title: 'Thêm sản phẩm thất bại'
+            }).then()
         })
-            .catch((erorr) => {
-                ToastCustom.fire({
-                    icon: 'error',
-                    title: 'Thêm sản phẩm thất bại'
-                }).then()
-            })
+
 
 
     }
@@ -244,9 +245,9 @@ const UpdateProduct = (props: ProductUpdateProps) => {
 
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        value={variant?.importPrice}
+                        defaultValue={variant?.importPrice}
                         onChange={(value) => {
-                            if (variant !== undefined) {
+                            if (variant) {
                                 variant!.importPrice = Number(value)
                                 onDetailChange()
                             }
@@ -256,10 +257,10 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                     <label>Giá bán lẻ</label>
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        value={variant?.salePrice}
+                        defaultValue={variant?.salePrice}
                         onChange={(value) => {
-                            if (variant) {
-                                variant!.salePrice = Number(value)
+                            if (variant !== undefined) {
+                                variant!.salePrice =  Number(value)
                                 onDetailChange()
                             }
                         }}
@@ -269,10 +270,10 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                     <label>Giá bán buôn</label>
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        value={variant?.wholesalePrice}
+                        defaultValue={variant?.wholesalePrice}
                         onChange={(value) => {
                             if (variant) {
-                                variant!.wholesalePrice = Number(value)
+                                variant!.wholesalePrice =  Number(value)
                                 onDetailChange()
                             }
                         }}
@@ -351,7 +352,7 @@ const UpdateProduct = (props: ProductUpdateProps) => {
         )
     }
     return (
-        <div className='p-5'>
+        <div className ='p-5'>
 
 
             <View></View>

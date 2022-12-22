@@ -114,7 +114,7 @@ const ProductDetails = () => {
                 break
             case '2':
                 if (productInfo?.product?.id) {
-                    
+
                     setIsUpdate(true)
                 } else {
                     ToastCustom.fire(
@@ -210,7 +210,7 @@ const ProductDetails = () => {
                                     </Col>
                                     <Col span={12}>
                                         <Moment format="DD/MM/YYYY HH:mm:ss">
-                                            {product?.createAt}
+                                            {product?.updateAt}
                                         </Moment>
 
 
@@ -296,16 +296,14 @@ const ProductDetails = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Delete!'
             }).then((result) => {
+                console.log(selectedRowKeys)
                 if (result.isConfirmed) {
-                    console.log(selectedRowKeys)
                     deleteVariantsById(selectedRowKeys).then((response: any) => {
-                        if (response.ok) {
-                            ToastCustom.fire({
-                                icon: 'success',
-                                title: 'Xóa phiên bản thành công'
-                            }).then()
-                            loadData()
-                        }
+                        ToastCustom.fire({
+                            icon: 'success',
+                            title: 'Xóa phiên bản thành công'
+                        })
+                          loadData()
                     }
                     )
                         .catch((error: any) => {
