@@ -21,3 +21,15 @@ export type TypeSupplier = {
     phone: string;
     accountId: number;
 }
+export interface ISupplierV2 {
+    id:number,
+    code: string;
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+    isDelete: boolean;
+    accountId: string;
+    updateAt: string;
+    createdAt: string;
+}

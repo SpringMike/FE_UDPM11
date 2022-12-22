@@ -10,17 +10,18 @@ import {ApexOptions} from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 
 
-export type DateTimeReportProps ={
-    startTime:Date | undefined,
-    endTime:Date | undefined
+export type DateTimeReportProps = {
+    startTime: Date | undefined,
+    endTime: Date | undefined
 }
+
 function RevenueChart(props: DateTimeReportProps) {
     const {startTime, endTime} = props;
 
     const [revenueChartItems, setRevenueChartItems] = useState<Array<RevenueChartResponse>>([]);
     const [filterRequest, setFilterRequest] = useState<DateTimeFilterProps>({});
 
-     const formatDateYear = (date: Date, errorText?: string): string => {
+    const formatDateYear = (date: Date, errorText?: string): string => {
         if (moment(date).isValid()) {
             return moment(date).format("YYYY-MM-DD");
         }
@@ -31,22 +32,22 @@ function RevenueChart(props: DateTimeReportProps) {
     }
 
     const getRevenueChart = async () => {
-            const startDate = moment(startTime);
-            const timeEnd = moment(endTime);
-            const diff = timeEnd.diff(startDate);
+        const startDate = moment(startTime);
+        const timeEnd = moment(endTime);
+        const diff = timeEnd.diff(startDate);
 
-            const diffDuration = moment.duration(diff);
-            filterRequest.startTime = startTime !== undefined ? formatDateYear(startTime) :undefined;
-            filterRequest.endTime = endTime !== undefined ? formatDateYear(endTime) : undefined;
+        const diffDuration = moment.duration(diff);
+        filterRequest.startTime = startTime !== undefined ? formatDateYear(startTime) : undefined;
+        filterRequest.endTime = endTime !== undefined ? formatDateYear(endTime) : undefined;
 
 
-            if (diffDuration.asDays() <= 90 && diffDuration.asDays() !==0) {
-                filterRequest.timeType = "day";
-            } else {
-                filterRequest.timeType = "month";
-            }
-            const response = await getRevenueChartApi(filterRequest);
-            setRevenueChartItems(response.data);
+        if (diffDuration.asDays() <= 90 && diffDuration.asDays() !== 0) {
+            filterRequest.timeType = "day";
+        } else {
+            filterRequest.timeType = "month";
+        }
+        const response = await getRevenueChartApi(filterRequest);
+        setRevenueChartItems(response.data);
     };
     useEffect(() => {
         getRevenueChart().then(r => {
@@ -82,7 +83,7 @@ function RevenueChart(props: DateTimeReportProps) {
             color: '#5da7e8'
         },
     ]
-    const date = revenueChartItems &&  (revenueChartItems.map(re1 => re1.date))
+    const date = revenueChartItems && (revenueChartItems.map(re1 => re1.date))
 
     const options: ApexOptions = {
         chart: {
@@ -103,7 +104,7 @@ function RevenueChart(props: DateTimeReportProps) {
             width: [5, 7, 5],
             curve: 'straight',
             dashArray: [0, 8, 5],
-            colors: ['#2E93fA','#5da7e8']
+            colors: ['#2E93fA', '#5da7e8']
         },
 
         markers: {
@@ -113,11 +114,11 @@ function RevenueChart(props: DateTimeReportProps) {
             hover: {
                 size: 5
             },
-            colors:['#2E93fA','#5da7e8']
+            colors: ['#2E93fA', '#5da7e8']
         },
-        yaxis:{
-            labels:{
-                formatter: function(val, index) {
+        yaxis: {
+            labels: {
+                formatter: function (val, index) {
                     return formatNumber(val);
                 },
                 style: {
@@ -128,7 +129,7 @@ function RevenueChart(props: DateTimeReportProps) {
         xaxis: {
             type: "datetime",
             labels: {
-                rotate:0,
+                rotate: 0,
                 maxHeight: 150,
                 style: {
                     fontSize: '11px'
@@ -143,20 +144,20 @@ function RevenueChart(props: DateTimeReportProps) {
             tickAmount: 6,
         },
         tooltip: {
-            custom: function({series, seriesIndex, dataPointIndex, w}) {
+            custom: function ({series, seriesIndex, dataPointIndex, w}) {
                 const data = w.globals.initialSeries[0].data[dataPointIndex];
                 let moneyType = " vnđ"
                 let lastRevenue = formatNumber(w.globals.initialSeries[1].data[dataPointIndex].y)
-                if (data.lastPeriodDate == null){
+                if (data.lastPeriodDate == null) {
                     data.lastPeriodDate = "Không có dữ liệu"
                 }
-                if ( lastRevenue === "0"){
+                if (lastRevenue === "0") {
                     lastRevenue = ""
                     moneyType = ""
                 }
                 return '<div style="padding: 10px">' +
-                    '<p><b>Hiện tại</b>: ' + moment(data.x).format('DD/MM/YYYY') +'  <b>' + formatNumber(data.y) + ' vnđ'  +'</b>  </p>' +
-                    '<p ><b>Kì trước</b>: ' + data.lastPeriodDate +'  <b>' + lastRevenue + moneyType  +'</b>  </p>' +
+                    '<p><b>Hiện tại</b>: ' + moment(data.x).format('DD/MM/YYYY') + '  <b>' + formatNumber(data.y) + ' vnđ' + '</b>  </p>' +
+                    '<p ><b>Kì trước</b>: ' + data.lastPeriodDate + '  <b>' + lastRevenue + moneyType + '</b>  </p>' +
                     '</div>';
             }
         },
@@ -166,30 +167,30 @@ function RevenueChart(props: DateTimeReportProps) {
     }
 
     return (
-        <Box component={Paper} p={2} height={500}>
 
-            <Grid container>
-                <Grid item xs={10}>
-                    <Typography component="h6" variant="h6" gutterBottom>DOANH THU WEBSITE
-                    </Typography>
+            <Box component={Paper} p={2} height={500}>
+                <Grid container>
+                    <Grid item xs={10}>
+                        <Typography component="h6" variant="h6" gutterBottom>DOANH THU WEBSITE
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Link to={'/admin/tracking/detail/revenue'}>Xem chi tiết
+                        </Link>
+                    </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                    <Link  to={'/tracking/detail/revenue'}>Xem chi tiết
-                    </Link>
-                </Grid>
-            </Grid>
-            {
-                revenueChartItems && (
-                    <ReactApexChart
-                        height={350}
-                        options={options}
-                        series={series}
-                        type="line"
-                    />
-                )
-            }
-
-        </Box>
+                {
+                    revenueChartItems && (
+                        <ReactApexChart
+                            height={350}
+                            options={options}
+                            series={series}
+                            type="line"
+                        />
+                    )
+                }
+            </Box>
     );
 }
+
 export default RevenueChart

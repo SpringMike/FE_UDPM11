@@ -7,6 +7,10 @@ import { EyeOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import { Input, DatePicker } from 'antd';
 import { debounce } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { padding } from '@mui/system';
+import base_url from '../../service/BaseApi';
 
 
 const OrderPurchaseMananger = () => {
@@ -18,9 +22,10 @@ const OrderPurchaseMananger = () => {
         timer: 3000,
         timerProgressBar: true,
     })
+    const user = useSelector((state: RootState) => state?.user);
 
     const printInvoicePdf = (id_account: number, id_order: number) => {
-        window.open('http://localhost:8080/api/orderPurchase/pdf/' + id_account + '/' + id_order + '');
+        window.open(`${base_url}/api/orderPurchase/pdf/` + id_account + '/' + id_order + '');
     }
     const columns: ColumnsType<IShowOrder> = [
         {
@@ -180,7 +185,7 @@ const OrderPurchaseMananger = () => {
     const updateMultiple = (status_id: number) => {
         setLoading(true);
         setReload(true);
-        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then(() => {
+        updateStatusOrderByAdmin(status_id, listId, user.username).then(() => {
             setLoading(false);
             Toast.fire({
                 icon: 'success',
@@ -290,7 +295,8 @@ const OrderPurchaseMananger = () => {
         setReload(true);
         const listId: number[] = []
         listId.push(idOrder)
-        updateStatusOrderByAdmin(status_id, listId, "Nguyen Van Duc").then(() => {
+        console.log("user", user.username);
+        updateStatusOrderByAdmin(status_id, listId, user.username).then(() => {
             Toast.fire({
                 icon: 'success',
                 title: 'Cập nhật trạng thái thành công '
@@ -396,7 +402,8 @@ const OrderPurchaseMananger = () => {
         </div>
             <Modal title="Chi Tiết Đơn Hàng" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={1000} >
                 <Table columns={columnsForOrderItem} dataSource={showOrderItems} loading={{ spinning: reloadTableItem }} />;
-            </Modal></>
+            </Modal>
+        </>
     );
 }
 

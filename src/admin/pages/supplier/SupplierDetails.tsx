@@ -49,12 +49,12 @@ const SupplierDetails = () => {
             items={[
                 {
                     label: <Link to="#">Xóa nhà cung cấp</Link>,
-                    key: '1',
+                    key: 1,
                     icon: <DeleteOutlined/>,
                 },
                 {
                     label: <Link to="#" onClick={() => setIsLoadModal(true)}>Sửa nhà cung cấp</Link>,
-                    key: '2',
+                    key: 2,
                     icon: <InfoCircleOutlined/>,
 
                 },

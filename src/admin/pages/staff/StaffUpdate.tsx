@@ -1,4 +1,4 @@
-import { IStaff, TypeStaff } from "../../type/StaffType"
+import { IStaff, IStaff2, TypeStaff } from "../../type/StaffType"
 import { Button, Col, Form, Input, Modal, Radio, RadioChangeEvent, Row, Select } from "antd";
 import React, { useState } from "react";
 import { updateSupplier } from "../../service/SupplierApi";
@@ -25,20 +25,20 @@ const StaffUpdate = ({ staff, isVisible, setIsVisible }: StaffProps) => {
     const [form] = Form.useForm();
     form.setFieldsValue({
         id: staff.id,
-        name: staff.name,
+        name: staff.full_name,
         code: staff.code,
         phone: staff.phone,
         email: staff.email,
-        accountId: staff.accountId,
+        accountId: staff.id_account,
         address: staff.address,
-        statusAccount: staff.statusAccount + '',
-        roleId: staff.roleId + ''
+        statusAccount: staff._delete + '',
+        roleId: staff.role_id + ''
     });
-    const onFormSubmit = (staffForm: TypeStaff) => {
+    const onFormSubmit = (staffForm: IStaff) => {
         staffForm.accountId = Number(1)
         staffForm.id = staff.id
         console.log(staffForm)
-        updateStaffById(staffForm.statusAccount, staffForm.roleId, staff.id).then(() => {
+        updateStaffById(staffForm.roleId, staffForm.statusAccount, staff.id_account).then(() => {
             ToastCustom.fire({
                 icon: 'success',
                 title: 'Sửa nhân viên thành công'
@@ -71,7 +71,7 @@ const StaffUpdate = ({ staff, isVisible, setIsVisible }: StaffProps) => {
     const onChangeRadio = (e: RadioChangeEvent) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
-      };
+    };
 
     return (
         <>
@@ -126,17 +126,17 @@ const StaffUpdate = ({ staff, isVisible, setIsVisible }: StaffProps) => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="Trạng thái" name="statusAccount">
-                                    <Select dropdownStyle={{height: 100, width: 300}}>
-                                        <Option style={{width: 400}} value="true">Hoạt Động</Option>
-                                        <Option value="false">Khoá</Option>
+                                    <Select dropdownStyle={{ height: 100, width: 300 }}>
+                                        <Option style={{ width: 400 }} value="false">Hoạt Động</Option>
+                                        <Option value="true">Khoá</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="Chức vụ" name="roleId">
-                                    <Select dropdownStyle={{height: 100, width: 300}}>
-                                        <Option style={{width: 400}} value="1">ADMIN</Option>
-                                        <Option value="2">STAFF</Option>
+                                    <Select dropdownStyle={{ height: 100, width: 300 }}>
+                                        <Option style={{ width: 400 }} value="1">Nhân Viên</Option>
+                                        <Option value="2">Quản lý</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>

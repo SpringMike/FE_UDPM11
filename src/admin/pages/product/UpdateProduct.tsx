@@ -1,14 +1,14 @@
-import {useNavigate, useParams} from "react-router-dom";
-import React, {memo, useEffect, useState} from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import React, { memo, useEffect, useState } from "react";
 import * as Antd from "antd";
-import {LeftOutlined} from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import * as Mui from '@mui/material'
-import {updateProduct,} from "../../service/ProductApi";
-import {IVariant, Product} from "../../type/ProductType";
+import { updateProduct, } from "../../service/ProductApi";
+import { IVariant, Product } from "../../type/ProductType";
 import ToastCustom from "../../features/toast/Toast";
 import SelectCategory from "./SelectCategory";
 import ImageUpload from "./ImageUpload";
-import {Category} from "../../type/CategoryType";
+import { Category } from "../../type/CategoryType";
 
 interface ProductUpdateProps {
     product: Product | undefined,
@@ -68,11 +68,11 @@ const UpdateProduct = (props: ProductUpdateProps) => {
     const onSubmit = (data: Product) => {
         setLoad(true)
         updateProduct(productInfo).then(res => {
-                ToastCustom.fire({
-                    icon: 'success',
-                    title: 'Sửa thành công'
-                }).then()
-                setIsUpdate(false)
+            ToastCustom.fire({
+                icon: 'success',
+                title: 'Sửa thành công'
+            }).then()
+            setIsUpdate(false)
             setLoad(false)
         })
             .catch((erorr) => {
@@ -245,7 +245,7 @@ const UpdateProduct = (props: ProductUpdateProps) => {
                     <Antd.InputNumber size={'large'} min={0} style={{ width: '100%', marginBottom: 10 }}
                         formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         value={variant?.importPrice}
-                        onChange={(value)  => {
+                        onChange={(value) => {
                             if (variant !== undefined) {
                                 variant!.importPrice = Number(value)
                                 onDetailChange()
@@ -351,7 +351,7 @@ const UpdateProduct = (props: ProductUpdateProps) => {
         )
     }
     return (
-        <div className ='p-5'>
+        <div className='p-5'>
 
 
             <View></View>

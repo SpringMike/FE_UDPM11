@@ -15,7 +15,6 @@ type Props = {
     invoice: IDetailImportInvoice
 }
 const ReturnInvoiceImport = ({returnInvoice, invoice}: Props) => {
-
     return (
         <>
             {

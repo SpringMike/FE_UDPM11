@@ -8,8 +8,8 @@ export const StaffColumn = [
     },
     {
         title: 'Tên nhân viên',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'fullName',
+        key: 'fullName',
     },
     {
         title: 'Email',
@@ -22,11 +22,6 @@ export const StaffColumn = [
         key: "phone"
     },
     {
-        title: "Username",
-        dataIndex: "username",
-        key: "username"
-    },
-    {
         title: "Giới tính",
         dataIndex: "gender",
         key: "gender",
@@ -35,24 +30,24 @@ export const StaffColumn = [
                 "Nữ"
         },
     },
-    {
-        title: "Chức vụ",
-        dataIndex: "roleId",
-        key: "roleId",
-        render: (roleId: Number) => {
-            return roleId == 1 ? "Quản lý" :
-                "Nhân viên"
-        },
-    },
-    {
-        title: "Trạng thái",
-        dataIndex: "statusAccount",
-        key: "status",
-        render: (status: boolean) => {
-            return status ? <Switch defaultChecked  /> :
-                <Switch  />
-        },
+    // {
+    //     title: "Chức vụ",
+    //     dataIndex: "roleId",
+    //     key: "roleId",
+    //     render: (roleId: Number) => {
+    //         return roleId == 1 ? "Quản lý" :
+    //             "Nhân viên"
+    //     },
+    // },
+    // {
+    //     title: "Trạng thái",
+    //     dataIndex: "statusAccount",
+    //     key: "status",
+    //     render: (status: boolean) => {
+    //         return status ? <Switch defaultChecked  /> :
+    //             <Switch  />
+    //     },
 
 
-    }
+    // }
 ];

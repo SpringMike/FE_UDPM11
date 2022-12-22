@@ -23,11 +23,12 @@ import {Link} from "react-router-dom";
 import {DatePicker} from "antd";
 import ReactApexChart from "react-apexcharts";
 import TableCellSort from "../../components/TableCellSort";
+import * as Antd from "antd";
 
 function RevenueDetailChart (){
     const sizePage = 10;
     const [page, setPage] = useState<number>(1);
-    const [totalPage, setTotalPage] = useState<number>(0)
+    const [totalPage, setTotalPage] = useState<number>(1)
 
     const [sortDirection, setSortDirection] = useState<SortDirection>();
     const [sortBy, setSortBy] = useState<string>();
@@ -170,16 +171,29 @@ function RevenueDetailChart (){
     ] : [];
     const { RangePicker } = DatePicker;
 
-    const onChangeRangePicker = (dates: any, dateStrings: any) => {
+    const onTimeChange = (dates: any, dateStrings: any) => {
         setStartTime( (dateStrings[0] === "") ? null : dateStrings[0])
         setEndTime( (dateStrings[1] === "") ? null : dateStrings[1])
     }
     return (
+        <div className='p-5'>
         <Grid container spacing={3} >
-            <Link   to="/admin/reports">Danh sach bao cao </Link>
-            <Grid item xs={12} component={Paper}>
+            <Link to="/admin/tracking">Danh sach bao cao </Link>
+            <Grid item xs={12} mt={2} component={Paper}>
                 <Typography component="h5" variant="h5" gutterBottom>Doanh thu theo thời gian</Typography>
-                <RangePicker showTime onChange={onChangeRangePicker} />
+                <Antd.DatePicker.RangePicker
+                    defaultValue={[moment(startTime), moment(endTime)]}
+                    style={{width: "50%"}}
+                    ranges={{
+                        'Hôm nay': [moment().startOf('day'), moment().endOf('day')],
+                        'Tuần này': [moment().startOf('week'), moment().endOf('week')],
+                        'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+                        'Năm nay': [moment().startOf('year'), moment().endOf('year')],
+                    }}
+                    showTime
+                    format="YYYY/MM/DD HH:mm:ss"
+                    onChange={onTimeChange}
+                />
                 {listRevenueReport && listRevenueReport.responses.length > 0 ? <ReactApexChart
                     height={400}
                     options={options}
@@ -196,12 +210,9 @@ function RevenueDetailChart (){
                     </strong>
                 </div>}
             </Grid>
-            <Grid item xs={12} component={Paper} style={{marginTop: 10}}>
-                <Button variant="outlined" color="primary"  >Bộ lọc
-                </Button>
-
+            <Grid item xs={12} component={Paper} style={{marginTop: 10,paddingBottom:25}}>
                 <Divider style={{  marginTop: 10, marginBottom: 10}}/>
-                <Table aria-label="referral table">
+                <Table aria-label="referral table" style={{padding: 10}}>
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">Ngày</TableCell>
@@ -301,21 +312,17 @@ function RevenueDetailChart (){
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25]}
-                                component="div"
-                                count={totalRows} // This is what your request should be returning in addition to the current page of rows.
-                                rowsPerPage={5}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
                         </TableRow>
+                        <Antd.Pagination responsive style={{marginTop: 10, marginRight: 10}}
+                                         pageSize={10} showSizeChanger showQuickJumper
+                                         defaultCurrent={1} total={totalPage} onChange={handleChangePage}
+                                         pageSizeOptions={[10, 20, 50]}/>
                     </TableFooter>
                 </Table>
 
             </Grid>
         </Grid>
+        </div>
     );
 
 }

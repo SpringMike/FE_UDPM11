@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Col, Dropdown, Menu, MenuProps, Row, Space, Table, Tabs } from "antd";
 import Moment from "react-moment";
 import { DeleteOutlined, DownOutlined, InfoCircleOutlined, LeftOutlined } from "@ant-design/icons";
-import { IStaff } from "../../type/StaffType";
+import { IStaff, IStaff2 } from "../../type/StaffType";
 import { getStaffById } from "../../service/StaffApi";
 import StaffUpdate from "./StaffUpdate";
 
@@ -17,6 +17,7 @@ type Account = {
 const StaffDetails = () => {
 
     const { id } = useParams();
+    console.log('123123123', id);
     const [staff, setStaff] = useState({} as IStaff);
 
     const [account, setAccount] = useState({} as Account)
@@ -25,6 +26,7 @@ const StaffDetails = () => {
             setStaff(staff.data)
         })
 
+        console.log("_----------------", staff);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -49,12 +51,12 @@ const StaffDetails = () => {
             items={[
                 {
                     label: <Link to="#">Xóa nhân viên</Link>,
-                    key: '1',
+                    key: 1,
                     icon: <DeleteOutlined />,
                 },
                 {
                     label: <Link to="#" onClick={() => setIsLoadModal(true)}>Sửa nhân viên</Link>,
-                    key: '2',
+                    key: 2,
                     icon: <InfoCircleOutlined />,
 
                 },
@@ -99,7 +101,7 @@ const StaffDetails = () => {
                                                 <p>Tên nhà nhân viên: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>{staff.name}</b>
+                                                <b>{staff.full_name}</b>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -118,14 +120,14 @@ const StaffDetails = () => {
                                                 <b>{staff.phone}</b>
                                             </Col>
                                         </Row>
-                                        <Row>
+                                        {/* <Row>
                                             <Col span={8}>
                                                 <p>Người tạo: </p>
                                             </Col>
                                             <Col span={12}>
                                                 <b>Comming</b>
                                             </Col>
-                                        </Row>
+                                        </Row> */}
                                     </Col>
                                     <Col span={8}>
                                         <Row>
@@ -136,6 +138,8 @@ const StaffDetails = () => {
                                                 <b>{staff.email}</b>
                                             </Col>
                                         </Row>
+
+
                                         <Row>
                                             <Col span={8}>
                                                 <p>Giới tính: </p>
@@ -143,20 +147,6 @@ const StaffDetails = () => {
                                             <Col span={12}>
                                                 <b>{staff.gender ? 'Nam' : 'Nữ'}</b>
                                             </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col span={8}>
-                                                <p>Ngày sinh: </p>
-                                            </Col>
-                                            <Col span={12}>
-                                                <b>
-                                                    <Moment format="DD/MM/YYYY">
-                                                        {staff.dob}
-                                                    </Moment>
-                                                </b>
-                                            </Col>
-                                        </Row>
-                                        <Row>
                                             <Col span={8}>
                                                 <p>Địa chỉ nhân viên: </p>
                                             </Col>
@@ -175,7 +165,7 @@ const StaffDetails = () => {
                                             <Col span={12}>
                                                 <b>
                                                     <Moment format="DD/MM/YYYY HH:mm:ss">
-                                                        {staff.createdAt}
+                                                        {staff.create_at}
                                                     </Moment>
                                                 </b>
                                             </Col>
@@ -187,17 +177,19 @@ const StaffDetails = () => {
                                             <Col span={12}>
                                                 <b>
                                                     <Moment format="DD/MM/YYYY HH:mm:ss">
-                                                        {staff.updateAt}
+                                                        {staff.update_at}
                                                     </Moment>
                                                 </b>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col span={8}>
-                                                <p>Người cập nhập: </p>
+                                                <p>Chức vụ: </p>
                                             </Col>
                                             <Col span={12}>
-                                                <b>comming</b>
+                                                <b>
+                                                    {staff.role_id == 1 ? 'Nhân viên' : 'Quản lý'}
+                                                </b>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -206,9 +198,11 @@ const StaffDetails = () => {
                                             </Col>
                                             <Col span={12}>
                                                 <b>{
-                                                    staff.statusAccount ? (
+                                                    staff._delete ? (
+                                                        <p style={{ color: 'red' }}>Khoá</p>
+                                                    ) : (
                                                         <p style={{ color: 'blue' }}>Hoạt động</p>
-                                                    ) : (<p style={{ color: 'red' }}>Khoá</p>)
+                                                    )
                                                 }</b>
                                             </Col>
                                         </Row>
@@ -217,7 +211,7 @@ const StaffDetails = () => {
                             </div>
                         </div>
                         {isLoadModal && <StaffUpdate staff={staff} isVisible={isLoadModal}
-                                                        setIsVisible={() => setIsLoadModal(false)}/>}
+                            setIsVisible={() => setIsLoadModal(false)} />}
                     </div>
                 )
             }

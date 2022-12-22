@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { deleteStaff, getStaffs, updateStatusStaff } from "../../service/StaffApi";
 import ToastCustom from "../../features/toast/Toast";
-import { IStaff } from "../../type/StaffType";
+import { IStaff, IStaff2 } from "../../type/StaffType";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ImportExcel from "./ImportExcel";
@@ -21,7 +21,8 @@ import StaffCreate from "./StaffCreate";
 const StaffList = () => {
 
     const { Title } = Typography;
-    const [data, setData] = useState([{} as IStaff]);
+
+    const [data, setData] = useState([{} as IStaff2]);
 
     const [reload, setReload] = useState(false);
 
@@ -194,7 +195,7 @@ const StaffList = () => {
                     onRow={(record) => {
                         return {
                             onClick: (event) =>
-                                navigate({ pathname: `/staff/details/${record.id}` }),
+                                navigate({ pathname: `/admin/staff/details/${record.id}` }),
                         };
                     }}
                     rowSelection={rowSelection}

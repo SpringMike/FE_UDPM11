@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import  {useCallback, useEffect, useState} from "react";
+import React,  {useCallback, useEffect, useState} from "react";
 import {IImportInvoice} from "../../type/ImportInvoiceType";
 import {getImportInvoices} from "../../service/ImportInvoiceApi";
 import {Button, Spin, Table} from "antd";
-
 import {Link, useNavigate} from "react-router-dom";
 import {Tabs} from 'antd';
 import {Input} from 'antd';
@@ -11,7 +10,6 @@ import '../../styles/Tab.css'
 import {debounce} from "@mui/material";
 import {PlusOutlined} from "@ant-design/icons";
 import {ImportInvoiceColumn} from "../../datatablesource/ImportInvoice";
-import React from "react";
 
 
 const ListImportInvoice = () => {
@@ -60,9 +58,7 @@ const ListImportInvoice = () => {
 
     return (
         <Spin spinning={spin}>
-             <Input onChange={(e) => handleInputOnchange(e)} style={{padding: '8px', marginTop: 10}}
-                      className="tabs-extra-demo-button"
-                      placeholder="Tìm kiếm theo mã đơn hàng, mã nhà cung cấp, tên kho"/>
+            
             <div className='p-5'>
                 <div style={{
                     display: 'flex',
@@ -75,8 +71,10 @@ const ListImportInvoice = () => {
                         <Button type="primary"><PlusOutlined/> Tạo mới đơn hàng</Button>
                     </Link>
                 </div>
-
-                <Tabs style={{display: 'block'}}  defaultActiveKey="1">
+                <Input onChange={(e) => handleInputOnchange(e)} style={{padding: '8px', marginTop: 10}}
+                      className="tabs-extra-demo-button"
+                      placeholder="Tìm kiếm theo mã đơn hàng, mã nhà cung cấp, tên kho"/>
+                <Tabs style={{display: 'block'}} defaultActiveKey="1">
                     <Tabs.TabPane tab="Tất cả cả đơn hàng" key="1">
                         {
                             importInvoices.length > 0 && <Table dataSource={importInvoices}
