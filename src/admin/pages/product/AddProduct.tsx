@@ -187,6 +187,7 @@ const AddProduct = (props: any) => {
             setSuppliers(r.data.reverse())
         })
         setVariants(props.variants)
+
         getCategories().then(res => {
             setCategories(res.data.reverse())
         }).catch(error => {
@@ -225,7 +226,8 @@ const AddProduct = (props: any) => {
                         <Antd.Input size={'large'}></Antd.Input>
                     </Antd.Form.Item>
                     <Antd.Space size={[50, 3]}>
-                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá bán lẻ' name="salePrice"
+                        
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Giá bán lẻ' name="wholesalePrice"
                             style={{ width: '100%' }}
                             rules={[
                                 { required: true, message: 'Giá bán lẻ Không được để trống' },
@@ -236,7 +238,7 @@ const AddProduct = (props: any) => {
                             >
                             </Antd.InputNumber>
                         </Antd.Form.Item>
-                        <Antd.Form.Item labelCol={{ span: 24 }} label='Cân nặng' name="wholesalePrice">
+                        <Antd.Form.Item labelCol={{ span: 24 }} label='Cân nặng' name="salePrice">
                             <Antd.InputNumber size={'large'} min={0} style={{ width: '100%' }}
                                 formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             >

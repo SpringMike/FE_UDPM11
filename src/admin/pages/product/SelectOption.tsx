@@ -22,7 +22,7 @@ const SelectOption = (props:ISelectOption) => {
     const addNewOptionUI = () => {
         if (options.length < size) {
            setOptions(options.concat([{
-                name: 'material',
+                name: 'Chất liệu',
                 values: []
             }]))
 
